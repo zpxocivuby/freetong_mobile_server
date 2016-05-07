@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="itaf-scheduler-web">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="itaf-core-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-core/itaf-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-exception-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-exception/itaf-exception">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-hibernate-jar-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-hibernate-jar/itaf-hibernate-jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-log-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-log/itaf-log">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-business-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-business/itaf-business">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-search-solr-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-search-solr/itaf-search-solr">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-persistence-hibernate-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-persistence-hibernate/itaf-persistence-hibernate">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-domain-mysql-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-domain-mysql/itaf-domain-mysql">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-workflow-activiti-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-workflow-activiti/itaf-workflow-activiti">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-scheduler-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-scheduler/itaf-scheduler">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-security-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-security/itaf-security">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-cache-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-cache/itaf-cache">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="itaf-im-server-1.0.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/itaf-im-server/itaf-im-server">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="itaf-scheduler-web"/>
+        <property name="java-output-path" value="/itaf-scheduler-web/target/classes"/>
+    </wb-module>
+</project-modules>

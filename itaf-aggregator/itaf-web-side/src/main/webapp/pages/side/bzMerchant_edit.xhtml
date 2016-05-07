@@ -1,0 +1,172 @@
+<ui:composition template="/template/PopEditTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript">
+			//<![CDATA[ 
+			var baseUrl = "#{baseSession.contextPath}";
+
+			function checkUserName() {
+				var totalLength = 0;
+				var charCode;
+				var userName = Ext.get("popEditFormId:username").getValue();
+				for (var i = 0; i < userName.length; i++) {
+					charCode = userName.charCodeAt(i);
+					if (charCode < 0x007f) {
+						totalLength++;
+					} else if ((0x0080 <= charCode) && (charCode <= 0x07ff)) {
+						totalLength += 2;
+					} else if ((0x0800 <= charCode) && (charCode <= 0xffff)) {
+						totalLength += 3;
+					} else {
+						totalLength += 4;
+					}
+				}
+				if (totalLength > 18) {
+					Ext.Msg.alert("#{messages['page.user.notice']}",
+							"#{messages['page.user.checkUserNameLength']}");
+					return false;
+				} else {
+					return true;
+				}
+			}
+
+			Ext.onReady(function() {
+				var operateMsg = "#{userAction.actionMsg}";
+				if ("success" == operateMsg) {
+					Ext.MessageBox.alert("#{messages['page.common.notice']}",
+							"#{messages['page.common.operateSuccess']}",
+							function() {
+								top.popWindowBase.app.exitWindow();
+							});
+				} else if ("failure" == operateMsg) {
+					Ext.MessageBox.alert("#{messages['page.common.notice']}",
+							"操作失败", function() {
+								top.popWindowBase.app.exitWindow();
+							});
+				}
+			});
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						<h:outputText value="#{messages['page.user.modifyUserInfo']}" />
+						<h:message for="username" errorClass="pop_error_msg_span" />
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">类型：商家</li>
+					</ul>
+					<ul>
+						<li class="textLi">用户名</li>
+						<li><h:inputText id="username" maxlength="18" required="true"
+								value="#{userAction.bzMerchant.sysUser.username}">
+							</h:inputText></li>
+						<li class="textLi">#{messages['page.user.phone']}</li>
+						<li><h:inputText id="mobile"
+								value="#{userAction.bzMerchant.sysUser.mobile}">
+
+							</h:inputText></li>
+						<li class="textLi">邮箱</li>
+						<li><h:inputText id="email" maxlength="18" required="true"
+								value="#{userAction.bzMerchant.sysUser.email}">
+							</h:inputText></li>
+					</ul>
+				</div>
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">名称</li>
+						<li><h:inputText id="nickname"
+								value="#{userAction.bzMerchant.sysUser.nickname}">
+
+							</h:inputText></li>
+						<li class="textLi">姓名</li>
+						<li><h:inputText id="name"
+								value="#{userAction.bzMerchant.sysUser.bzRealnameCertificateTemp.name}">
+
+							</h:inputText></li>
+						<li class="textLi">性别</li>
+						<li><h:selectOneMenu id="sex"
+								value="#{userAction.bzMerchant.sysUser.bzRealnameCertificateTemp.sex}">
+								<f:selectItems value="#{userAction.selectSex}" />
+							</h:selectOneMenu></li>
+					</ul>
+				</div>
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">出生日期</li>
+						<li><h:inputText id="birthdate"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-%d'})"
+								value="#{userAction.bzMerchant.sysUser.bzRealnameCertificateTemp.birthdate}">
+							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							</h:inputText></li>
+						<li class="textLi">手机</li>
+						<li><h:inputText id="realnameMobile"
+								value="#{userAction.bzMerchant.sysUser.bzRealnameCertificateTemp.mobile}">
+							</h:inputText></li>
+						<li class="textLi">证件类型</li>
+						<li><h:selectOneMenu id="idType"
+								value="#{userAction.bzMerchant.sysUser.bzRealnameCertificateTemp.idType}">
+								<f:selectItems value="#{userAction.selectIdType}" />
+							</h:selectOneMenu></li>
+					</ul>
+					<ul>
+						<li class="textLi">证件号码</li>
+						<li><h:inputText id="idNo"
+								value="#{userAction.bzMerchant.sysUser.bzRealnameCertificateTemp.idNo}">
+							</h:inputText></li>
+					</ul>
+				</div>
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">服务商名称</li>
+						<li><h:inputText id="companyName"
+								value="#{userAction.bzMerchant.companyName}">
+							</h:inputText></li>
+						<li class="textLi">服务商地址</li>
+						<li><h:inputText id="companyAddress"
+								value="#{userAction.bzMerchant.companyAddress}">
+							</h:inputText></li>
+						<li class="textLi">商家特色</li>
+						<li><h:inputText id="merchantCharacteristics"
+								value="#{userAction.bzMerchant.merchantCharacteristics}">
+							</h:inputText></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<h:inputHidden id="bzMerchantId"
+						value="#{userAction.bzMerchant.id}" />
+					<h:commandButton class="Button"
+						onclick="if(!checkUserName()){return false;}"
+						value="#{messages['page.common.save']}"
+						action="#{userAction.actionExecute}">
+						<f:param name="methodType" value="saveBzMerchant" />
+					</h:commandButton>
+					<input class="Button" type="button"
+						value="#{messages['page.common.cancel']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

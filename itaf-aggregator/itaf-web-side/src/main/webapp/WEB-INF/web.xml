@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="itaf-web-side" version="2.5">
+
+	<display-name>itaf-web-side Web Application</display-name>
+
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>itaf.framework.itaf-web-side</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			 classpath*:applicationContext-annotation.xml
+			,classpath*:applicationContext-transaction.xml
+			,classpath*:applicationContext-hibernate.xml
+			,classpath*:applicationContext-aop-exception.xml
+			,classpath*:applicationContext-cache.xml
+			,classpath*:applicationContext-aop-cache-business.xml
+			,classpath*:applicationContext-especial-bean.xml
+			,classpath*:applicationContext-config.xml
+			,classpath*:applicationContext-springsecurity3.xml
+			,classpath*:applicationContext-cxf.xml
+			,classpath*:applicationContext-im.xml
+			,classpath*:applicationContext-activiti5.xml
+		</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.CONFIG_FILES</param-name>
+		<param-value>/WEB-INF/faces-config.xml</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>org.richfaces.skin</param-name>
+		<param-value>blueSky</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>org.richfaces.enableControlSkinning</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.richfaces.fileUpload.maxRequestSize</param-name>
+		<param-value>100000000</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.richfaces.fileUpload.createTempFiles</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- 配置编码 -->
+	<filter>
+		<filter-name>setCharacterEncodingFilter</filter-name>
+		<filter-class>itaf.framework.web.filter.SetCharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<filter-class>
+			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
+		</filter-class>
+		<init-param>
+			<param-name>singleSession</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter>
+		<filter-name>webPageLogFilter</filter-name>
+		<filter-class>itaf.framework.security.filter.WebAccessLogFilter</filter-class>
+		<init-param>
+			<param-name>ENABLE_LOG</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>setCharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>webPageLogFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<!-- SPRING 监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- SPRING管JSF中的SCOPE作用域 -->
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+
+	<!--.JSF2.0的配置 -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+	<!-- CXF配置 -->
+	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<init-param>
+			<param-name>hide-service-list-page</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Kaptcha Servlet -->
+	<servlet>
+		<servlet-name>kaptcha</servlet-name>
+		<servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+		<init-param>
+			<param-name>kaptcha.border</param-name>
+			<param-value>no</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.image.width</param-name>
+			<param-value>80</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.image.height</param-name>
+			<param-value>36</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.textproducer.char.string</param-name>
+			<param-value>abcde2345678gfynmnpwx</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.textproducer.char.length</param-name>
+			<param-value>4</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.textproducer.font.size</param-name>
+			<param-value>30</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.textproducer.font.color</param-name>
+			<param-value>black</param-value>
+		</init-param>
+		<init-param>
+			<param-name>kaptcha.noise.impl</param-name>
+			<param-value>com.google.code.kaptcha.impl.NoNoise</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>kaptcha</servlet-name>
+		<url-pattern>/kaptcha.jpg</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>UploadFileServlet</servlet-name>
+		<servlet-class>itaf.framework.web.servlet.UploadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadFileServlet</servlet-name>
+		<url-pattern>/wsServlet/UploadFileServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DownloadFileServlet</servlet-name>
+		<servlet-class>itaf.framework.web.servlet.DownloadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownloadFileServlet</servlet-name>
+		<url-pattern>/wsServlet/DownloadFileServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>UploadProductServlet</servlet-name>
+		<servlet-class>itaf.framework.web.servlet.UploadProductServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadProductServlet</servlet-name>
+		<url-pattern>/wsServlet/UploadProductServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DownloadProductServlet</servlet-name>
+		<servlet-class>itaf.framework.web.servlet.DownloadProductServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownloadProductServlet</servlet-name>
+		<url-pattern>/wsServlet/DownloadProductServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>UploadHeadIcoServlet</servlet-name>
+		<servlet-class>itaf.framework.web.servlet.UploadHeadIcoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadHeadIcoServlet</servlet-name>
+		<url-pattern>/wsServlet/UploadHeadIcoServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DownloadHeadIcoServlet</servlet-name>
+		<servlet-class>itaf.framework.web.servlet.DownloadHeadIcoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownloadHeadIcoServlet</servlet-name>
+		<url-pattern>/wsServlet/DownloadHeadIcoServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DownloadVersionFileServlet</servlet-name>
+		<servlet-class>itaf.framework.web.servlet.DownloadVersionFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownloadVersionFileServlet</servlet-name>
+		<url-pattern>/wsServlet/DownloadVersionFileServlet</url-pattern>
+	</servlet-mapping>
+
+	<!-- In the Servlet 2.5 and lower environments, it is necessary to register 
+		the ResourceServlet manually in the WEB-INF/web.xml configuration file: -->
+	<servlet>
+		<servlet-name>Resource Servlet</servlet-name>
+		<servlet-class>org.richfaces.webapp.ResourceServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Resource Servlet</servlet-name>
+		<url-pattern>/org.richfaces.resources/*</url-pattern>
+	</servlet-mapping>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/error.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error404.jsp</location>
+	</error-page>
+	<error-page>
+		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+		<location>/errorViewExpired.jsp</location>
+	</error-page>
+
+	<welcome-file-list>
+		<welcome-file>pages/index.xhtml</welcome-file>
+	</welcome-file-list>
+
+</web-app>  

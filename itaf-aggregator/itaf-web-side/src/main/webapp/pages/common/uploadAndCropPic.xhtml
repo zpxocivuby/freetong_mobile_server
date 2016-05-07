@@ -1,0 +1,143 @@
+<ui:composition template="/template/PopEmptyTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<link rel="stylesheet" type="text/css"
+			href="#{baseSession.contextPath}/css/jquery.Jcrop.min.css" />
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/jquery.Jcrop.min.js"></script>
+		<script type="text/javascript">
+			//<![CDATA[
+			jQuery(function($) {
+				uploadComplete();
+				// Create variables (in this scope) to hold the API and image size
+				var jcrop_api, boundx, boundy;
+				$('#picShowId').Jcrop({
+					onChange : updatePreview,
+					onSelect : updatePreview,
+					aspectRatio : 1
+				}, function() {
+					// Use the API to get the real image size
+					var bounds = this.getBounds();
+					boundx = bounds[0];
+					boundy = bounds[1];
+					// Store the API in the jcrop_api variable
+					jcrop_api = this;
+				});
+				function updatePreview(c) {
+					jQuery('#cropPicFormId\\:x').val(c.x);
+					jQuery('#cropPicFormId\\:y').val(c.y);
+					jQuery('#cropPicFormId\\:w').val(c.w);
+					jQuery('#cropPicFormId\\:h').val(c.h);
+
+					if (parseInt(c.w) > 0) {
+						var rx = 100 / c.w;
+						var ry = 100 / c.h;
+						$('#preview').css({
+							width : Math.round(rx * boundx) + 'px',
+							height : Math.round(ry * boundy) + 'px',
+							marginLeft : '-' + Math.round(rx * c.x) + 'px',
+							marginTop : '-' + Math.round(ry * c.y) + 'px'
+						});
+					}
+				}
+			});
+			function uploadComplete() {
+				var actionMsg = document.getElementById("cropPicFormId:actionMsgId").value;
+				if (actionMsg.length <= 0) {
+					return;
+				}
+				
+				var actionResult = PUBLIC.page.showActionMsg(actionMsg);
+				if (!actionResult) {
+					return;
+				}
+				
+				var attachIds = document
+						.getElementById("cropPicFormId:attachId").value;
+				var attachNames = document
+						.getElementById("cropPicFormId:attachName").value;
+				if (!parent.document) {
+					return;
+				}
+				// 父窗口是弹出框
+				var parentFrameObj = parent.document.getElementsByName("popIframe")[0];
+				if (parentFrameObj
+						&& parentFrameObj.contentWindow.#{cropPictureAction.jsCallback}) {
+					parentFrameObj.contentWindow.#{cropPictureAction.jsCallback}(attachIds,
+							attachNames);
+					top.popWindowBase.app.exitWindow();
+				}
+				// 父窗口
+				else if (parent.#{cropPictureAction.jsCallback}) {
+					parent.#{cropPictureAction.jsCallback}(attachIds, attachNames);
+					top.popWindowBase.app.exitWindow();
+				}
+			}
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="bodyRegion">
+		<div class="ban_warp">
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<div class="ban_btn">
+						<h:form id="cropPicFormId">
+							<h:inputHidden id="actionMsgId"
+								value="#{cropPictureAction.actionMsg}" />
+							<h:inputHidden id="jsCallback"
+								value="#{cropPictureAction.jsCallback}" />
+							<h:inputHidden id="attachId"
+								value="#{cropPictureAction.attachId}" />
+							<h:inputHidden id="attachName"
+								value="#{cropPictureAction.attachName}" />
+							<h:inputHidden id="x" />
+							<h:inputHidden id="y" />
+							<h:inputHidden id="w" />
+							<h:inputHidden id="h" />
+							<h:commandButton styleClass="Button"
+								action="#{cropPictureAction.saveCropPic}"
+								value="#{messages['page.common.save']}" />
+							<input id="closeWindowId" class="Button" type="button"
+								onclick="top.popWindowBase.app.exitWindow();"
+								value="#{messages['page.common.close']}" />
+						</h:form>
+					</div>
+					<div style="width: 850px; height: 50px; line-height: 50px;">
+						<f:verbatim>
+							<form enctype="multipart/form-data" method="post"
+								action="#{baseSession.contextPath}/jsfServlet/FileUploadServlet?jsCallback=#{cropPictureAction.jsCallback}">
+								<input type="file" name="myfile" /><input type="submit"
+									value="上传" />
+							</form>
+						</f:verbatim>
+					</div>
+					<div style="float: left;">
+						<div style="overflow: hidden; float: left;">
+							<img id="picShowId"
+								src="#{baseSession.picPath}/#{cropPictureAction.getImagePath()}" />
+						</div>
+						<div
+							style="width: 100px; height: 100px; overflow: hidden; float: left; margin-left: 10px;">
+							<img class="jcrop-preview" id="preview"
+								style="width: 253px; height: 187px; margin-left: -56px; margin-top: -29px;"
+								src="#{baseSession.picPath}/#{cropPictureAction.getImagePath()}" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

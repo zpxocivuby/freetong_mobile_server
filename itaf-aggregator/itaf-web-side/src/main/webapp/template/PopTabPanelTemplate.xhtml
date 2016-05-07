@@ -1,0 +1,19 @@
+<ui:composition template="/template/PopEmptyTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/TabPanel.js" />
+		<ui:insert name="pop_tp_head_region" />
+	</ui:define>
+	<ui:define name="bodyRegion">
+		<div id="tabs" />
+		<ui:insert name="pop_tp_content_region" />
+	</ui:define>
+</ui:composition>

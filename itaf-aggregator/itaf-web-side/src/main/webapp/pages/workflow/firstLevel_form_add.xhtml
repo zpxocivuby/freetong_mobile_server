@@ -1,0 +1,161 @@
+<ui:composition template="/template/HfQuickMenu.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:validator="http://shale.apache.org/validator">
+	<ui:define name="navigation_region">
+		#{messages['page.common.currentPosition']} >> 我的工作台 >> 工作事项一级审批
+	</ui:define>
+	<ui:define name="hf_st_head_region">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript">
+			//<![CDATA[ 
+			var baseUrl = "#{baseSession.contextPath}";
+			function openUploadFileWindow() {
+				var strLink = baseUrl
+						+ "/pages/common/fileUpload.xhtml?jsCallback=afterUploadFiles&maxFilesQuantity=10&acceptedTypes=txt,doc,docx";
+				var popTitle = "#{messages['page.message.attachment']}";
+				top.popWindowBase.app.popWindow2(strLink, null, popTitle, 800,
+						355, true);
+			}
+			function afterUploadFiles(attachIds, attachNames) {
+				document.getElementById("qlListFormId:addAttachIds").value = attachIds;
+				document.getElementById("qlListFormId:addAttachBtnId").click();
+			}
+			function complete() {
+				alert("操作成功");
+				window.location.href = baseUrl
+						+ "/pages/workflow/firstLevel_form_add.xhtml";
+			}
+
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="hf_ql_query_conent_region">
+
+	</ui:define>
+	<ui:define name="hf_ql_list_conent_region">
+		<div class="ban_warp">
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">标题:</li>
+						<li><h:inputText id="title"
+								value="#{bzDailyWorkAction.bzDailyWork.title}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">内容:</li>
+						<li><h:inputTextarea id="content" rows="4"
+								style="width:500px;"
+								value="#{bzDailyWorkAction.bzDailyWork.content}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">经办人:</li>
+						<li><h:inputText id="operatorName" readonly="true" /></li>
+						<li><h:inputHidden id="operator" value="1000020651" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">经办人联系方式等:</li>
+					</ul>
+					<ul>
+						<li><h:inputTextarea id="operatorContact" rows="4"
+								style="width:500px;"
+								value="#{bzDailyWorkAction.bzDailyWork.operatorContact}" /></li>
+					</ul>
+					<ul>
+						<li>类型:日常工作事项一级审批</li>
+						<li><h:inputHidden id="processDefinitionId"
+								value="firstLevel" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">第一审批人:</li>
+						<li><h:inputHidden id="firstApproval" value="1000020651" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.attachment.attachmentList']}</li>
+						<li><input onclick="openUploadFileWindow()" class="Button"
+							type="button"
+							value="#{messages['page.attachment.addAttachment']}" /></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<a4j:commandButton styleClass="Button" render="qlListFormId"
+						oncomplete="PUBLIC.page.ajaxEnd();complete();"
+						onclick="PUBLIC.page.queryAjaxStart();"
+						value="#{messages['page.common.save']}"
+						action="#{bzDailyWorkAction.save}" />
+					<a4j:commandButton styleClass="Button" render="qlListFormId"
+						oncomplete="PUBLIC.page.ajaxEnd();complete();"
+						onclick="PUBLIC.page.queryAjaxStart();"
+						value="#{messages['page.common.submit']}"
+						action="#{bzDailyWorkAction.submit}" />
+				</div>
+			</div>
+			<div class="ban_con">
+				<h:inputHidden id="addAttachIds" />
+				<div style="display: none">
+					<a4j:commandButton id="addAttachBtnId" render="attachDataTableId"
+						oncomplete="PUBLIC.page.ajaxEnd();"
+						onclick="PUBLIC.page.queryAjaxStart();"
+						action="#{bzDailyWorkAction.addAttachments}">
+					</a4j:commandButton>
+				</div>
+				<rich:extendedDataTable id="attachDataTableId"
+					selectionMode="single" value="#{bzDailyWorkAction.bsAttachments}"
+					rows="1000" columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="item">
+					<rich:column width="250px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.fileName']}" />
+						</f:facet>
+						<h:commandLink action="#{attachmentAction.download}">
+							<h:outputText value="#{item.srcFileName}.#{item.fileExt}" />
+							<f:param name="attachId" value="#{item.id}" />
+						</h:commandLink>
+					</rich:column>
+					<rich:column width="250px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.createdUser']}" />
+						</f:facet>
+						<h:outputText value="#{item.createdUser.username}" />
+					</rich:column>
+					<rich:column width="100px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.createdDate']}" />
+						</f:facet>
+						<h:outputText value="#{item.createdDate}">
+							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+						</h:outputText>
+					</rich:column>
+					<rich:column width="80px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.common.operate']}" />
+						</f:facet>
+						<a4j:commandLink action="#{bzDailyWorkAction.deleteAttachment}"
+							render="attachDataTableId">
+							<h:outputText value="#{messages['page.common.delete']}" />
+							<f:param name="attachId" value="#{item.id}" />
+							<f:param name="id" value="#{bzDailyWorkAction.bzDailyWork.id}" />
+						</a4j:commandLink>
+					</rich:column>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

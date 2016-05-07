@@ -1,0 +1,88 @@
+<ui:composition template="/template/PopViewTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript">
+			//<![CDATA[
+			function uploadComplete() {
+				var actionMsg = document.getElementById("popViewFormId:actionMsgId").value;
+				if (actionMsg.length > 0) {
+					var actionResult = PUBLIC.page.showActionMsg(actionMsg);
+					if (!actionResult) {
+						return;
+					}
+				}
+				
+				var attachIds = document
+						.getElementById("popViewFormId:attachIds").value;
+				var attachNames = document
+						.getElementById("popViewFormId:attachNames").value;
+				if (!parent.document) {
+					return;
+				}
+				// 父窗口是弹出框
+				var parentFrameObj = parent.document.getElementsByName("popIframe")[0];
+				if (parentFrameObj
+						&& parentFrameObj.contentWindow.#{attachmentAction.jsCallback}) {
+					parentFrameObj.contentWindow.#{attachmentAction.jsCallback}(attachIds,
+							attachNames);
+				}
+				// 父窗口
+				else if (parent.#{attachmentAction.jsCallback}) {
+					parent.#{attachmentAction.jsCallback}(attachIds, attachNames);
+				}
+			}
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="pop_view_content_region">
+		<div class="ban_warp">
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<h:outputText style="color: red;font-size: 12px;"
+						value="#{messages['page.message.attachment']}" />
+					<br />
+					<h:panelGroup>
+						<!-- noDuplicate="true" 本次上传的文件中不能有重复文件 -->
+						<rich:fileUpload id="upload"
+							fileUploadListener="#{attachmentAction.upload}"
+							acceptedTypes="#{attachmentAction.acceptedTypes}"
+							ontyperejected="alert('类型不匹配');" addLabel="添加" uploadLabel="上传"
+							clearAllLabel="清除全部" deleteLabel="删除" clearLabel="清除"
+							noDuplicate="true" doneLabel="完成"
+							onuploadcomplete="uploadComplete();"
+							render="popViewFormId:popViewHiddenPanelId"
+							sizeExceededLabel="#{messages['page.message.attachment']}"
+							maxFilesQuantity="#{attachmentAction.maxFilesQuantity}">
+						</rich:fileUpload>
+					</h:panelGroup>
+				</div>
+				<div class="ban_btn">
+					<input id="closeWindowId" class="Button" type="button"
+						onclick="top.popWindowBase.app.exitWindow();"
+						value="#{messages['page.common.close']}" />
+					<h:inputHidden id="taskId" value="#{baseFormAction.taskId}" />
+					<h:inputHidden id="isTempFile"
+						value="#{attachmentAction.isTempFile}" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+		<rich:panel id="popViewHiddenPanelId" style="display:none;">
+			<h:inputHidden id="actionMsgId" value="#{attachmentAction.actionMsg}" />
+			<h:inputHidden id="attachIds" value="#{attachmentAction.attachIds}" />
+			<h:inputHidden id="attachNames"
+				value="#{attachmentAction.attachNames}" />
+		</rich:panel>
+	</ui:define>
+</ui:composition>

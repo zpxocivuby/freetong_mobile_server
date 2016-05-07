@@ -1,0 +1,174 @@
+<ui:composition template="/template/HfQueryListTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="navigation_region">
+	    	#{messages['page.common.currentPosition']}#{messages['page.parameter.locationRegion']}
+	  	</ui:define>
+	<ui:define name="hf_ql_head_region">
+		<script type="text/javascript">
+			var baseUrl = "#{baseSession.contextPath}";
+			function viewParamInfo(paramId) {
+				var strLink = baseUrl
+						+ "/pages/platform/parameter_view.xhtml?paramId="
+						+ paramId;
+				var popTitle = "#{messages['page.parameter.parameterView']}";
+				top.popWindowBase.app.popWindow2(strLink, null, popTitle, 1050,
+						185, true);
+			}
+
+			function editParamInfo(paramId) {
+				var strLink = baseUrl
+						+ "/pages/platform/parameter_edit.xhtml?paramId="
+						+ paramId;
+				var popTitle = "#{messages['page.parameter.parameterEdit']}";
+				var btnObj = document
+						.getElementById("qlQueryFormId:parameterQueryId");
+				top.popWindowBase.app.popWindow2(strLink, btnObj, popTitle,
+						1050, 185, true);
+			}
+		</script>
+	</ui:define>
+	<ui:define name="hf_ql_query_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.common.searchCondition']}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li>#{messages['page.parameter.parameterNameEnglish']} <h:inputText
+								id="codeType"
+								value="#{parameterAction.queryCriteria.queryCondition.nameEn}"
+								maxlength="40" />
+							#{messages['page.parameter.parameterNameChinese']} <h:inputText
+								id="nameZh"
+								value="#{parameterAction.queryCriteria.queryCondition.nameZh}"
+								maxlength="40" /> <a4j:commandButton id="parameterQueryId"
+								value="#{messages['page.common.query']}" render="parameterDtId"
+								styleClass="Button" oncomplete="PUBLIC.page.ajaxEnd();"
+								onclick="PUBLIC.page.queryAjaxStart();">
+								<f:param name="operateType" value="query" />
+							</a4j:commandButton> <input type="reset" class="Button"
+							value="#{messages['page.common.reSetValue']}" />
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+	<ui:define name="hf_ql_list_conent_region">
+		<div class="ban_top_bg">
+			<div class="ban_top_con">
+				<div class="ban_title_font">
+					#{messages['page.depart.detailTable']}</div>
+				<div class="ban_title_iconw"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="ban_con">
+			<rich:extendedDataTable id="parameterDtId" selectionMode="single"
+				value="#{parameterAction.pagerDataModel}"
+				rows="#{parameterAction.pagerDataModel.pageResult.pageSize}"
+				columnClasses="scroll_column_no_rightline"
+				footerClass="scroll_footer_color" headerClass="scroll_head_color"
+				noDataLabel="#{messages['page.common.nodata']}" var="item">
+				<rich:column width="270px">
+					<f:facet name="header">
+						<h:outputText
+							value="#{messages['page.parameter.parameterNameChinese']}" />
+					</f:facet>
+					<a4j:commandLink ajaxSingle="true"
+						onclick="viewParamInfo('#{item.id}');" value="#{item.nameZh}" />
+				</rich:column>
+				<rich:column width="270px">
+					<f:facet name="header">
+						<h:outputText
+							value="#{messages['page.parameter.parameterNameEnglish']}" />
+					</f:facet>
+					<h:outputText value="#{item.nameEn}" />
+				</rich:column>
+				<rich:column width="270px">
+					<f:facet name="header">
+						<h:outputText value="#{messages['page.parameter.parameterSort']}" />
+					</f:facet>
+					<h:outputText value="#{item.category}" />
+				</rich:column>
+				<rich:column width="270px">
+					<f:facet name="header">
+						<h:outputText value="#{messages['page.parameter.parameterValue']}" />
+					</f:facet>
+					<h:outputText value="#{item.value}" />
+				</rich:column>
+				<rich:column width="80px">
+					<f:facet name="header">
+						<h:outputText value="#{messages['page.common.edit']}" />
+					</f:facet>
+					<a4j:commandLink ajaxSingle="true"
+						onclick="editParamInfo('#{item.id}');"
+						value="#{messages['page.common.edit']}" />
+				</rich:column>
+				<f:facet name="footer">
+					<rich:dataScroller fastControls="hide"
+						page="#{parameterAction.pagerDataModel.pageResult.currentPage}">
+						<f:facet name="first">
+							<h:graphicImage url="../../images/firstbg.gif" />
+						</f:facet>
+						<f:facet name="first_disabled">
+							<h:graphicImage url="../../images/firstbg_n.gif" />
+						</f:facet>
+						<f:facet name="last">
+							<h:graphicImage url="../../images/lastbg.gif" />
+						</f:facet>
+						<f:facet name="last_disabled">
+							<h:graphicImage url="../../images/lastbg_n.gif" />
+						</f:facet>
+						<f:facet name="next">
+							<h:graphicImage url="../../images/nextbg.gif" />
+						</f:facet>
+						<f:facet name="next_disabled">
+							<h:graphicImage url="../../images/nextbg_n.gif" />
+						</f:facet>
+						<f:facet name="previous">
+							<h:graphicImage url="../../images/previousbg.gif" />
+						</f:facet>
+						<f:facet name="previous_disabled">
+							<h:graphicImage url="../../images/previousbg_n.gif" />
+						</f:facet>
+					</rich:dataScroller>
+					<h:panelGroup styleClass="pager_info">
+						<h:outputText value="#{messages['page.pager.total']} " />
+						<h:outputText
+							value=" #{parameterAction.pagerDataModel.pageResult.totalPage} " />
+						<h:outputText value=" #{messages['page.pager.page']} " />
+						<h:outputText value=" #{messages['page.pager.prepage']} " />
+						<h:outputText
+							value=" #{parameterAction.pagerDataModel.pageResult.pageSize} " />
+						<h:outputText value=" #{messages['page.pager.item']} " />
+						<h:outputText value=" #{messages['page.pager.total']} " />
+						<h:outputText
+							value=" #{parameterAction.pagerDataModel.pageResult.totalCount} " />
+						<h:outputText value=" #{messages['page.pager.item']}" />
+					</h:panelGroup>
+				</f:facet>
+			</rich:extendedDataTable>
+		</div>
+		<div class="clear"></div>
+		<div class="ban_down_bg">
+			<div class="ban_down_left"></div>
+		</div>
+	</ui:define>
+</ui:composition>

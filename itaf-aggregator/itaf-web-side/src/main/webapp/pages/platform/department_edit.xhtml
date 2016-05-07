@@ -1,0 +1,119 @@
+<ui:composition template="/template/PopEditTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript">
+			var baseUrl = "#{baseSession.contextPath}";
+			function showTree() {
+				if (Ext.get("formid:parentname")) {
+					var strLink = baseUrl
+							+ "/pages/base/TsDepartmentTree.xhtml";
+					var popTitle = "#{messages['page.depart.detailDataTable']}";
+					top.popWindowBase.app.popWindow2(strLink, null, popTitle,
+							600, 550);
+				}
+			}
+			Ext.onReady(function() {
+				var operateMsg = "#{departmentAction.operateMsg}";
+				if ("success" == operateMsg) {
+					Ext.MessageBox.alert(
+							"#{messages['page.manualEntryEdit.success']}",
+							"#{messages['page.common.operateSuccess']}",
+							function() {
+								top.popWindowBase.app.exitWindow();
+							});
+				}
+			});
+		</script>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						<h:outputText value="#{messages['page.depart.modifyDepartInfo']}" />
+						<h:message for="deptNo" errorClass="pop_error_msg_span" />
+						<h:message for="parentname" errorClass="pop_error_msg_span" />
+						<h:message for="nameZh" errorClass="pop_error_msg_span" />
+						<h:message for="nameEn" errorClass="pop_error_msg_span" />
+						<h:message for="description" errorClass="pop_error_msg_span" />
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">
+							#{messages['page.depart.departmentNumber']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="deptNo"
+								value="#{departmentAction.tsDepartment.deptNo}" maxlength="10"
+								required="true"
+								validatorMessage="#{messages['page.depart.departmentNumber']}#{messages['page.common.alert']}">
+							</h:inputText></li>
+						<li class="textLi">#{messages['page.department.parentname']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="parentname" readonly="true"
+								onfocus="showTree()"
+								value="#{departmentAction.tsDepartment.parentname}"
+								maxlength="30" required="true"
+								validatorMessage="#{messages['page.department.parentname']}#{messages['page.common.alert']}">
+							</h:inputText> <h:inputHidden id="parentId"
+								value="#{departmentAction.tsDepartment.parentId}" /></li>
+						<li class="textLi">
+							#{messages['page.depart.departmentNameChinese']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="nameZh"
+								value="#{departmentAction.tsDepartment.nameZh}" maxlength="30"
+								required="true"
+								validatorMessage="#{messages['page.depart.departmentNameChinese']}#{messages['page.common.alert']}">
+							</h:inputText></li>
+					</ul>
+					<ul>
+						<li class="textLi">
+							#{messages['page.depart.departmentNameEnglish']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="nameEn"
+								value="#{departmentAction.tsDepartment.nameEn}" maxlength="30"
+								required="true"
+								validatorMessage="#{messages['page.depart.departmentNameEnglish']}#{messages['page.common.alert']}">
+							</h:inputText></li>
+						<li class="textLi">
+							#{messages['page.depart.departmentDescription']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="description"
+								value="#{departmentAction.tsDepartment.description}"
+								maxlength="30" required="true"
+								validatorMessage="#{messages['page.depart.departmentDescription']}#{messages['page.common.alert']}">
+							</h:inputText></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<h:inputHidden value="#{departmentAction.tsDepartment.id}" />
+					<h:commandButton styleClass="Button"
+						value="#{messages['page.common.determine']}"
+						action="#{departmentAction.save}" />
+					<input class="Button" type="button"
+						value="#{messages['page.common.cancel']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

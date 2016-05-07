@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>itaf.framework</groupId>
+		<artifactId>itaf-aggregator</artifactId>
+		<version>1.0.RELEASE</version>
+	</parent>
+	<artifactId>itaf-ws-server-impl</artifactId>
+	<name>itaf-ws-server-impl</name>
+	<url>http://maven.apache.org</url>
+	<version>${itaf.ws.server.impl.version}</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>itaf.framework</groupId>
+			<artifactId>itaf-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>itaf.framework</groupId>
+			<artifactId>itaf-exception</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>itaf.framework</groupId>
+			<artifactId>itaf-log</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>itaf.framework</groupId>
+			<artifactId>itaf-ws-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>itaf.framework</groupId>
+			<artifactId>itaf-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>itaf.framework</groupId>
+			<artifactId>itaf-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.belerweb</groupId>
+			<artifactId>pinyin4j</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+	</dependencies>
+</project>

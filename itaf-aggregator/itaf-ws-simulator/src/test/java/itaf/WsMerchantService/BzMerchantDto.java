@@ -1,0 +1,62 @@
+
+package itaf.WsMerchantService;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>bzMerchantDto complex type的 Java 类。
+ * 
+ * <p>以下模式片段指定包含在此类中的预期内容。
+ * 
+ * <pre>
+ * &lt;complexType name="bzMerchantDto">
+ *   &lt;complexContent>
+ *     &lt;extension base="{itaf.framework.ws.server.merchant}operateDto">
+ *       &lt;sequence>
+ *         &lt;element name="bzServiceProviderTypeDto" type="{itaf.framework.ws.server.merchant}bzServiceProviderTypeDto" minOccurs="0"/>
+ *       &lt;/sequence>
+ *     &lt;/extension>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "bzMerchantDto", propOrder = {
+    "bzServiceProviderTypeDto"
+})
+public class BzMerchantDto
+    extends OperateDto
+{
+
+    protected BzServiceProviderTypeDto bzServiceProviderTypeDto;
+
+    /**
+     * 获取bzServiceProviderTypeDto属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link BzServiceProviderTypeDto }
+     *     
+     */
+    public BzServiceProviderTypeDto getBzServiceProviderTypeDto() {
+        return bzServiceProviderTypeDto;
+    }
+
+    /**
+     * 设置bzServiceProviderTypeDto属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BzServiceProviderTypeDto }
+     *     
+     */
+    public void setBzServiceProviderTypeDto(BzServiceProviderTypeDto value) {
+        this.bzServiceProviderTypeDto = value;
+    }
+
+}

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<h:head>
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta http-equiv="X-UA-Compatible" content="IE=8" />
+	<title>央视新闻终端应用管理平台</title>
+	<link rel="stylesheet" href="#{baseSession.contextPath}/css/login.css"
+		type="text/css" />
+	<script type="text/javascript">
+		function toTop() {
+			if (window != top)
+				top.location.href = location.href;
+		}
+		function refreshCode(obj) {
+			obj.src = '#{baseSession.contextPath}/kaptcha.jpg?'
+					+ Math.floor(Math.random() * 100);
+		}
+	</script>
+</h:head>
+<h:body class="enter_bg" onload="toTop();">
+	<f:loadBundle basename="TipMessages" var="messages" />
+	<div class="enter_warp">
+		<!--top -->
+		<div class="enter_topw_l">
+			<div class="enter_logo">
+				<img src="#{baseSession.contextPath}/images/logo.gif" />
+			</div>
+			<div class="enter_logo_r"></div>
+		</div>
+		<!--top end-->
+		<div class="enter_w">
+			<div class="enter_wb">
+				<div class="top">欢迎进入央视新闻终端应用管理平台</div>
+				<div class="con">
+					<div class="enter_from">
+						<div class="enter_login">
+							<f:view>
+								<form
+									action="#{baseSession.contextPath}/j_spring_security_check"
+									method="post">
+									<table>
+										<tr>
+											<td>
+												<div class="error_msg">
+													<c:if
+														test="${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message=='Bad credentials'}">
+														<font color="red" size="2">您的用户名或者密码错误</font>
+													</c:if>
+													<c:if
+														test="${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message=='Cannot pass null or empty values to constructor'}">
+														<font color="red" size="2">您的用户名或者密码错误</font>
+													</c:if>
+													<c:if
+														test="${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message=='Bad captcha'}">
+														<font color="red" size="2">您的验证码错误</font>
+													</c:if>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div>
+													<ul>
+														<li><span class="user"> <h:outputText
+																	value="#{messages['login.username'] }" />
+														</span> <span class="input_user"> <input name="j_username"
+																type="text" />
+														</span></li>
+														<li><span class="user"> <h:outputText
+																	value="#{messages['login.password1'] }&#160;&#160;"
+																	escape="true" /> <h:outputText
+																	value="#{messages['login.password2'] } " escape="true" />
+														</span> <span class="input_user"> <input name="j_password"
+																type="password" />
+														</span></li>
+														<li><span class="user"> <h:outputText
+																	value="#{messages['login.captcha'] }" />
+														</span> <span class="input_captcha"> <input maxlength="4"
+																name="j_captcha" /> <img
+																src="#{baseSession.contextPath}/kaptcha.jpg"
+																alt="#{messages['login.captcha.alt'] }"
+																title="#{messages['login.captcha.alt'] }"
+																onclick="refreshCode(this);" />
+														</span></li>
+														<li><span class="input_Y"> <input
+																name="submit" type="submit"
+																value="#{messages['login.loginaction'] }" />
+														</span> <span class="input_x"> <input name="reset"
+																type="reset" value="#{messages['login.cancelaction'] }" />
+														</span></li>
+													</ul>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</form>
+							</f:view>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--footer -->
+	<div id="footer">Copyright © CCTV 央视新闻终端应用管理平台</div>
+	<!--footer end-->
+</h:body>
+</html>

@@ -1,0 +1,119 @@
+* {
+	margin: 0;
+	padding: 0
+}
+
+ul {
+	list-style: none
+}
+
+.nav_tags {
+	background: url(../images/tags/images/muneBg_c.png) repeat-x 0px 0px;
+	margin-right: 10px;
+	margin-left: 8px;
+	display: block;
+	height: 45px;
+}
+
+.menu_l {
+	background: url(../images/tags/images/muneBg_l.png) no-repeat left 0px;
+	height: 45px;
+	display: block;
+}
+
+.menu_r {
+	background: url(../images/tags/images/muneBg_r.png) no-repeat right 0px;
+	display: block;
+	height: 45px;
+}
+
+.nav_tags li {
+	float: left;
+	font-size: 13px;
+	height: 45px; /*margin-5px:8px; *margin-5px:-4px;*/
+}
+
+.nav_tags li img.line_1 {
+	height: 30px;
+	margin-top: 5px;
+}
+
+.nav_tags a {
+	text-decoration: none;
+	display: inline-block;
+	height: 45px;
+	font-family: Verdana, Arial, Helvetica, sans-serif, "黑体";
+	color: #fff;
+	text-align: center; /* padding-5px:19px;_padding-5px:21px;*/
+	zoom: 1;
+	line-height: 40px;
+	_line-height: 45px;
+}
+
+.nav_tags a:hover {
+	text-decoration: none;
+}
+
+.nav_on2 a {
+	text-decoration: none;
+	display: inline-block;
+	height: 45px;
+	font-family: Verdana, Arial, Helvetica, sans-serif, "黑体";
+	color: #EFEFEF;
+	text-align: center;
+	padding-right: 22px;
+	padding-left: 22px;
+}
+
+.nav_on2 a:hover {
+	text-decoration: none;
+	color: #FF9900;
+	position: relative;
+}
+
+.nav_on3 a {
+	text-decoration: none;
+	display: inline-block;
+	height: 45px;
+	font-family: Verdana, Arial, Helvetica, sans-serif, "黑体";
+	color: #fff;
+	text-align: center;
+	zoom: 1;
+	background: url(../images/tags/images/current.jpg) -10px no-repeat;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+.nav_on3 a:hover {
+	text-decoration: none;
+	background: url(../images/tags/images/current.jpg) right 5px no-repeat;
+}
+
+.nav_on1 {
+	background: url(../images/tags/images/current.jpg) no-repeat left 5px;
+	padding-left: 13px;
+}
+
+.nav_on1 a {
+	text-decoration: none;
+	display: inline-block;
+	height: 45px;
+	font-family: Verdana, Arial, Helvetica, sans-serif, "黑体";
+	color: #fff;
+	padding: 0px 16px 0px 0px;
+	background: url(../images/tags/images/current.jpg) no-repeat right 5px;
+	font-weight: bold;
+}
+
+.nav_on1 a:hover {
+	text-decoration: none;
+}
+
+.nav span {
+	height: 21px;
+	width: 21px;
+	cursor: pointer;
+	top: 5px;
+	position: absolute;
+	left: 783px;
+}

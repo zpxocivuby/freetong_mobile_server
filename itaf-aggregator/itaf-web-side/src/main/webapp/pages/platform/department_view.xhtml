@@ -1,0 +1,65 @@
+<ui:composition template="/template/PopViewTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="pop_view_content_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						<h:outputText value="#{messages['page.depart.viewDepartInfo']}" />
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">
+							#{messages['page.depart.departmentNumber']}</li>
+						<li><h:inputText id="deptNo"
+								value="#{departmentAction.tsDepartment.deptNo}" readonly="true" />
+						</li>
+						<li class="textLi">#{messages['page.department.parentname']}
+						</li>
+						<li><h:inputText id="parentname"
+								value="#{departmentAction.tsDepartment.parentname}"
+								readonly="true" /></li>
+						<li class="textLi">
+							#{messages['page.depart.departmentNameChinese']}</li>
+						<li><h:inputText id="nameZh"
+								value="#{departmentAction.tsDepartment.nameZh}" readonly="true" />
+						</li>
+					</ul>
+					<ul>
+						<li class="textLi">
+							#{messages['page.depart.departmentNameEnglish']}</li>
+						<li><h:inputText id="nameEn"
+								value="#{departmentAction.tsDepartment.nameEn}" readonly="true" />
+						</li>
+						<li class="textLi">
+							#{messages['page.depart.departmentDescription']}</li>
+						<li><h:inputText id="description"
+								value="#{departmentAction.tsDepartment.description}"
+								readonly="true" /></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<input class="Button" type="button"
+						value="#{messages['page.common.close']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

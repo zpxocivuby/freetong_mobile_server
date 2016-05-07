@@ -1,0 +1,167 @@
+<ui:composition template="/template/PopQueryListTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="pop_ql_head_region">
+		<script type="text/javascript">
+   		//<![CDATA[
+			var baseUrl = "#{baseSession.contextPath}";
+			Ext.onReady(function() {
+				PUBLIC.page.checkedOnly();
+				PUBLIC.page.showActionMsg("#{roleAddUserListAction.actionMsg}");
+			});
+			function viewUserInfo(userId){
+				var strLink = baseUrl + "/pages/base/user_view.xhtml?userId=" + userId;
+				var popTitle = "#{messages['page.user.viewUserInfo']}";
+				top.popWindowBase.app.popWindow2(strLink, null, popTitle, 1050, 238);
+			}
+			//]]>  
+		</script>
+	</ui:define>
+	<ui:define name="pop_ql_query_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.common.searchCondition']}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi_search">#{messages['page.user.userName']}</li>
+						<li><h:inputText id="username"
+								value="#{roleAddUserListAction.queryCriteria.queryCondition.username}" />
+						</li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<h:inputHidden id="dataId" value="#{roleAddUserListAction.roleId }" />
+					<a4j:commandButton id="queryDataBtnId"
+						value="#{messages['page.common.query']}"
+						render="roleAddUserListDtId" styleClass="Button"
+						oncomplete="PUBLIC.page.ajaxEnd();"
+						onclick="PUBLIC.page.queryAjaxStart();">
+						<f:param name="operateType" value="query" />
+					</a4j:commandButton>
+					<input type="reset" class="Button"
+						value="#{messages['page.common.reSetValue']}" /> <input
+						class="Button" type="button"
+						value="#{messages['page.common.cancel']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+	<ui:define name="pop_ql_list_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.user.userManage']}</div>
+					<div class="ban_title_iconw">
+						<ul>
+							<li class="ban_icon4"></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_operate_btn">
+					<a4j:commandButton value="#{messages['page.common.determine']}"
+						onclick="PUBLIC.page.queryAjaxStart();" styleClass="Button"
+						oncomplete="PUBLIC.page.ajaxEnd();" render="popQlListFormId"
+						action="#{roleAddUserListAction.actionExecute}">
+						<f:param name="methodType" value="save" />
+					</a4j:commandButton>
+				</div>
+				<div class="cj_line" style="margin: 0;"></div>
+				<rich:extendedDataTable id="roleAddUserListDtId"
+					selectionMode="single"
+					value="#{roleAddUserListAction.pagerDataModel}"
+					rows="#{roleAddUserListAction.pagerDataModel.pageResult.pageSize}"
+					columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="item">
+					<rich:column width="40px">
+						<f:facet name="header">
+							<h:selectBooleanCheckbox onclick="PUBLIC.page.checkedAll();"
+								class="publicCheckAll" />
+						</f:facet>
+						<h:selectBooleanCheckbox lang="#{item.id}"
+							onclick="PUBLIC.page.checkedOnly();" class="publicCheck"
+							style="background: none;border: none;height: 18px;line-height: 18px;" />
+					</rich:column>
+					<rich:column width="180px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.user.userName']}" />
+						</f:facet>
+						<a href="#" onclick="viewUserInfo(#{item.id });"> <h:outputText
+								value="#{item.username}" />
+						</a>
+					</rich:column>
+					<f:facet name="footer">
+						<rich:dataScroller fastControls="hide"
+							page="#{roleAddUserListAction.pagerDataModel.pageResult.currentPage}">
+							<f:facet name="first">
+								<h:graphicImage url="../../images/firstbg.gif" />
+							</f:facet>
+							<f:facet name="first_disabled">
+								<h:graphicImage url="../../images/firstbg_n.gif" />
+							</f:facet>
+							<f:facet name="last">
+								<h:graphicImage url="../../images/lastbg.gif" />
+							</f:facet>
+							<f:facet name="last_disabled">
+								<h:graphicImage url="../../images/lastbg_n.gif" />
+							</f:facet>
+							<f:facet name="next">
+								<h:graphicImage url="../../images/nextbg.gif" />
+							</f:facet>
+							<f:facet name="next_disabled">
+								<h:graphicImage url="../../images/nextbg_n.gif" />
+							</f:facet>
+							<f:facet name="previous">
+								<h:graphicImage url="../../images/previousbg.gif" />
+							</f:facet>
+							<f:facet name="previous_disabled">
+								<h:graphicImage url="../../images/previousbg_n.gif" />
+							</f:facet>
+						</rich:dataScroller>
+						<h:panelGroup styleClass="pager_info">
+							<h:outputText value="#{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{roleAddUserListAction.pagerDataModel.pageResult.totalPage} " />
+							<h:outputText value=" #{messages['page.pager.page']} " />
+							<h:outputText value=" #{messages['page.pager.prepage']} " />
+							<h:outputText
+								value=" #{roleAddUserListAction.pagerDataModel.pageResult.pageSize} " />
+							<h:outputText value=" #{messages['page.pager.item']} " />
+							<h:outputText value=" #{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{roleAddUserListAction.pagerDataModel.pageResult.totalCount} " />
+							<h:outputText value=" #{messages['page.pager.item']}" />
+						</h:panelGroup>
+					</f:facet>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

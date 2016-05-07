@@ -1,0 +1,230 @@
+<ui:composition template="/template/HfQuickMenu.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="navigation_region">
+			#{messages['page.common.currentPosition']} >> #{messages['page.draftWorkFlow.list.location']}
+	</ui:define>
+	<ui:define name="hf_st_head_region">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/workflow.js" />
+		<script type="text/javascript">
+			//<![CDATA[
+			function comfirmReback() {
+				var confirmDeleteTitle = "确定要撤回吗？";
+				if (confirm(confirmDeleteTitle)) {
+					return true;
+				}
+				return false;
+			};
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="hf_ql_query_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.common.searchCondition']}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<div class="cj_line" style="margin: 0;"></div>
+					<ul>
+						<li>#{messages['page.draftWorkFlow.list.title']}:<h:inputText
+								id="title"
+								value="#{draftWorkflowAction.queryCriteria.queryCondition.title}" />
+						</li>
+						<li>#{messages['page.draftWorkFlow.list.searchCreateDate']}:<h:inputText
+								id="startDate"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd'})"
+								value="#{draftWorkflowAction.queryCriteria.queryCondition.startDate}" />
+							#{messages['page.draftWorkFlow.list.dao']}<h:inputText
+								id="endDate"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd'})"
+								value="#{draftWorkflowAction.queryCriteria.queryCondition.endDate}" />
+
+						</li>
+					</ul>
+					<ul>
+						<li>#{messages['page.draftWorkFlow.list.searchStatus']}:<h:selectOneMenu
+								id="approvalState"
+								value="#{draftWorkflowAction.queryCriteria.queryCondition.approvalState}">
+								<f:selectItem itemLabel="全部" />
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrApprovalStateChecked}" />
+							</h:selectOneMenu></li>
+						<li>#{messages['page.draftWorkFlow.list.searchFormType']}:<h:selectOneMenu
+								id="processDefinitionId"
+								value="#{draftWorkflowAction.queryCriteria.queryCondition.processDefinitionId}">
+								<f:selectItem itemLabel="全部" />
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrProcessDefinitionChecked}" />
+							</h:selectOneMenu>
+						</li>
+					</ul>
+
+				</div>
+				<div class="ban_btn">
+					<a4j:commandButton id="queryDataBtnId" render="qlListFormId"
+						styleClass="Button" onclick="PUBLIC.page.queryAjaxStart()"
+						oncomplete="PUBLIC.page.ajaxEnd();"
+						value="#{messages['page.common.query']}">
+						<f:param name="operateType" value="query" />
+					</a4j:commandButton>
+					<input id="reSetValue" type="reset" class="Button"
+						value="#{messages['page.common.reSetValue']}" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+	<!-- 列表显示 -->
+	<ui:define name="hf_ql_list_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">#{messages['page.draftWorkFlow.list.myApplication']}</div>
+					<div class="ban_title_iconw">
+						<ul>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<rich:extendedDataTable selectionMode="single"
+					value="#{draftWorkflowAction.pagerDataModel}"
+					rows="#{draftWorkflowAction.pagerDataModel.pageResult.pageSize}"
+					columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="dataVar">
+					<rich:column width="140px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.draftWorkFlow.list.formType']}" />
+						</f:facet>
+						<a
+							onclick="Workflow.page.showForm('#{dataVar.draftPageUrlAndParams}',1035,380);"
+							href="#"><h:outputText value="#{dataVar.title}" /></a>
+					</rich:column>
+					<rich:column width="200px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.draftWorkFlow.list.formType']}" />
+						</f:facet>
+						<h:outputText value="#{dataVar.formName}" />
+					</rich:column>
+					<rich:column width="160px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.draftWorkFlow.list.createDate']}" />
+						</f:facet>
+						<h:outputText value="#{dataVar.createdDate}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</rich:column>
+					<rich:column width="100px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.draftWorkFlow.list.approvalStatus']}" />
+						</f:facet>
+						<h:outputText value="otrApprovalState,#{dataVar.approvalState}"
+							converter="codeListConverter" />
+					</rich:column>
+					<rich:column width="80px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.draftWorkFlow.list.status']}" />
+						</f:facet>
+						<h:outputText value="otrAgree,#{dataVar.status}"
+							converter="codeListConverter" />
+					</rich:column>
+					<rich:column width="100px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.common.operate']}" />
+						</f:facet>
+						<a4j:commandLink render="qlListFormId" styleClass="Button"
+							rendered="#{dataVar.approvalState == 1}"
+							onclick="if(!PUBLIC.page.confirmDelete()){return false};PUBLIC.page.queryAjaxStart();"
+							oncomplete="PUBLIC.page.ajaxEnd();"
+							action="#{draftWorkflowAction.delete }"
+							value="#{messages['page.draftWorkFlow.list.delete']}">
+							<f:param name="id" value="#{dataVar.id }" />
+						</a4j:commandLink>
+						<a4j:commandLink rendered="#{dataVar.approvalState == 2}"
+							render="qlListFormId" styleClass="Button"
+							onclick="if(!comfirmReback()){return false};PUBLIC.page.queryAjaxStart();"
+							oncomplete="PUBLIC.page.ajaxEnd();"
+							action="#{baseFormAction.deleteProcessInstance }"
+							value="#{messages['page.draftWorkFlow.list.withdraw']}">
+							<f:param name="id" value="#{dataVar.id }" />
+							<f:param name="processInstanceId"
+								value="#{dataVar.processInstanceId }" />
+						</a4j:commandLink>
+					</rich:column>
+
+					<f:facet name="footer">
+						<rich:dataScroller fastControls="hide"
+							page="#{draftWorkflowAction.pagerDataModel.pageResult.currentPage}">
+							<f:facet name="first">
+								<h:graphicImage url="../../images/firstbg.gif" />
+							</f:facet>
+							<f:facet name="first_disabled">
+								<h:graphicImage url="../../images/firstbg_n.gif" />
+							</f:facet>
+							<f:facet name="last">
+								<h:graphicImage url="../../images/lastbg.gif" />
+							</f:facet>
+							<f:facet name="last_disabled">
+								<h:graphicImage url="../../images/lastbg_n.gif" />
+							</f:facet>
+							<f:facet name="next">
+								<h:graphicImage url="../../images/nextbg.gif" />
+							</f:facet>
+							<f:facet name="next_disabled">
+								<h:graphicImage url="../../images/nextbg_n.gif" />
+							</f:facet>
+							<f:facet name="previous">
+								<h:graphicImage url="../../images/previousbg.gif" />
+							</f:facet>
+							<f:facet name="previous_disabled">
+								<h:graphicImage url="../../images/previousbg_n.gif" />
+							</f:facet>
+						</rich:dataScroller>
+						<h:panelGroup styleClass="pager_info">
+							<h:outputText value="#{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{draftWorkflowAction.pagerDataModel.pageResult.totalPage} " />
+							<h:outputText value=" #{messages['page.pager.page']} " />
+							<h:outputText value=" #{messages['page.pager.prepage']} " />
+							<h:outputText
+								value=" #{draftWorkflowAction.pagerDataModel.pageResult.pageSize} " />
+							<h:outputText value=" #{messages['page.pager.item']} " />
+							<h:outputText value=" #{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{draftWorkflowAction.pagerDataModel.pageResult.totalCount} " />
+							<h:outputText value=" #{messages['page.pager.item']}" />
+						</h:panelGroup>
+					</f:facet>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

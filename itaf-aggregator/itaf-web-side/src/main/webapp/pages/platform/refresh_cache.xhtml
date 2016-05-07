@@ -1,0 +1,74 @@
+<ui:composition template="/template/HfQueryListTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="navigation_region">
+    	#{messages['page.common.currentPosition']}#{messages['page.refreshCache.locationRegion']}
+  	</ui:define>
+	<ui:define name="hf_ql_head_region">
+		<script type="text/javascript">
+			//<![CDATA[
+			Ext.onReady(function() {
+				PUBLIC.page.showActionMsg("#{refreshCacheAction.actionMsg}");
+			});
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="hf_ql_query_conent_region">
+	</ui:define>
+	<ui:define name="hf_ql_list_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.refreshCache.listTitle']}</div>
+					<div class="ban_title_iconw"></div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi" style="border: 1px;">刷新通用编码</li>
+						<li><h:commandButton
+								value="#{messages['page.refreshCache.refresh']}"
+								action="#{refreshCacheAction.actionExecute }"
+								styleClass="Button">
+								<f:param name="methodType" value="refreshCodeList" />
+							</h:commandButton></li>
+					</ul>
+					<div class="cj_line" style="margin: 0;"></div>
+					<ul>
+						<li class="textLi" style="border: 1px;">刷新资源树</li>
+						<li><h:commandButton
+								value="#{messages['page.refreshCache.refresh']}"
+								action="#{refreshCacheAction.actionExecute }"
+								styleClass="Button">
+								<f:param name="methodType" value="refreshResource" />
+							</h:commandButton></li>
+					</ul>
+					<div class="cj_line" style="margin: 0;"></div>
+					<ul>
+						<li class="textLi" style="border: 1px;">刷新站点树</li>
+						<li><h:commandButton
+								value="#{messages['page.refreshCache.refresh']}"
+								action="#{refreshCacheAction.actionExecute }"
+								styleClass="Button">
+								<f:param name="methodType" value="refreshSiteInf" />
+							</h:commandButton></li>
+					</ul>
+					<div class="cj_line" style="margin: 0;"></div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

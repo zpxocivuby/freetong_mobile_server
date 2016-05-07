@@ -1,0 +1,62 @@
+﻿﻿﻿
+ @charset "utf-8";
+/* CSS Override Richfaces css */
+
+/*分页样式*/
+.scroll_footer_color {
+	background: none repeat scroll 0 0 #D8E7EE;
+}
+
+.scroll_head_color {
+	background-color: #BED6F8;
+	background-image: url("../images/richfaces_table_header.png");
+	background-position: left top;
+	background-repeat: repeat-x;
+}
+
+.scroll_table_color {
+	background: none repeat scroll 0 0 #D8E7EE;
+}
+
+.scroll_selected_color {
+	background-image: url(../images/pageBG.gif);
+}
+
+.scroll_inactive_color {
+	background-image: url(../images/pageBg2_n.gif);
+}
+
+.scroll_page_input {
+	width: 25px;
+	height: 18px;
+	line-height: 18px;
+	text-align: center;
+}
+
+.scroll_column_no_rightline {
+	border-right: 0 solid #C0C0C0;
+	height: 22px;
+	line-height: 22px;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: "宋体", Verdana, Arial, Helvetica, sans-serif;
+}
+
+.rich-extdt-maindiv {
+	height: auto !important;
+}
+
+.rich-extdt-maindiv,.extdt-innerdiv {
+	position: relative !important;
+}
+
+.extdt-outerdiv {
+	height: auto !important;
+	overflow: visible !important;
+}
+
+.extdt-content {
+	height: auto !important;
+	max-height: 700px;
+	min-height: 310px;
+}

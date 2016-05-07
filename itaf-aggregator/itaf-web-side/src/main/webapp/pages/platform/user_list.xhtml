@@ -1,0 +1,276 @@
+<ui:composition template="/template/HfQueryListTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="navigation_region">
+		#{messages['page.common.currentPosition']}#{messages['page.user.yourLocation']}
+	</ui:define>
+	<ui:define name="hf_ql_head_region">
+		<script type="text/javascript">
+   		//<![CDATA[
+    		var baseUrl = "#{baseSession.contextPath}";
+			
+			function addUser(){
+				var strLink = baseUrl + "/pages/platform/user_edit.xhtml";
+				var popTitle = "";
+				var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 300);
+			}
+			
+			function addBzConsumer(){
+				var strLink = baseUrl + "/pages/side/bzConsumer_edit.xhtml";
+				var popTitle = "买家信息";
+				var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 300);
+			}
+			
+			function addBzMerchant(){
+				var strLink = baseUrl + "/pages/side/bzMerchant_edit.xhtml";
+				var popTitle = "商家信息";
+				var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 400);
+			}
+			
+			function addBzDistCompany(){
+				var strLink = baseUrl + "/pages/side/bzDistCompany_edit.xhtml";
+				var popTitle = "配送商信息";
+				var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 400);
+			}
+			
+			function addBzDistMerchantCompany(){
+				var strLink = baseUrl + "/pages/side/bzDistMerchantCompany_edit.xhtml";
+				var popTitle = "配送商商家信息";
+				var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 400);
+			}
+			
+			function modifyUser(userId, type){
+				if(type == "1"){
+					var strLink = baseUrl + "/pages/platform/user_edit.xhtml?userId=" + userId;
+					var popTitle = "#{messages['page.user.modifyUser']}";
+					var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+					top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 300);
+				}else if(type == "10"){
+					var strLink = baseUrl + "/pages/side/bzConsumer_edit.xhtml?bzConsumerId=" + userId;
+					var popTitle = "修改买家信息";
+					var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+					top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 300);
+				}else if(type == "20"){
+					var strLink = baseUrl + "/pages/side/bzMerchant_edit.xhtml?bzMerchantId=" + userId;
+					var popTitle = "修改商家信息";
+					var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+					top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 400);
+				}else if(type == "30"){
+					var strLink = baseUrl + "/pages/side/bzDistCompany_edit.xhtml?bzDistCompanyId=" + userId;
+					var popTitle = "修改配送商信息";
+					var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+					top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 400);
+				}else if(type == "2030"){
+					var strLink = baseUrl + "/pages/side/bzDistMerchantCompany_edit.xhtml?bzDistMerchantCompanyId=" + userId;
+					var popTitle = "修改配送商商家信息";
+					var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+					top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 400);
+				}
+			}
+			function confirmDel() {
+				if (confirm("#{messages['page.common.confirmDelete']}")) {
+					PUBLIC.page.queryAjaxStart();
+					var userIds = PUBLIC.page.getCheckedLang();
+					document.getElementById("qlListFormId:userIds").value = userIds;
+					return true;
+				}
+				return false;
+			}
+			//]]>  
+		</script>
+	</ui:define>
+	<ui:define name="hf_ql_query_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.common.searchCondition']}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi_search">#{messages['page.user.userName']}</li>
+						<li><h:inputText id="username"
+								value="#{userAction.queryCriteria.queryCondition.username}" />
+						</li>
+						<li class="textLi_search">类型</li>
+						<li><h:selectOneMenu id="type" value="#{userAction.type}">
+											<f:selectItem itemLabel="全部" />
+											<f:selectItems
+												value="#{userAction.selectType}"/>
+										</h:selectOneMenu></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<a4j:commandButton id="queryDataBtnId"
+						value="#{messages['page.common.query']}" render="qlListFormId"
+						styleClass="Button" oncomplete="PUBLIC.page.ajaxEnd();"
+						onclick="PUBLIC.page.queryAjaxStart();">
+						<f:param name="operateType" value="query" />
+					</a4j:commandButton>
+					<input type="reset" class="Button"
+						value="#{messages['page.common.reSetValue']}" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+		<!--查询条件 end-->
+	</ui:define>
+	<ui:define name="hf_ql_list_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.user.userManage']}</div>
+					<div class="ban_title_iconw">
+						<ul>
+							<li class="ban_icon4"></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_operate_btn">
+					<input type="button" class="Button" onclick="addUser();"
+						value="增加系统用户" />
+					<input type="button" class="Button" onclick="addBzConsumer();"
+						value="增加买家" />
+					<input type="button" class="Button" onclick="addBzMerchant();"
+						value="增加商家" />
+					<input type="button" class="Button" onclick="addBzDistCompany();"
+						value="增加配送商" />
+					<input type="button" class="Button" onclick="addBzDistMerchantCompany();"
+						value="增加配送商商家" />
+					<h:inputHidden id="userIds" />
+				</div>
+				<div class="cj_line" style="margin: 0;"></div>
+				<rich:extendedDataTable selectionMode="single"
+					value="#{userAction.pagerDataModel}"
+					rows="#{userAction.pagerDataModel.pageResult.pageSize}"
+					columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="item">
+					<rich:column width="60px">
+						<f:facet name="header">
+							<h:selectBooleanCheckbox onclick="PUBLIC.page.checkedAll();"
+								class="publicCheckAll" />
+						</f:facet>
+						<h:selectBooleanCheckbox lang="#{item.id}"
+							onclick="PUBLIC.page.checkedOnly();" class="publicCheck"
+							style="background: none;border: none;height: 18px;line-height: 18px;" />
+					</rich:column>
+					<rich:column width="130px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.user.userName']}" />
+						</f:facet>
+						<a href="#" onclick="modifyUser(#{item.id},#{item.type});"> <h:outputText
+								value="#{item.username}" />
+						</a>
+					</rich:column>
+					<rich:column width="130px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="邮箱" />
+						</f:facet>
+						<h:outputText value="#{item.email}" />
+					</rich:column>
+					<rich:column width="130px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="名称" />
+						</f:facet>
+						<h:outputText value="#{item.nickname}" />
+					</rich:column>
+					<rich:column width="130px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.user.phone']}" />
+						</f:facet>
+						<h:outputText value="#{item.mobile}" />
+					</rich:column>
+					<rich:column width="130px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="类型" />
+						</f:facet>
+						<h:outputText
+								value="sideSysUserType,#{item.type}"
+								converter="codeListConverter" />
+					</rich:column>
+					<rich:column width="100px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.common.operate']}" />
+						</f:facet>
+						<a4j:commandLink value="#{messages['page.common.edit']}"
+							onclick="modifyUser(#{item.id},#{item.type});" ajaxSingle="true" />
+					</rich:column>
+					<f:facet name="footer">
+						<rich:dataScroller fastControls="hide"
+							page="#{userAction.pagerDataModel.pageResult.currentPage}">
+							<f:facet name="first">
+								<h:graphicImage url="../../images/firstbg.gif" />
+							</f:facet>
+							<f:facet name="first_disabled">
+								<h:graphicImage url="../../images/firstbg_n.gif" />
+							</f:facet>
+							<f:facet name="last">
+								<h:graphicImage url="../../images/lastbg.gif" />
+							</f:facet>
+							<f:facet name="last_disabled">
+								<h:graphicImage url="../../images/lastbg_n.gif" />
+							</f:facet>
+							<f:facet name="next">
+								<h:graphicImage url="../../images/nextbg.gif" />
+							</f:facet>
+							<f:facet name="next_disabled">
+								<h:graphicImage url="../../images/nextbg_n.gif" />
+							</f:facet>
+							<f:facet name="previous">
+								<h:graphicImage url="../../images/previousbg.gif" />
+							</f:facet>
+							<f:facet name="previous_disabled">
+								<h:graphicImage url="../../images/previousbg_n.gif" />
+							</f:facet>
+						</rich:dataScroller>
+						<h:panelGroup styleClass="pager_info">
+							<h:outputText value="#{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{userAction.pagerDataModel.pageResult.totalPage} " />
+							<h:outputText value=" #{messages['page.pager.page']} " />
+							<h:outputText value=" #{messages['page.pager.prepage']} " />
+							<h:outputText
+								value=" #{userAction.pagerDataModel.pageResult.pageSize} " />
+							<h:outputText value=" #{messages['page.pager.item']} " />
+							<h:outputText value=" #{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{userAction.pagerDataModel.pageResult.totalCount} " />
+							<h:outputText value=" #{messages['page.pager.item']}" />
+						</h:panelGroup>
+					</f:facet>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

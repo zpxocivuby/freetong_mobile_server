@@ -1,0 +1,19 @@
+<ui:composition template="/template/HeaderAndFooterTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="hf_head_region">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/TabPanel.js" />
+		<ui:insert name="hf_tab_head_region" />
+	</ui:define>
+	<ui:define name="hf_content_region">
+		<div id="tabs" />
+		<ui:insert name="hf_tab_content_region" />
+	</ui:define>
+</ui:composition>

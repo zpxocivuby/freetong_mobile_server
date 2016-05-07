@@ -1,0 +1,1 @@
+//ITAF DAO Tool Generator at 2014-05-29 16:36:19 package itaf.framework.persistence.log.dao;import itaf.framework.domain.log.SysUserAccLog;import itaf.framework.persistence.base.dao.IBaseDao;public interface ISysUserAccLogDao extends IBaseDao<SysUserAccLog> {	SysUserAccLog findBySessionIdAndUserName(String sessionId, String userName);}

@@ -1,0 +1,245 @@
+<ui:composition template="/template/PopEditScollerTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:validator="http://shale.apache.org/validator">
+	<ui:define name="headRegion">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript">
+			//<![CDATA[      
+			var baseUrl = "#{baseSession.contextPath}";
+
+			function complete() {
+				alert("操作成功");
+
+			}
+
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.otrNo']}:</li>
+						<li class="textLi"><h:outputText id="otrNumber"
+								value="#{bzOtrCreateAction.bzOtrCreate.otrNumber}"
+								readonly="true" /></li>
+
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.creator']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.bzStaffInf.username}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.employeeName']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.bzStaffInf.realnameZh}" /></li>
+						<li class="textLi">#{messages['page.otr.add.employeeNo']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.bzStaffInf.username}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.email']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.bzStaffInf.email}" /></li>
+						<li class="textLi">#{messages['page.otr.add.mobile']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.bzStaffInf.mobile}" /></li>
+						<li class="textLi">#{messages['page.otr.add.department']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.bzStaffInf.bzSiteInf.siteNameZh}" /></li>
+						<li class="textLi">#{messages['page.otr.add.state']}:</li>
+						<li class="textLi"><h:outputText
+								value="otrApprovalState,#{bzOtrCreateAction.bzOtrCreate.approvalState}"
+								converter="codeListConverter" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.requisitionName']}:</li>
+						<li class="textLi"><h:outputText id="title"
+								value="#{bzOtrCreateAction.bzOtrCreate.title}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.application']}:</li>
+						<li class="textLi"><h:outputText id="applyMatter"
+								value="#{bzOtrCreateAction.bzOtrCreate.applyMatter}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.date']}:</li>
+						<li class="textLi"><h:outputText id="startDate"
+								value="#{bzOtrCreateAction.bzOtrCreate.startDate}" /> <h:outputText
+								id="endDate" value="#{bzOtrCreateAction.bzOtrCreate.endDate}" />
+						</li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.applyContent']}:</li>
+						<li class="textLi"><h:outputText id="applyContent"
+								value="#{bzOtrCreateAction.bzOtrCreate.applyContent}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.scheduling']}:</li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.returnflights']}:</li>
+						<li class="textLi">#{messages['page.otr.add.airlineCompany']}:</li>
+						<li class="textLi"><h:outputText id="airline"
+								value="#{bzOtrCreateAction.bzOtrCreate.airline}" /></li>
+						<li class="textLi">#{messages['page.otr.add.airlineNo']}:</li>
+						<li class="textLi"><h:outputText id="fltNo"
+								value="#{bzOtrCreateAction.bzOtrCreate.fltNo}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.whetherThereIsSupervisionTasks']}:</li>
+						<li><h:selectOneRadio id="haveOverseeTask"
+								value="#{bzOtrCreateAction.bzOtrCreate.haveOverseeTask}"
+								disabled="true">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+						<li class="textLi">#{messages['page.otr.add.returnType']}:</li>
+						<li class="textLi"><h:selectOneMenu id="returnCountryType"
+								value="#{bzOtrCreateAction.bzOtrCreate.returnCountryType}"
+								disabled="true">
+								<f:selectItem />
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrReturnCountryTypeChecked}" />
+							</h:selectOneMenu></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theAccompanyingFamilyMembersWhetherToReturnHomeOnLeave']}:</li>
+						<li><h:selectOneRadio id="isDependentVacation"
+								value="#{bzOtrCreateAction.bzOtrCreate.isDependentVacation}"
+								disabled="true">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+						<li class="textLi">#{messages['page.otr.add.toTheNumberOfDependents']}:</li>
+						<li class="textLi"><h:outputText id="dependentNum"
+								value="#{bzOtrCreateAction.bzOtrCreate.dependentNum}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.duringTheVacationWhetherToArrangeTravel']}:</li>
+						<li><h:selectOneRadio id="isOutboundTourism"
+								value="#{bzOtrCreateAction.bzOtrCreate.isOutboundTourism}"
+								disabled="true">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.duringTheVacationWhetherToArrangeTravel']}:</li>
+						<li><h:selectOneRadio id="isPoliceRegistration"
+								value="#{bzOtrCreateAction.bzOtrCreate.isPoliceRegistration}"
+								disabled="true">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.travelArrangements']}:</li>
+						<li class="textLi">#{messages['page.otr.add.country']}:</li>
+						<li class="textLi"><h:outputText id="travelCountry"
+								value="#{bzOtrCreateAction.bzOtrCreate.travelCountry}" /></li>
+						<li class="textLi">#{messages['page.otr.add.time']}:</li>
+						<li class="textLi"><h:outputText id="travelStartTime"
+								value="#{bzOtrCreateAction.bzOtrCreate.travelStarttime}" /> <h:outputText
+								id="travelEndTime"
+								value="#{bzOtrCreateAction.bzOtrCreate.travelEndtime}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theAccompanyingFamilyMembersIfTheEndOfTheWeekVacationToReturnToTheResident']}:</li>
+						<li><h:selectOneRadio id="isDependentComeback"
+								value="#{bzOtrCreateAction.bzOtrCreate.isDependentComeback}"
+								disabled="true">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.returneesNeedToExitCertificate']}:</li>
+						<li><h:outputText id="applicantInlandTel"
+								value="#{bzOtrCreateAction.bzOtrCreate.applicantInlandTel}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theAccompanyingFamilyMembersIfTheEndOfTheWeekVacationToReturnToTheResident']}:<h:outputText
+								value="#{bzOtrCreateAction.bzOtrCreate.operator.realnameZh}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theApplicantAndDomesticTelephone']}:</li>
+						<li><h:outputText id="operatorContact"
+								value="#{bzOtrCreateAction.bzOtrCreate.operatorContact}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theFirstApprover']}:</li>
+						<li><h:inputText id="firstApprovalName" readonly="true"
+								value="#{bzOtrCreateAction.bzOtrCreate.firstApproval.realnameZh}" /></li>
+						<li class="textLi">#{messages['page.otr.add.secondApprover']}:</li>
+						<li><h:inputText id="secondApprovalName" readonly="true"
+								value="#{bzOtrCreateAction.bzOtrCreate.secondApproval.realnameZh}" /></li>
+					</ul>
+
+				</div>
+				<div class="ban_btn">
+					<input class="Button" type="button"
+						value="#{messages['page.common.cancel']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="ban_con">
+				<h:inputHidden id="addAttachIds" />
+				<div style="display: none">
+					<a4j:commandButton id="addAttachBtnId" render="attachDataTableId"
+						oncomplete="PUBLIC.page.ajaxEnd();"
+						onclick="PUBLIC.page.queryAjaxStart();"
+						action="#{bzOtrCreateAction.addAttachments}">
+					</a4j:commandButton>
+				</div>
+				<rich:extendedDataTable id="attachDataTableId"
+					selectionMode="single" value="#{bzOtrCreateAction.bsAttachments}"
+					rows="1000" columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="item">
+					<rich:column width="250px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.fileName']}" />
+						</f:facet>
+						<h:commandLink action="#{attachmentAction.download}">
+							<h:outputText value="#{item.srcFileName}.#{item.fileExt}" />
+							<f:param name="attachId" value="#{item.id}" />
+						</h:commandLink>
+					</rich:column>
+					<rich:column width="250px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.createdUser']}" />
+						</f:facet>
+						<h:outputText value="#{item.createdUser.username}" />
+					</rich:column>
+					<rich:column width="100px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.createdDate']}" />
+						</f:facet>
+						<h:outputText value="#{item.createdDate}">
+							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+						</h:outputText>
+					</rich:column>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,75 @@
+<ui:composition template="/template/PopEmptyTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="titleRegion">
+   		Menu
+  	</ui:define>
+	<ui:define name="headRegion">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/column-tree.js" />
+		<link rel="stylesheet" type="text/css"
+			href="#{baseSession.contextPath}/css/column-tree.css" />
+
+		<script type="text/javascript">
+			Ext.onReady(function(){
+			    var tree = new Ext.tree.ColumnTree({
+			        id: "columnTree",
+			        height: 290,
+			        rootVisible:false,
+			        autoScroll:true,
+			        title: "",
+			        renderTo: Ext.getBody(),
+			        uiProviders:{
+			            "col": Ext.tree.ColumnNodeUI
+			        },
+			        columns:[{
+			            header:"#{messages['page.resourcemanage.tree.resourceNameZh']}",
+			            width:'25%',
+			            dataIndex:'nameZh'
+			        },{
+			            header:"#{messages['page.resourcemanage.tree.resourceNameEn']}",
+			            width:"20%",
+			            dataIndex:"nameEn"
+			        },{
+			            header:"#{messages['page.resourcemanage.tree.resourceDesc']}",
+			            width:"15%",
+			            dataIndex:"description"
+			        },{
+			            header:"#{messages['page.resourcemanage.tree.resourceValue']}",
+			            width:"34%",
+			            dataIndex:"path"
+			        },{
+			            header:"#{messages['page.resourcemanage.tree.resourceOrderNo']}",
+			            width:"5%",
+			            dataIndex:"orderNo"
+			        }],
+			        loader: new Ext.tree.TreeLoader(),
+			        root: new Ext.tree.AsyncTreeNode({
+			            text:"resources",
+			            children: [
+							#{resourceColumnTreeAction.rootResource}
+			            ]
+			        })
+			    });
+			    
+			    tree.on("click",function(node){
+			    	parent.document.getElementById("panel_zone_center").style.display="block";
+					var panelframe = parent.document.getElementById("panel_zone");
+					panelframe.contentWindow.location.href="resource_manage_panel.xhtml?id="+ node.id
+						+ "&amp;this_path=" + node.getPath()
+						+ "&amp;parent_path=" + node.parentNode.getPath();
+			    });
+			
+			    var expand_path="#{param['expand_path']}";
+			    tree.expandPath(expand_path);
+			});
+		</script>
+	</ui:define>
+	<ui:define name="bodyRegion"></ui:define>
+</ui:composition>

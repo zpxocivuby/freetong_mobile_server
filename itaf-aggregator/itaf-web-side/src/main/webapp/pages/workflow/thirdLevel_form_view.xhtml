@@ -1,0 +1,126 @@
+<ui:composition template="/template/PopEditScollerTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:validator="http://shale.apache.org/validator">
+	<ui:define name="headRegion">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript">
+			//<![CDATA[      
+			var baseUrl = "#{baseSession.contextPath}";
+
+			function complete() {
+				alert("操作成功");
+
+			}
+
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">#{messages['page.secondApproval.add.title']}:</li>
+						<li><h:outputText
+								value="#{bzDailyWorkAction.bzDailyWork.title}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.secondApproval.add.content']}:</li>
+						<li><h:outputText
+								value="#{bzDailyWorkAction.bzDailyWork.content}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.operator']}:</li>
+						<li><h:outputText
+								value="#{bzDailyWorkAction.bzDailyWork.operator.realnameZh}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.selectOperator']}:</li>
+						<li class="textLi"><h:outputText id="operatorContact"
+								value="#{bzDailyWorkAction.bzDailyWork.operatorContact}" /></li>
+					</ul>
+					<ul>
+						<li>状态:</li>
+						<li><h:outputText
+								value="otrAgree,#{bzDailyWorkAction.bzDailyWork.status}"
+								converter="codeListConverter" /></li>
+					</ul>
+					<ul>
+						<li>#{messages['page.secondApproval.add.type']}:日常工作事项三级审批</li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theFirstApprover']}:</li>
+						<li><h:inputText id="firstApprovalName" readonly="true"
+								value="#{bzDailyWorkAction.bzDailyWork.firstApproval.realnameZh}" /></li>
+						<li class="textLi">#{messages['page.otr.add.secondApprover']}:</li>
+						<li><h:inputText id="secondApprovalName" readonly="true"
+								value="#{bzDailyWorkAction.bzDailyWork.secondApproval.realnameZh}" /></li>
+						<li class="textLi">#{messages['page.otr.add.thirdApprover']}:</li>
+						<li><h:inputHidden id="thirdApproval" readonly="true"
+								value="#{bzDailyWorkAction.bzDailyWork.thirdApproval.realnameZh}" /></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<input class="Button" type="button"
+						value="#{messages['page.common.cancel']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="ban_con">
+				<h:inputHidden id="addAttachIds" />
+				<div style="display: none">
+					<a4j:commandButton id="addAttachBtnId" render="attachDataTableId"
+						oncomplete="PUBLIC.page.ajaxEnd();"
+						onclick="PUBLIC.page.queryAjaxStart();"
+						action="#{bzDailyWorkAction.addAttachments}">
+					</a4j:commandButton>
+				</div>
+				<rich:extendedDataTable id="attachDataTableId"
+					selectionMode="single" value="#{bzDailyWorkAction.bsAttachments}"
+					rows="1000" columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="item">
+					<rich:column width="250px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.fileName']}" />
+						</f:facet>
+						<h:commandLink action="#{attachmentAction.download}">
+							<h:outputText value="#{item.srcFileName}.#{item.fileExt}" />
+							<f:param name="attachId" value="#{item.id}" />
+						</h:commandLink>
+					</rich:column>
+					<rich:column width="250px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.createdUser']}" />
+						</f:facet>
+						<h:outputText value="#{item.createdUser.username}" />
+					</rich:column>
+					<rich:column width="100px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.createdDate']}" />
+						</f:facet>
+						<h:outputText value="#{item.createdDate}">
+							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+						</h:outputText>
+					</rich:column>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,72 @@
+<ui:composition template="/template/PopEditTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="navigation_region">
+    		#{messages['page.common.currentPosition']} >> 新建版本信息
+  	</ui:define>
+
+	<ui:define name="headRegion">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript">
+			//<![CDATA[
+			var baseUrl = "#{baseSession.contextPath}";
+
+			Ext.onReady(function() {
+				PUBLIC.page.showActionMsg("#{clientVersionAction.actionMsg}",
+						true);
+			});
+
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						<h:outputText value="创建版本信息" />
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">客戶端版本号:</li>
+						<li><h:outputText value="#{clientVersionAction.versionNo}" /></li>
+						<li class="textLi">状态:</li>
+						<li>新建</li>
+					</ul>
+					<ul>
+						<li class="textLi">类型:</li>
+						<li><h:selectOneMenu id="type">
+								<f:selectItem itemValue="1" itemLabel="andriod" />
+								<f:selectItem itemValue="2" itemLabel="ios" />
+							</h:selectOneMenu></li>
+						<li class="textLi"></li>
+						<li></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<h:inputHidden id="versionNo"
+						value="#{clientVersionAction.versionNo}" />
+					<h:commandButton class="Button" value="保存"
+						action="#{clientVersionAction.actionExecute}">
+						<f:param name="methodType" value="save" />
+					</h:commandButton>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

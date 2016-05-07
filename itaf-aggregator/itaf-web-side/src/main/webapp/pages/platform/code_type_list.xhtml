@@ -1,0 +1,326 @@
+<ui:composition template="/template/HfTopMiddleBottom.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="navigation_region">
+   		#{messages['page.common.currentPosition']}#{messages['page.code.type.list.locationRegion']}
+	</ui:define>
+	<ui:define name="hf_tmb_head_region">
+		<script type="text/javascript">
+			//<![CDATA[
+			var baseUrl = "#{baseSession.contextPath}";
+			function addCodeList(codeTypeId) {
+				var strLink = baseUrl
+						+ "/pages/platform/code_list_edit.xhtml?codeTypeId="
+						+ codeTypeId + "&codeListId=";
+				var popTitle = "#{messages['page.code.type.list.codeEditInfo']}";
+				var btnObj = document
+						.getElementById("tmbBottomFormId:refreshCodeListsId");
+				top.popWindowBase.app.popWindow2(strLink, btnObj, popTitle,
+						1050, 185, true);
+			};
+
+			function editPageList(codeTypeId, codeListId) {
+				var strLink = baseUrl
+						+ "/pages/platform/code_list_edit.xhtml?codeTypeId="
+						+ codeTypeId + "&codeListId=" + codeListId;
+				var popTitle = "#{messages['page.code.type.list.codeEditInfo']}";
+				var btnObj = document
+						.getElementById("tmbBottomFormId:refreshCodeListsId");
+				top.popWindowBase.app.popWindow2(strLink, btnObj, popTitle,
+						1050, 160, true);
+			}
+
+			function confirmDelete() {
+				if (confirm("#{messages['page.common.confirmDelete']}")) {
+					return true;
+				}
+				return false;
+			}
+			function operateResult() {
+				var operateMsg = "#{codeListAction.operateMsg}";
+				if ("success" == operateMsg) {
+					Ext.MessageBox.alert("#{messages['page.common.notice']}",
+							"#{messages['page.common.operateSuccess']}",
+							function() {
+								top.popWindowBase.app.exitWindow();
+							});
+				} else if ("error" == operateMsg) {
+					Ext.MessageBox.alert("#{messages['page.common.notice']}",
+							"#{messages['page.common.operateError']}");
+				}
+			}
+
+			function showCodeListsFormIf(show) {
+				if (true == show) {
+					document.getElementById("codeListContentId").style.display = "";
+				} else {
+					document.getElementById("codeListContentId").style.display = "none";
+				}
+			};
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="hf_tmb_top_content_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.common.searchCondition']}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<h:form id="queryCenter">
+						<ul>
+							<li>#{messages['page.code.type.list.codeType']} <h:inputText
+									id="type"
+									value="#{codeTypeAction.queryCriteria.queryCondition.codeType}"
+									maxlength="20" />
+								#{messages['page.code.type.list.codeNameChinese']} <h:inputText
+									id="nameZh"
+									value="#{codeTypeAction.queryCriteria.queryCondition.nameZh}"
+									maxlength="42" /> <a4j:commandButton
+									value="#{messages['page.common.query']}" styleClass="Button"
+									render="tmbMiddleFormId"
+									onclick="PUBLIC.page.queryAjaxStart();showCodeListsFormIf(false);"
+									oncomplete="PUBLIC.page.ajaxEnd();">
+									<f:param name="operateType" value="query" />
+								</a4j:commandButton> <input type="reset" class="Button"
+								value="#{messages['page.common.reSetValue']}" />
+							</li>
+						</ul>
+					</h:form>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+	<ui:define name="hf_tmb_middle_content_region">
+		<div class="ban_top_bg">
+			<div class="ban_top_con">
+				<div class="ban_title_font">
+					#{messages['page.code.type.list.codeTypeTable']}</div>
+				<div class="ban_title_iconw"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="ban_con">
+			<rich:extendedDataTable selectionMode="single"
+				value="#{codeTypeAction.pagerDataModel}"
+				rows="#{codeTypeAction.pagerDataModel.pageResult.pageSize}"
+				columnClasses="scroll_column_no_rightline"
+				footerClass="scroll_footer_color" headerClass="scroll_head_color"
+				noDataLabel="#{messages['page.common.nodata']}" var="item">
+				<rich:column width="350px">
+					<f:facet name="header">
+						<h:outputText value="#{messages['page.code.type.list.codeType']}" />
+					</f:facet>
+					<h:outputText value="#{item.codeType}" />
+				</rich:column>
+				<rich:column width="350px">
+					<f:facet name="header">
+						<h:outputText
+							value="#{messages['page.code.type.list.codeNameChinese']}" />
+					</f:facet>
+					<h:outputText value="#{item.nameZh}" />
+				</rich:column>
+				<rich:column width="380px">
+					<f:facet name="header">
+						<h:outputText
+							value="#{messages['page.code.type.list.codeNameEnglish']}" />
+					</f:facet>
+					<h:outputText value="#{item.nameEn}" />
+				</rich:column>
+				<rich:column width="80px">
+					<f:facet name="header">
+						<h:outputText value="#{messages['page.common.view']}" />
+					</f:facet>
+					<a4j:commandLink oncomplete="showCodeListsFormIf(true);"
+						value="#{messages['page.common.view']}" render="tmbBottomFormId">
+						<f:param name="codeTypeId" value="#{item.id}" />
+					</a4j:commandLink>
+				</rich:column>
+				<f:facet name="footer">
+					<rich:dataScroller fastControls="hide"
+						page="#{codeTypeAction.pagerDataModel.pageResult.currentPage}">
+						<f:facet name="first">
+							<h:graphicImage url="../../images/firstbg.gif" />
+						</f:facet>
+						<f:facet name="first_disabled">
+							<h:graphicImage url="../../images/firstbg_n.gif" />
+						</f:facet>
+						<f:facet name="last">
+							<h:graphicImage url="../../images/lastbg.gif" />
+						</f:facet>
+						<f:facet name="last_disabled">
+							<h:graphicImage url="../../images/lastbg_n.gif" />
+						</f:facet>
+						<f:facet name="next">
+							<h:graphicImage url="../../images/nextbg.gif" />
+						</f:facet>
+						<f:facet name="next_disabled">
+							<h:graphicImage url="../../images/nextbg_n.gif" />
+						</f:facet>
+						<f:facet name="previous">
+							<h:graphicImage url="../../images/previousbg.gif" />
+						</f:facet>
+						<f:facet name="previous_disabled">
+							<h:graphicImage url="../../images/previousbg_n.gif" />
+						</f:facet>
+					</rich:dataScroller>
+					<h:panelGroup styleClass="pager_info">
+						<h:outputText value="#{messages['page.pager.total']} " />
+						<h:outputText
+							value=" #{codeTypeAction.pagerDataModel.pageResult.totalPage} " />
+						<h:outputText value=" #{messages['page.pager.page']} " />
+						<h:outputText value=" #{messages['page.pager.prepage']} " />
+						<h:outputText
+							value=" #{codeTypeAction.pagerDataModel.pageResult.pageSize} " />
+						<h:outputText value=" #{messages['page.pager.item']} " />
+						<h:outputText value=" #{messages['page.pager.total']} " />
+						<h:outputText
+							value=" #{codeTypeAction.pagerDataModel.pageResult.totalCount} " />
+						<h:outputText value=" #{messages['page.pager.item']}" />
+					</h:panelGroup>
+				</f:facet>
+			</rich:extendedDataTable>
+		</div>
+		<div class="clear"></div>
+		<div class="ban_down_bg">
+			<div class="ban_down_left"></div>
+		</div>
+	</ui:define>
+	<ui:define name="hf_tmb_bottom_content_region">
+		<div id="codeListContentId" style="display: none">
+			<div style="height: 5px;"></div>
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.code.type.list.codeListTable']}</div>
+					<div class="ban_title_iconw">
+						<ul>
+							<li class="ban_icon4"><a4j:commandLink ajaxSingle="true"
+									onclick="addCodeList('#{codeListAction.codeTypeId }');"
+									value="#{messages['page.common.add']}" /></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<span style="display: none;"> <a4j:commandButton
+						ajaxSingle="true" id="refreshCodeListsId" render="tmbBottomFormId">
+					</a4j:commandButton>
+				</span>
+				<h:inputHidden id="codeTypeId" value="#{codeListAction.codeTypeId }" />
+				<rich:extendedDataTable selectionMode="single"
+					value="#{codeListAction.pagerDataModel}"
+					rows="#{codeListAction.pagerDataModel.pageResult.pageSize}"
+					columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="item">
+					<rich:column width="80px">
+						<f:facet name="header">
+							<h:outputText value="#{messages['page.code.list.edit.sortNo']}" />
+						</f:facet>
+						<h:outputText value="#{item.sortNo}" />
+					</rich:column>
+					<rich:column width="300px">
+						<f:facet name="header">
+							<h:outputText
+								value="#{messages['page.code.list.edit.codeValue']}" />
+						</f:facet>
+						<h:outputText value="#{item.codeValue}" title="#{item.codeValue}" />
+					</rich:column>
+					<rich:column width="350px">
+						<f:facet name="header">
+							<h:outputText
+								value="#{messages['page.code.list.edit.codeNameChinese']}" />
+						</f:facet>
+						<h:outputText value="#{item.nameZh}" title="#{item.nameZh}" />
+					</rich:column>
+					<rich:column width="350px">
+						<f:facet name="header">
+							<h:outputText
+								value="#{messages['page.code.list.edit.codeNameEnglish']}" />
+						</f:facet>
+						<h:outputText value="#{item.nameEn}" title="#{item.nameEn}" />
+					</rich:column>
+					<rich:column width="80px">
+						<f:facet name="header">
+							<h:outputText value="#{messages['page.common.operate']}" />
+						</f:facet>
+						<a4j:commandLink ajaxSingle="true"
+							onclick="editPageList('#{item.sysCodeType.id}', '#{item.id}');"
+							value="#{messages['page.common.edit']}" style="margin-left: 5px;">
+						</a4j:commandLink>
+						<a4j:commandLink value="#{messages['page.common.delete']}"
+							action="#{codeListAction.delete}" render="tmbBottomFormId"
+							onclick="if(!confirmDelete()){return false;};"
+							oncomplete="operateResult();" style="margin-left: 5px;">
+							<f:param name="codeListId" value="#{item.id}" />
+						</a4j:commandLink>
+					</rich:column>
+					<f:facet name="footer">
+						<rich:dataScroller fastControls="hide"
+							page="#{codeListAction.pagerDataModel.pageResult.currentPage}">
+							<f:facet name="first">
+								<h:graphicImage url="../../images/firstbg.gif" />
+							</f:facet>
+							<f:facet name="first_disabled">
+								<h:graphicImage url="../../images/firstbg_n.gif" />
+							</f:facet>
+							<f:facet name="last">
+								<h:graphicImage url="../../images/lastbg.gif" />
+							</f:facet>
+							<f:facet name="last_disabled">
+								<h:graphicImage url="../../images/lastbg_n.gif" />
+							</f:facet>
+							<f:facet name="next">
+								<h:graphicImage url="../../images/nextbg.gif" />
+							</f:facet>
+							<f:facet name="next_disabled">
+								<h:graphicImage url="../../images/nextbg_n.gif" />
+							</f:facet>
+							<f:facet name="previous">
+								<h:graphicImage url="../../images/previousbg.gif" />
+							</f:facet>
+							<f:facet name="previous_disabled">
+								<h:graphicImage url="../../images/previousbg_n.gif" />
+							</f:facet>
+						</rich:dataScroller>
+						<h:panelGroup styleClass="pager_info">
+							<h:outputText value="#{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{codeListAction.pagerDataModel.pageResult.totalPage} " />
+							<h:outputText value=" #{messages['page.pager.page']} " />
+							<h:outputText value=" #{messages['page.pager.prepage']} " />
+							<h:outputText
+								value=" #{codeListAction.pagerDataModel.pageResult.pageSize} " />
+							<h:outputText value=" #{messages['page.pager.item']} " />
+							<h:outputText value=" #{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{codeListAction.pagerDataModel.pageResult.totalCount} " />
+							<h:outputText value=" #{messages['page.pager.item']}" />
+						</h:panelGroup>
+					</f:facet>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,39 @@
+<ui:composition template="/template/PopViewTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="pop_view_content_region">
+		<div class="ban_warp">
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">#{messages['page.role.view.nameZh']}</li>
+						<li><h:inputText readonly="true"
+								value="#{roleManageAction.sysRole.nameZh}" /></li>
+						<li class="textLi">#{messages['page.role.view.nameEn']}</li>
+						<li><h:inputText readonly="true"
+								value="#{roleManageAction.sysRole.nameEn}" /></li>
+						<li class="textLi">#{messages['page.role.desc']}</li>
+						<li><h:inputText readonly="true"
+								value="#{roleManageAction.sysRole.description}" /></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<input class="Button" type="button"
+						value="#{messages['page.common.close']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

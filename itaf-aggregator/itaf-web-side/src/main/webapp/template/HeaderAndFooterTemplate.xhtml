@@ -1,0 +1,100 @@
+<ui:composition template="/template/EmptyTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="titleRegion">
+		CCTV海外记者部运营管理系统
+	</ui:define>
+	<ui:define name="headRegion">
+		<script type="text/javascript">
+			//<![CDATA[
+			var baseUrl = "#{baseSession.contextPath}";
+			function showDate() {
+				var today = new Date();
+				var year = today.getYear();
+				var month = today.getMonth() + 1;
+				var date = today.getDate();
+				if (year < 1900) {
+					year += 1900;
+				}
+				var result = year + "#{messages['page.header.year']}" + month
+						+ "#{messages['page.header.month']}" + date
+						+ "#{messages['page.header.date']}";
+				return result;
+			}
+			Ext
+					.onReady(function() {
+						if (document.getElementById("systemDateId")) {
+							document.getElementById("systemDateId").innerHTML = showDate();
+						}
+					});
+			function viewUserInfo(staffId){
+				var strLink = baseUrl + "/pages/staff/bzStaffRotation_list.xhtml?userId=" + staffId;
+				PUBLIC.page.queryAjaxStart();
+				window.location.href=strLink;
+			}
+			//]]>
+		</script>
+		<ui:insert name="hf_head_region" />
+	</ui:define>
+	<ui:define name="bodyRegion">
+		<div class="enter_warp">
+			<!-- 用户操作区域 -->
+			<div class="enter_bg">
+				<div class="enter_topw">
+					<div class="enter_logo">
+						<img src="#{baseSession.contextPath}/images/logo.gif" />
+					</div>
+					<div class="enter_logo_r">
+						<div class="enter_logo_r_top">
+							<ul>
+								<li class="header_text"><span><h:outputText
+											value="#{messages['page.header.welcome']}" /></span> <span
+									title="#{userAction.relName}"><a href="#"
+										onclick="javascript:viewUserInfo(#{userAction.userId});"><h:outputText
+												value="#{userAction.shortRelName}" /></a></span> <span
+									id="systemDateId"></span></li>
+							</ul>
+						</div>
+						<div class="enter_logo_r_down">
+							<ul>
+								<li style="width: 150px"><h:form>
+								<span>
+								        <h:outputLink
+											value="#{baseSession.contextPath}/j_spring_security_logout">
+											<h:outputText value="#{messages['page.header.quit']}" />
+										</h:outputLink>
+								    </span>
+										<h:commandLink action="#{languageSelector.selectLanguageZH}"
+											value="中文" /> |
+									<h:commandLink action="#{languageSelector.selectLanguageEN}"
+											value="English" />
+									</h:form></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 功能菜单区域 -->
+			<div class="enter_bg">
+				<div id="menuDiv">
+					<h:outputText escape="false" value="#{navigationAction.navHtmlString}" />
+				</div>
+			</div>
+			<!-- 功能连接导航区域 -->
+			<div class="navigation">
+				<ui:insert name="navigation_region" />
+			</div>
+			<!-- body区域 -->
+			<div class="content_bg">
+				<ui:insert name="hf_content_region" />
+			</div>
+		</div>
+		<!-- <div id="footer">#{messages['page.index.footer.footer']}</div> -->
+	</ui:define>
+</ui:composition>

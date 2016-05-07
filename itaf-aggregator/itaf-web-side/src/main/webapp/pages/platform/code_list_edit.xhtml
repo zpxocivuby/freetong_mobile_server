@@ -1,0 +1,101 @@
+<ui:composition template="/template/PopEditTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript">
+			Ext.onReady(function() {
+				var operateMsg = "#{codeListAction.operateMsg}";
+				if ("success" == operateMsg) {
+					Ext.MessageBox.alert("#{messages['page.common.notice']}",
+							"#{messages['page.common.operateSuccess']}",
+							function() {
+								top.popWindowBase.app.exitWindow();
+							});
+				} else if ("error" == operateMsg) {
+					Ext.MessageBox.alert("#{messages['page.common.notice']}",
+							"#{messages['page.common.operateError']}");
+				}
+			});
+		</script>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						<h:outputText
+							value="#{messages['page.code.type.list.codeEditInfo']}" />
+						<h:message for="codeValue" errorClass="pop_error_msg_span" />
+						<h:message for="sortNo" errorClass="pop_error_msg_span" />
+						<h:message for="nameZh" errorClass="pop_error_msg_span" />
+						<h:message for="nameEn" errorClass="pop_error_msg_span" />
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">
+							#{messages['page.code.list.edit.codeValue']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="codeValue" name="codeValue"
+								value="#{codeListAction.sysCodeList.codeValue}" maxlength="85"
+								required="true"
+								validatorMessage="#{codeListAction.sysCodeList.codeValue} #{messages['page.common.alert']}">
+							</h:inputText></li>
+						<li class="textLi">#{messages['page.code.list.edit.sortNo']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="sortNo" name="sortNo" required="true"
+								validatorMessage="#{codeListAction.sysCodeList.codeValue} #{messages['page.common.alert']}"
+								value="#{codeListAction.sysCodeList.sortNo}" maxlength="9">
+							</h:inputText></li>
+						<li class="textLi">
+							#{messages['page.code.list.edit.codeNameChinese']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="nameZh" name="nameZh"
+								value="#{codeListAction.sysCodeList.nameZh}" maxlength="85"
+								required="true"
+								validatorMessage="#{codeListAction.sysCodeList.nameZh} #{messages['page.common.alert']}">
+							</h:inputText></li>
+					</ul>
+					<ul>
+						<li class="textLi">
+							#{messages['page.code.list.edit.codeNameEnglish']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="nameEn"
+								value="#{codeListAction.sysCodeList.nameEn}" name="nameEn"
+								maxlength="85" required="true"
+								validatorMessage="#{codeListAction.sysCodeList.nameEn} #{messages['page.common.alert']}">
+							</h:inputText></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<input type="hidden" id="codeTypeId"
+						value="#{codeListAction.codeTypeId }" /> <input type="hidden"
+						id="codeListId" value="#{codeListAction.codeListId }" />
+					<h:commandButton value="#{messages['page.common.determine']}"
+						action="#{codeListAction.save }" styleClass="Button">
+					</h:commandButton>
+					<input class="Button" type="button"
+						value="#{messages['page.common.cancel']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

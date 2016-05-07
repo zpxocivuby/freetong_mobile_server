@@ -1,0 +1,216 @@
+<ui:composition template="/template/EmptyTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript">
+			//<![CDATA[
+			NGPTreeLoader = Ext
+					.extend(
+							Ext.tree.TreeLoader,
+							{
+								loadNodeChildren : null,
+								dataUrl : '',
+								load : function(node, callback) {
+									if (this.clearOnLoad) {
+										while (node.firstChild) {
+											node.removeChild(node.firstChild);
+										}
+									}
+									if (this.doPreload(node)) { // preloaded json children
+										if (typeof callback == "function") {
+											callback();
+										}
+									} else if (this.dataUrl || this.url) {
+										this.requestData(node, callback);
+									} else {
+										this.requestDataFromA4j(node, callback);
+									}
+								},
+								requestDataFromA4j : function(node, callback) {
+									if (this.fireEvent("beforeload", this,
+											node, callback) !== false) {
+										var params = {
+											"thish" : this,
+											"node" : node,
+											"callback" : callback,
+											"callbackForA4j" : this.handleResponseForA4j
+										};
+										if (typeof this.loadNodeChildren == "function") {
+											this.loadNodeChildren(params);
+										}
+									} else {
+										if (typeof callback == "function") {
+											callback();
+										}
+									}
+								},
+								handleResponseForA4j : function(response, bool,
+										thish) {
+									if (bool) {
+										thish.handleResponse(response);
+									} else {
+										thish.handleFailure(response);
+									}
+								}
+							});
+			var tree;
+			Ext
+			.onReady(function() {
+								if (document.getElementById("saveBtnId")) {
+									document.getElementById("saveBtnId")
+											.focus();
+								}
+								tree = new Ext.tree.TreePanel(
+										{
+											id : 'departTreePanel',
+											renderTo : 'departTreeId',
+											useArrows : false,
+											animate : true,
+											enableDD : false,
+											rootVisible : false,
+											containerScroll : true,
+											autoScroll : true,
+											selModel : new Ext.tree.DefaultSelectionModel(),
+											root : new Ext.tree.AsyncTreeNode({
+												text : '部门信息树',
+												id : '0'
+											}),
+											loader : new NGPTreeLoader(
+													{
+														loadNodeChildren : loadClueTreeNodeChildren
+													})
+										});
+								tree
+										.on(
+												'checkchange',
+												function(node, checked) {
+													if (checked) {
+														var checkedNodes = tree
+																.getChecked();
+														for (var i = 0; i < checkedNodes.length; i++) {
+															if (checkedNodes[i] != node) {
+																checkedNodes[i]
+																		.getUI()
+																		.toggleCheck(
+																				false);
+															}
+														}
+													}
+												}, tree);
+								tree.render();
+								function loadClueTreeNodeChildren(params) {
+									document
+											.getElementById("departTreeForm:loadChildrenNodesId").value = params.node.id;
+									document
+											.getElementById(
+													"departTreeForm:submitDepartTreeForm")
+											.onclick();
+									clueTreeNodeLoader = params;
+								}
+							});
+			var clueTreeNodeLoader = null;
+			function clueTreeCallBack(data, thish) {
+				if (clueTreeNodeLoader == null) {
+					return;
+				}
+				var response = {};
+				response.responseText = data;
+				response.argument = {
+					"node" : clueTreeNodeLoader.node,
+					"callback" : clueTreeNodeLoader.callback
+				};
+				clueTreeNodeLoader.callbackForA4j(response, true,
+						clueTreeNodeLoader.thish);
+				clueTreeNodeLoader = null;
+			}
+
+			function saveSelectedValue() {
+				var selectedValue = "";
+				var selectedId = "";
+				if (tree) {
+					var checkedNodes = tree.getChecked();
+					for (var i = 0; i < checkedNodes.length; i++) {
+						selectedValue += checkedNodes[i].attributes.path;
+						selectedId += checkedNodes[i].attributes.id;
+					}
+				}
+				if (parent.document
+						&& parent.document.getElementsByName("popIframe")[0]) {
+					var parentFrameObj = parent.document
+							.getElementsByName("popIframe")[0];
+					var obj = parentFrameObj.contentWindow.document;
+					if (obj && obj.getElementById("formid:parentname")) {
+						obj.getElementById("formid:parentname").value = selectedValue;
+						obj.getElementById("formid:parentId").value = selectedId;
+						top.popWindowBase.app.exitWindow();
+					}
+				}
+				if (parent.document
+						&& parent.document.getElementsByName("popIframe")[0]) {
+					var parentFrameObj = parent.document
+							.getElementsByName("popIframe")[0];
+					var obj = parentFrameObj.contentWindow.document;
+					if (obj.getElementById("userlistform")) {
+						var content = obj.getElementById("userlistform").contentWindow.document;
+						if (content
+								&& content
+										.getElementById("searchForm:treename")) {
+							content.getElementById("searchForm:treename").value = selectedValue;
+							top.popWindowBase.app.exitWindow();
+						}
+					}
+				}
+				if (parent.document
+						&& parent.document.getElementsByName("main")[0]) {
+					var parentFrameObj = parent.document
+							.getElementsByName("main")[0];
+					var obj = parentFrameObj.contentWindow.document;
+					if (obj && obj.getElementById("searchForm:treename")) {
+						obj.getElementById("searchForm:treename").value = selectedValue;
+						top.popWindowBase.app.exitWindow();
+					}
+				}
+			}
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="bodyRegion">
+		<div class="ban_warp" style="height: 100%">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.clueTree.clueClassTreeInfo']}</div>
+					<div class="ban_title_iconw">
+						<ul>
+							<li class="ban_icon4"><a href="#" id="saveBtnId"
+								onclick="saveSelectedValue();">
+									#{messages['page.common.determine']}</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div id="departTreeId"
+					style="height: 480px; width: 100%; overflow: auto;">
+					<h:form id="departTreeForm" style="display: none;">
+						<h:inputHidden id="loadChildrenNodesId" />
+						<a4j:commandButton id="submitDepartTreeForm"
+							oncomplete="clueTreeCallBack('#{departmentAction.loadChildrenNodesJson}');">
+						</a4j:commandButton>
+					</h:form>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

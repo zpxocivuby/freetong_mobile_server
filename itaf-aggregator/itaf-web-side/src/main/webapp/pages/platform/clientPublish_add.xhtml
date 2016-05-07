@@ -1,0 +1,115 @@
+<ui:composition template="/template/PopEditTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="navigation_region">
+    		#{messages['page.common.currentPosition']} >> 新建发布程序
+  	</ui:define>
+	<ui:define name="headRegion">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript">
+			//<![CDATA[
+			var baseUrl = "#{baseSession.contextPath}";
+			Ext.onReady(function() {
+				PUBLIC.page
+						.showActionMsg("#{clientPublishAction.actionMsg}", true);
+			});
+
+			function checkSavePublish() {
+				if (document.getElementById("popEditFormId:publishNo").value == ""
+						|| document.getElementById("popEditFormId:publishNo").value == null) {
+					alert("请选择客户端版本!");
+					return false;
+				}
+				return true;
+			}
+
+			function checkNewPublish() {
+				if (document.getElementById("popEditFormId:publishNo").value == ""
+						|| document.getElementById("popEditFormId:publishNo").value == null) {
+					alert("请选择客户端版本!");
+					return false;
+				}
+				if (document.getElementById("popEditFormId:fileId").value == ""
+						|| document.getElementById("popEditFormId:fileId").value == null) {
+					alert("请上传附件后再发布!");
+					return false;
+				}
+				return true;
+			}
+
+			function openUploadFileWindow() {
+				var strLink = baseUrl
+						+ "/pages/common/fileUpload.xhtml?jsCallback=afterUploadFiles&maxFilesQuantity=1&acceptedTypes=apk";
+				var popTitle = "#{messages['page.message.attachment']}";
+				top.popWindowBase.app.popWindow2(strLink, null, popTitle, 700,
+						355, true);
+			}
+
+			function afterUploadFiles(attachIds, attachNames) {
+				document.getElementById("popEditFormId:fileId").value = attachIds;
+				document.getElementById("fileName").innerHTML = attachNames;
+			}
+
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						<h:outputText value="新建" />
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">客戶端版本:</li>
+						<li><h:selectOneMenu id="publishNo" style="width: 200px;">
+								<f:selectItems value="#{clientPublishAction.versionSelects}" />
+							</h:selectOneMenu></li>
+					</ul>
+					<ul>
+						<li class="textLi">更新信息:</li>
+						<li><h:inputTextarea id="updateMsg" rows="4" cols="60" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">发布文件名称:</li>
+						<li id="fileName" style="color: #ff0000"></li>
+						<li><input class="Button" type="button"
+							onclick="openUploadFileWindow(); return false;" value="文件上传" /></li>
+					</ul>
+					<h:inputHidden id="fileId" />
+				</div>
+				<div class="ban_btn">
+					<h:commandButton class="Button"
+						onclick="if(!checkSavePublish()){return false;}" value="保存"
+						action="#{clientPublishAction.actionExecute}">
+						<f:param name="methodType" value="save" />
+					</h:commandButton>
+					<h:commandButton class="Button"
+						onclick="if(!checkNewPublish()){return false;}" value="发布"
+						action="#{clientPublishAction.actionExecute}">
+						<f:param name="methodType" value="newPublish" />
+					</h:commandButton>
+					<h:commandButton value="#{messages['page.common.cancel']}"
+						onclick="top.popWindowBase.app.exitWindow();" styleClass="Button">
+					</h:commandButton>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,67 @@
+<ui:composition template="/template/PopEditTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript">
+			//<![CDATA[ 
+			var baseUrl = "#{baseSession.contextPath}";
+
+			Ext.onReady(function() {
+				var operateMsg = "#{userAction.actionMsg}";
+				if ("success" == operateMsg) {
+					Ext.MessageBox.alert("#{messages['page.common.notice']}",
+							"#{messages['page.common.operateSuccess']}",
+							function() {
+								top.popWindowBase.app.exitWindow();
+							});
+				} else if ("failure" == operateMsg) {
+					Ext.MessageBox.alert("#{messages['page.common.notice']}",
+							"操作失败", function() {
+								top.popWindowBase.app.exitWindow();
+							});
+				}
+			});
+			function complete(){
+				alert("操作成功");
+				top.popWindowBase.app.exitWindow();
+			}
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">公司名称</li>
+						<li><h:inputText id="companyname" maxlength="18" required="true"
+								value="#{bzApplyDistCertificateAction.bzApplyDistCertificate.companyName}">
+							</h:inputText></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<h:inputHidden id="processDefinitionId"
+								value="sideSecondLevel" />
+					<a4j:commandButton styleClass="Button" render="qlListFormId"
+						oncomplete="PUBLIC.page.ajaxEnd();complete();"
+						onclick="PUBLIC.page.queryAjaxStart();"
+						value="#{messages['page.common.submit']}"
+						action="#{bzApplyDistCertificateAction.submit}" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

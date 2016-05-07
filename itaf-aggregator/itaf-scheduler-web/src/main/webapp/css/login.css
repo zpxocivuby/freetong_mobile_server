@@ -1,0 +1,42 @@
+@charset "utf-8";
+html, body, div, span, h1, h2, h3, h4, h5, h6, p,a, img, q, dl, dt, dd, ol, ul, li, form,table, tr, th, td {margin: 0;padding: 0;border: 0;vertical-align: middle;}
+html,body { width:100%;height:100%;overflow: hidden;font-size:12px;}
+div{ text-align:left;}
+select{ font-size:12px; vertical-align:middle; line-height:20px; height:20px;margin:0px 5px;}
+img{ border:none;}
+ol,ul,li{list-style:none;}
+form{margin:0;padding:0;}
+input{vertical-align:middle;background:#fff;border:1px solid #7F9DB9;font-size:12px;padding:0 2px; color:#333333; height:18px; margin:0 2px;}
+button{margin:0 3px;_margin-bottom:10px;}
+textarea{ background:#fff; border:1px solid #7F9DB9; font-size:12px; padding:0px 2px; margin:0px 5px; vertical-align:bottom; _vertical-align:text-bottom;}
+td{text-align:left;font-weight:normal;}
+.clear{clear: both;font-size: 1px;visibility: hidden;}
+
+/*enter*/
+.enter_bg{background:url(../images/enter_bg.jpg) repeat-x top #2376A9;}
+.enter_warp{margin:0 auto;}
+.enter_topw_l{height:103px;position: absolute;top:0;width:100%}
+.enter_logo{width:50%;float:left;height:103px;}
+.enter_logo img{border:none;margin:20px 0 0 15px;}
+.enter_logo_r{width:400px;height:102px; float:right;background:url(../images/enter_top_r.jpg) no-repeat right top;}
+
+.enter_w{clear:both;padding-top:12%;}
+.enter_wb{width:762px;overflow:hidden;margin:0px auto;position: relative;}
+.enter_wb .top{ height:75px; text-align:center; font: bold 24px/75px "黑体" ; color: #FFFFFF; background: url(../images/entor_t_top.png); }
+.enter_wb .con{height:287px;background:url(../images/entor_t_bottom.png) no-repeat top left;padding-top:60px;}
+.enter_from{width:330px;left:370px;position: absolute;}
+
+.enter_login { width: 330px; padding: 10px; font: 16px/36px "宋体"; position: relative; margin-top:-40px; }
+.enter_login li { height: 54px; position: relative; width: 330px; line-height: 36px; margin-bottom: 2px; color: #708085; }
+.error_msg {font-weight: 600;  height: 36px; line-height: 36px; margin-left: 30px; text-align: left;}
+
+.user { text-align: right; width: 90px; display: block; color: #003165;  font: 14px/36px "宋体";}
+.input_user input { height: 36px; width: 240px; background: url(../images/entor_input_bg.png) no-repeat 0px center; border-style: none; border-width: 0px; position: absolute; right: 0px; line-height: 36px; vertical-align: middle; top: 0px; }
+.input_captcha input { height: 36px; line-height: 36px; width: 100px; border: 1px solid #9DADC5; border-radius: 3px 3px 3px 3px; position: absolute; right: 138px; vertical-align: middle; top: 0px; }
+.input_captcha img { height: 36px; width: 80px; border-style: none; border-width: 0px; position: absolute; right: 40px; vertical-align: middle; top: 0px; cursor: pointer;}
+
+.input_Y input { background: url(../images/btn_bg.png) no-repeat; _background: url(../images/btn_bg.gif) no-repeat; height: 44px; width: 108px; border-style: none; position: absolute; text-align: center; vertical-align: middle; right: 160px; font: normal 16px "黑体"; color: #003165; }
+.input_x input { background: url(../images/btn_bg.png) no-repeat; _background: url(../images/btn_bg.gif) no-repeat; height: 44px; width: 108px; border-style: none; position: absolute; vertical-align: middle; right: 0px; font: 16px "黑体"; color: #003165; }
+
+#footer {font-family:Arial; position:relative; bottom:0; height:30px; width:100%; text-align:center; color:#FFFFFF; }
+ 

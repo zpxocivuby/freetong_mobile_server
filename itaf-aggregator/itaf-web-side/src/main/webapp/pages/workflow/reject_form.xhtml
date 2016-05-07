@@ -1,0 +1,140 @@
+<ui:composition template="/template/PopEditScollerTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript">
+			//<![CDATA[ 
+			function submitSuccess() {
+				Ext.Msg.alert("#{messages['page.workflow.otr.notice']}", "#{messages['page.workflow.otr.submitsuccess']}", function() {
+					top.popWindowBase.app.exitWindow();
+				});
+			}
+			function saveSuccess() {
+				Ext.Msg.alert("#{messages['page.workflow.otr.notice']}", "#{messages['page.workflow.otr.savesuccess']}", function() {
+					top.popWindowBase.app.exitWindow();
+				});
+			}
+			function clearValue(obj) {
+				obj.value = "";
+			}
+			function uploadWindow() {
+
+				var taskId = Ext.get("popEditFormId:taskId").getValue();
+				var baseUrl = "#{baseSession.contextPath}";
+				var strLink = baseUrl + "/pages/common/fileUpload.xhtml?formId=popEditFormId&maxFilesQuantity=8&acceptedTypes=jpg,gif,txt&taskId=" + taskId;
+
+				var popTitle = "#{messages['page.message.attachment']}";
+				var popObj = document
+						.getElementById("popEditFormId:queryAttachHiddenId");
+				top.popWindowBase.app.popWindow2(strLink, popObj, popTitle,
+						500, 330, true);
+			}
+			function confirmDeleteAttach() {
+				if (confirm("#{messages['page.manualEntryEdit.confirmDelete']}")) {
+					return true;
+				}
+				return false;
+			}
+			//]]>
+		</script>
+		<style type="text/css">
+.extdt-content {
+	height: auto !important;
+	max-height: 700px;
+	min-height: 30px;
+}
+</style>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">#{messages['page.workflow.otr.approvalinformation']}</li>
+						<li><h:inputTextarea id="approvalInfo"
+								value="#{baseFormAction.approveInfo}" 
+								style="width: 850px;height: 200px;" maxlength="3000" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">
+							</li>
+						<li><h:panelGroup style="width:850px;" layout="block">
+								<rich:extendedDataTable value="#{attachmentAction.attachments}"
+									rows="100" width="850" id="uploadTableId" align="center"
+									selectionMode="single" sortMode="single"
+									columnClasses="scroll_column_no_rightline"
+									footerClass="scroll_footer_color"
+									headerClass="scroll_head_color" enableContextMenu="false"
+									noDataLabel="no data" first="0" var="attachment">
+									<rich:column width="200px" filterBy="false" sortable="false">
+										<f:facet name="header">
+											<h:outputText styleClass="headerText"
+												value="#{messages['page.workflow.otr.name']}" />
+										</f:facet>
+										<h:commandLink action="#{attachmentAction.download }">
+											<h:outputText value="#{attachment.srcFileName}" />
+											<f:param name="attachId" value="#{attachment.id}" />
+										</h:commandLink>
+									</rich:column>
+									<rich:column width="200px" filterBy="false" sortable="false">
+										<f:facet name="header">
+											<h:outputText styleClass="headerText"
+												value="#{messages['page.workflow.otr.ext']}" />
+										</f:facet>
+										<h:outputText value="#{attachment.fileExt}" />
+									</rich:column>
+									<rich:column width="200px" filterBy="false" sortable="false">
+										<f:facet name="header">
+											<h:outputText styleClass="headerText"
+												value="#{messages['page.common.operate']}" />
+										</f:facet>
+										<a4j:commandLink action="#{attachmentAction.deleteAttach }"
+											value="#{messages['page.common.delete']}"
+											render="uploadTableId"
+											onclick="if(!confirmDeleteAttach()) {return false;};PUBLIC.page.operateAjaxStart();"
+											oncomplete="PUBLIC.page.ajaxEnd();" ajaxSingle="true">
+											<f:param name="attachId" value="#{attachment.id}" />
+										</a4j:commandLink>
+									</rich:column>
+								</rich:extendedDataTable>
+							</h:panelGroup> <span style="display: none;"> <a4j:commandButton
+									id="queryAttachHiddenId" render="uploadTableId" />
+						</span></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<h:inputHidden id="taskId" value="#{baseFormAction.taskId}" />
+
+					<a4j:commandButton
+						oncomplete="PUBLIC.page.ajaxEnd();saveSuccess();"
+						onclick="PUBLIC.page.queryAjaxStart();"
+						value="#{messages['page.common.save']}"
+						action="#{baseFormAction.doSaveReject}" styleClass="Button" />
+
+					<a4j:commandButton
+						oncomplete="PUBLIC.page.ajaxEnd();submitSuccess();"
+						onclick="PUBLIC.page.queryAjaxStart();"
+						value="#{messages['page.common.submit']}"
+						action="#{baseFormAction.reject}" styleClass="Button" />
+
+					<input class="Button" type="button"
+						onclick="uploadWindow(); return false;"
+						value="#{messages['page.workflow.otr.addattachment']}" /> <input
+						id="closeWindowId" class="Button" type="button"
+						value="#{messages['page.common.cancel']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,252 @@
+<ui:composition template="/template/HfQuickMenu.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="navigation_region">
+			#{messages['page.common.currentPosition']} >> 版本管理
+	</ui:define>
+	<ui:define name="hf_st_head_region">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript">
+			//<![CDATA[
+			var baseUrl = "#{baseSession.contextPath}";
+
+			Ext.onReady(function() {
+				PUBLIC.page.showActionMsg("#{clientVersionAction.actionMsg}",
+						true);
+			});
+
+			function add() {
+				var strLink = baseUrl
+						+ "/pages/platform/clientVersion_add.xhtml";
+				var popTitle = "新建版本";
+				var refreshObj = document
+						.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle,
+						700, 250, true);
+			}
+
+			var alertNotice = PUBLIC.page.getAlertNotice();
+
+			function on() {
+				var versionId = PUBLIC.page.getCheckedLang();
+				if (versionId.length == 0) {
+					alert("只允许选择一条数据");
+					return false;
+				}
+				var versionIds = versionId.split(",");
+				if (versionIds.length > 1) {
+					alert("只允许选择一条数据");
+					return false;
+				}
+				document.getElementById("qlQueryFormId:versionId").value = versionId;
+				return true;
+			}
+
+			function off() {
+				var versionId = PUBLIC.page.getCheckedLang();
+				if (versionId.length == 0) {
+					alert("只允许选择一条数据");
+					return false;
+				}
+
+				var versionIds = versionId.split(",");
+				if (versionIds.length > 1) {
+					alert("只允许选择一条数据");
+					return false;
+				}
+				document.getElementById("qlQueryFormId:versionId").value = versionId;
+				return true;
+			}
+
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="hf_ql_query_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.common.searchCondition']}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					版本号:
+					<h:inputText id="versionNo"
+						value="#{clientVersionAction.queryCriteria.queryCondition.versionNo}"
+						maxlength="50" />
+					状态:
+					<h:selectOneMenu id="status"
+						value="#{clientVersionAction.queryCriteria.queryCondition.status}">
+						<f:selectItems value="#{clientVersionAction.statusSelects}" />
+					</h:selectOneMenu>
+					类型:
+					<h:selectOneMenu id="type"
+						value="#{clientVersionAction.queryCriteria.queryCondition.type}">
+						<f:selectItems value="#{clientVersionAction.typeSelects}" />
+					</h:selectOneMenu>
+					<br /> 开始时间:
+					<h:inputText id="startTime"
+						onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'qlQueryFormId:startTime\')}',maxDate:'%y-%M-%d %H:%m:%s'})"
+						value="#{clientVersionAction.queryCriteria.queryCondition.startTime}">
+					</h:inputText>
+					结束时间:
+					<h:inputText id="endTime"
+						onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'qlQueryFormId:endTime\')||\'%y-%M-%d %H:%m:%s\'}'})"
+						value="#{clientVersionAction.queryCriteria.queryCondition.endTime}">
+					</h:inputText>
+				</div>
+				<div class="ban_btn">
+					<a4j:commandButton id="queryDataBtnId"
+						value="#{messages['page.common.query']}" render="qlListFormId"
+						styleClass="Button" oncomplete="PUBLIC.page.ajaxEnd();"
+						onclick="PUBLIC.page.queryAjaxStart();">
+						<f:param name="operateType" value="query" />
+					</a4j:commandButton>
+					<input type="button" class="Button" onclick="add();" value="创建新版本" />
+					<h:commandButton id="publishDataBtnId" value="启用"
+						render="qlQueryFormId" styleClass="Button"
+						action="#{clientVersionAction.actionExecute}"
+						onclick="if(!on()){return false};">
+						<f:param name="methodType" value="on" />
+					</h:commandButton>
+					<h:commandButton id="abandonDataBtnId" value="失效"
+						render="qlQueryFormId" styleClass="Button"
+						action="#{clientVersionAction.actionExecute}"
+						onclick="if(!off()){return false};">
+						<f:param name="methodType" value="off" />
+					</h:commandButton>
+					<h:inputHidden id="versionId" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+	<!-- 列表显示 -->
+	<ui:define name="hf_ql_list_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font"></div>
+					<div class="ban_title_iconw">
+						<ul>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<rich:extendedDataTable selectionMode="single"
+					value="#{clientVersionAction.pagerDataModel}"
+					rows="#{clientVersionAction.pagerDataModel.pageResult.pageSize}"
+					columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="dataVar">
+					<rich:column width="180px">
+						<f:facet name="header">
+							<h:selectBooleanCheckbox onclick="PUBLIC.page.checkedAll();"
+								class="publicCheckAll" />
+						</f:facet>
+						<h:selectBooleanCheckbox lang="#{dataVar.id}"
+							onclick="PUBLIC.page.checkedOnly();" class="publicCheck"
+							style="background: none;border: none;height: 18px;line-height: 18px;" />
+						<h:outputText value="#{dataVar.id}" />
+					</rich:column>
+					<rich:column width="200px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="版本号" />
+						</f:facet>
+						<h:outputText value="#{dataVar.versionNo}" />
+					</rich:column>
+					<rich:column width="80px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="类型" />
+						</f:facet>
+						<h:outputText rendered="#{dataVar.type == '1'}" value="andriod" />
+						<h:outputText rendered="#{dataVar.type == '2'}" value="ios" />
+					</rich:column>
+					<rich:column width="120px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="创建人" />
+						</f:facet>
+						<h:outputText value="#{dataVar.createdBy}" />
+					</rich:column>
+					<rich:column width="120px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="创建时间" />
+						</f:facet>
+						<h:outputText value="#{dataVar.createdDate}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</rich:column>
+					<rich:column width="80px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="状态" />
+						</f:facet>
+						<h:outputText rendered="#{dataVar.status == 'new'}" value="新建" />
+						<h:outputText rendered="#{dataVar.status == 'on'}" value="上线启用" />
+						<h:outputText rendered="#{dataVar.status == 'off'}" value="下线停用" />
+					</rich:column>
+					<f:facet name="footer">
+						<rich:dataScroller fastControls="hide"
+							page="#{clientVersionAction.pagerDataModel.pageResult.currentPage}">
+							<f:facet name="first">
+								<h:graphicImage url="../../images/firstbg.gif" />
+							</f:facet>
+							<f:facet name="first_disabled">
+								<h:graphicImage url="../../images/firstbg_n.gif" />
+							</f:facet>
+							<f:facet name="last">
+								<h:graphicImage url="../../images/lastbg.gif" />
+							</f:facet>
+							<f:facet name="last_disabled">
+								<h:graphicImage url="../../images/lastbg_n.gif" />
+							</f:facet>
+							<f:facet name="next">
+								<h:graphicImage url="../../images/nextbg.gif" />
+							</f:facet>
+							<f:facet name="next_disabled">
+								<h:graphicImage url="../../images/nextbg_n.gif" />
+							</f:facet>
+							<f:facet name="previous">
+								<h:graphicImage url="../../images/previousbg.gif" />
+							</f:facet>
+							<f:facet name="previous_disabled">
+								<h:graphicImage url="../../images/previousbg_n.gif" />
+							</f:facet>
+						</rich:dataScroller>
+						<h:panelGroup styleClass="pager_info">
+							<h:outputText value="#{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{clientVersionAction.pagerDataModel.pageResult.totalPage} " />
+							<h:outputText value=" #{messages['page.pager.page']} " />
+							<h:outputText value=" #{messages['page.pager.prepage']} " />
+							<h:outputText
+								value=" #{clientVersionAction.pagerDataModel.pageResult.pageSize} " />
+							<h:outputText value=" #{messages['page.pager.item']} " />
+							<h:outputText value=" #{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{clientVersionAction.pagerDataModel.pageResult.totalCount} " />
+							<h:outputText value=" #{messages['page.pager.item']}" />
+						</h:panelGroup>
+					</f:facet>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

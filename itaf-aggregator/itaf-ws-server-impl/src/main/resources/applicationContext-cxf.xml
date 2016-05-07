@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="true"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="
+			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:applicationContext-cxf-base.xml" />
+
+	<jaxws:endpoint id="wsSysLoginService" implementor="#wsSysLoginServiceImpl"
+		implementorClass="itaf.framework.ws.server.platform.impl.WsSysLoginServiceImpl"
+		address="/WsSysLoginService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsSysLogoutService" implementor="#wsSysLogoutServiceImpl"
+		implementorClass="itaf.framework.ws.server.platform.impl.WsSysLogoutServiceImpl"
+		address="/WsSysLogoutService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsSysAttachmentService" implementor="#wsSysAttachmentServiceImpl"
+		implementorClass="itaf.framework.ws.server.platform.impl.WsSysAttachmentServiceImpl"
+		address="/WsSysAttachmentService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<!-- User Service -->
+	<jaxws:endpoint id="wsSysUserService" implementor="#wsSysUserServiceImpl"
+		implementorClass="itaf.framework.ws.server.platform.impl.WsSysUserServiceImpl"
+		address="/WsSysUserService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsAccountService" implementor="#wsAccountServiceImpl"
+		implementorClass="itaf.framework.ws.server.account.impl.WsAccountServiceImpl"
+		address="/WsAccountService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsSysRegisterService" implementor="#wsSysRegisterServiceImpl"
+		implementorClass="itaf.framework.ws.server.platform.impl.WsSysRegisterServiceImpl"
+		address="/WsSysRegisterService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<!-- System Parameter Service -->
+	<jaxws:endpoint id="wsImMessageService" implementor="#wsImMessageServiceImpl"
+		implementorClass="itaf.framework.ws.server.im.impl.WsImMessageServiceImpl"
+		address="/WsImMessageService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsPaymentTypeService" implementor="#wsPaymentTypeServiceImpl"
+		implementorClass="itaf.framework.ws.server.order.impl.WsPaymentTypeServiceImpl"
+		address="/WsPaymentTypeService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsServiceProviderTypeService"
+		implementor="#wsServiceProviderTypeServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsServiceProviderTypeServiceImpl"
+		address="/WsServiceProviderTypeService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsSyncServiceProviderTypeService"
+		implementor="#wsSyncServiceProviderTypeServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsSyncServiceProviderTypeServiceImpl"
+		address="/WsSyncServiceProviderTypeService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsSyncProductCategoryService"
+		implementor="#wsSyncProductCategoryServiceImpl"
+		implementorClass="itaf.framework.ws.server.product.impl.WsSyncProductCategoryServiceImpl"
+		address="/WsSyncProductCategoryService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsUserAddressService" implementor="#wsUserAddressServiceImpl"
+		implementorClass="itaf.framework.ws.server.consumer.impl.WsUserAddressServiceImpl"
+		address="/WsUserAddressService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsUserDeliveryAddressService"
+		implementor="#wsUserDeliveryAddressServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsUserDeliveryAddressServiceImpl"
+		address="/WsUserDeliveryAddressService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsRealnameCertificateService"
+		implementor="#wsRealnameCertificateServiceImpl"
+		implementorClass="itaf.framework.ws.server.certificate.impl.WsRealnameCertificateServiceImpl"
+		address="/WsRealnameCertificateService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsApplyRealnameCertificateService"
+		implementor="#wsApplyRealnameCertificateServiceImpl"
+		implementorClass="itaf.framework.ws.server.certificate.impl.WsApplyRealnameCertificateServiceImpl"
+		address="/WsApplyRealnameCertificateService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsApplyDistCertificateService"
+		implementor="#wsApplyDistCertificateServiceImpl"
+		implementorClass="itaf.framework.ws.server.certificate.impl.WsApplyDistCertificateServiceImpl"
+		address="/WsApplyDistCertificateService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsApplySellingCertificateService"
+		implementor="#wsApplySellingCertificateServiceImpl"
+		implementorClass="itaf.framework.ws.server.certificate.impl.WsApplySellingCertificateServiceImpl"
+		address="/WsApplySellingCertificateService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsMerchantService" implementor="#wsMerchantServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsMerchantServiceImpl"
+		address="/WsMerchantService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsProductService" implementor="#wsProductServiceImpl"
+		implementorClass="itaf.framework.ws.server.product.impl.WsProductServiceImpl"
+		address="/WsProductService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsSearchService" implementor="#wsSearchServiceImpl"
+		implementorClass="itaf.framework.ws.server.search.impl.WsSearchServiceImpl"
+		address="/WsSearchService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsCartItemService" implementor="#wsCartItemServiceImpl"
+		implementorClass="itaf.framework.ws.server.cart.impl.WsCartItemServiceImpl"
+		address="/WsCartItemService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsOrderInitService" implementor="#wsOrderInitServiceImpl"
+		implementorClass="itaf.framework.ws.server.order.impl.WsOrderInitServiceImpl"
+		address="/WsOrderInitService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsOrderService" implementor="#wsOrderServiceImpl"
+		implementorClass="itaf.framework.ws.server.order.impl.WsOrderServiceImpl"
+		address="/WsOrderService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsOrderRefundService" implementor="#wsOrderRefundServiceImpl"
+		implementorClass="itaf.framework.ws.server.order.impl.WsOrderRefundServiceImpl"
+		address="/WsOrderRefundService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsStockOrderService" implementor="#wsStockOrderServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsStockOrderServiceImpl"
+		address="/WsStockOrderService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsDistOrderService" implementor="#wsDistOrderServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsDistOrderServiceImpl"
+		address="/WsDistOrderService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsCollectionOrderService"
+		implementor="#wsCollectionOrderServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsCollectionOrderServiceImpl"
+		address="/WsCollectionOrderService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsInvoiceService" implementor="#wsInvoiceServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsInvoiceServiceImpl"
+		address="/WsInvoiceService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsDistStatementService" implementor="#wsDistStatementServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsDistStatementServiceImpl"
+		address="/WsDistStatementService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsDistStatementItemService"
+		implementor="#wsDistStatementItemServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsDistStatementItemServiceImpl"
+		address="/WsDistStatementItemService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsProductFavoriteService"
+		implementor="#wsProductFavoriteServiceImpl"
+		implementorClass="itaf.framework.ws.server.product.impl.WsProductFavoriteServiceImpl"
+		address="/WsProductFavoriteService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="wsMerchantFavoriteService"
+		implementor="#wsMerchantFavoriteServiceImpl"
+		implementorClass="itaf.framework.ws.server.merchant.impl.WsMerchantFavoriteServiceImpl"
+		address="/WsMerchantFavoriteService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:endpoint>
+
+</beans>

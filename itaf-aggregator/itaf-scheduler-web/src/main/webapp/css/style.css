@@ -1,0 +1,56 @@
+@charset "utf-8";
+html, body, div, span, h1, h2, h3, h4, h5, h6, p,a, img, q, dl, dt, dd, ol, ul, li, form,table, tr, th, td {margin: 0;padding: 0;border: 0;vertical-align: middle;}
+html { width:100%;overflow-y: scroll;margin: auto;height:100%;font-size:12px;}
+body { width:1200px;margin: auto;height:100%;}
+div{ text-align:left;}
+select{ font-size:12px; vertical-align:middle; line-height:20px; height:20px;margin:0px 5px;}
+img{ border:none;}
+ol,ul,li{list-style:none;}
+form{margin:0;padding:0;}
+input{vertical-align:middle;background:#fff;border:1px solid #7F9DB9;font-size:12px;padding:0 2px; color:#333333; height:18px; margin:0 2px;}
+button{margin:0 3px;_margin-bottom:10px;}
+textarea{ background:#fff; border:1px solid #7F9DB9; font-size:12px; padding:0px 2px; margin:0px 5px; vertical-align:bottom; _vertical-align:text-bottom;}
+td{text-align:left;font-weight:normal;}
+.clear{clear: both;font-size: 1px;visibility: hidden;}
+
+/*enter*/
+.enter_warp{margin:0 auto;}
+.enter_bg{background:url(../images/enter_bg.jpg) repeat-x top #2376A9;}
+.enter_topw{height:105px;}
+.enter_logo{width:50%;float:left;height:105px;}
+.enter_logo img{border:none;margin:25px 0 0 25px;}
+/*header2*/
+.enter_logo_r{width:500px; height:104px; float:right; background:url(../images/enter_top_r.jpg) no-repeat right top; }
+.enter_logo_r_top a{ color: #D1E3EF; height: 30px; margin-bottom: 0px; font: 12px/30px "宋体"; }
+.enter_logo_r_top ul{ width: 500px; height: 50px; }
+.navigation{height: 25px; line-height: 25px; padding: 5px; background-color: #D1E3EF;}
+.content_bg { height: 100%; width: 100%; }
+/*修改*/
+.enter_logo_r_top li{ float: right; width: 250px; height: 30px; font: 12px/30px "宋体"; color: #D1E3EF; padding-top: 15px; }
+.header_text { display: block; text-align: center;float:left}
+.header_text a{ color: #D1E3EF; height: 25px; _height: 30px; font: 12px/30px "宋体"; padding-bottom:5px; _ padding-bottom:0px; _margin-bottom:0px; _text-decoration: none; }
+.header_input { height: 25px; width: 232px; border-style: none; display: block; position: relative; }
+.header_input span a { height: 18px; width: 18px; display: block; position: absolute; top: 20px; right: 10px; background: url(../images/fangdajing.png) no-repeat left 0px; }
+.header_input input { height: 25px; width: 200px; margin-left: 8px; background: url(../images/input_bg.png) no-repeat left 0px; border-style: none; vertical-align: middle; font: 12px/25px "宋体"; padding-right: 24px; padding-left: 16px; display: block; position: absolute; top: 20px; }
+/*修改*/
+.enter_logo_r_down ul { width: 650px; height: 24px; float: right; padding-right: 25px;  background: url(../images/header_lineBg.png) no-repeat 0px top; background-position: top right;}
+.enter_logo_r_down li { float: right; display: block; width: 155px; text-align: right; color: #D1E3EF; font: 12px/24px "宋体"; }
+.b2 { background: url(../images/icon4.gif) no-repeat 10px center; }
+.b1 { background: url(../images/icon5.gif) no-repeat 13px center; }
+.enter_logo_r_down a { color: #E2E8EE; text-decoration: none; }
+.enter_logo_r_down a:hover { color: #FF0000; }
+
+.enter_w{clear:both;padding-top:100px;}
+.enter_wb{width:762px;overflow:hidden;margin:0px auto;}
+.enter_wb .top{ height:75px; text-align:center; font: bold 24px/75px "黑体"; color: #FFFFFF; background: url(../images/entor_t_top.png); }
+
+.enter_wb .con{height:287px;background:url(../images/entor_t_bottom.png) no-repeat top left;padding-top:60px;}
+
+.enter_from{width:330px;margin-left:370px;}
+.VIP { width: 330px; padding: 10px; font: 16px/36px "黑体"; position: relative; }
+.VIP li { height: 64px; position: relative; width: 330px; line-height: 36px; margin-bottom: 2px; color: #708085; }
+.user { text-align: right; width: 90px; display: block; color: #003165; }
+.input_Y input { background: url(../images/btn_bg.png) no-repeat; _background: url(../images/btn_bg.gif) no-repeat; height: 44px; width: 108px; border-style: none; position: absolute; text-align: center; vertical-align: middle; right: 108px; font: normal 16px "黑体"; color: #003165; }
+.input_x input { background: url(../images/btn_bg.png) no-repeat; _background: url(../images/btn_bg.gif) no-repeat; height: 44px; width: 108px; border-style: none; position: absolute; vertical-align: middle; right: 0px; font: 16px "黑体"; color: #003165; }
+
+#footer {position:fixed; font-family: Arial; background:url(../images/footerbg.jpg) repeat-x 0px 0px; height:30px;line-height: 30px; width:1200px; text-align:center; color: #FFFFFF;margin: auto;bottom: 0px; }

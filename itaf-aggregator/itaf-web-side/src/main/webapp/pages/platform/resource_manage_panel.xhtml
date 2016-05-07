@@ -1,0 +1,282 @@
+<ui:composition template="/template/PopEmptyTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="titleRegion">
+    	Resource Panel		
+	</ui:define>
+	<ui:define name="headRegion">
+		<script type="text/javascript">
+			//<![CDATA[
+			function refreshTreeToParent() {
+				var treeframe = parent.document.getElementById("tree_zone");
+				treeframe.contentWindow.location.href = "./resource_manage_tree.xhtml?expand_path=#{param['parent_path']}";
+				expandToParent();
+			}
+			function refreshTreeToCurrent(type) {
+				var canRefresh = "";
+				if ("add" == type) {
+					canRefresh = $(".addCanRefreshCls").html();
+				} else if ("edit" == type) {
+					canRefresh = $(".editCanRefreshCls").html();
+				}
+				if (canRefresh.length > 0) {
+					return;
+				}
+				var treeframe = parent.document.getElementById("tree_zone");
+				treeframe.contentWindow.location.href = "./resource_manage_tree.xhtml?expand_path=#{param['this_path']}";
+				var panelframe = parent.document.getElementById("panel_zone");
+				panelframe.contentWindow.location.reload();
+				expandToParent();
+			}
+			function refreshTreeAfterDelete() {
+				var treeframe = parent.document.getElementById("tree_zone");
+				var panelframe = parent.document
+						.getElementById("panel_zone_center");
+				panelframe.style.display = "none";
+				treeframe.contentWindow.location.href = "./resource_manage_tree.xhtml?expand_path=#{param['parent_path']}";
+				expandToParent();
+			}
+			function confirmDelete() {
+				if (confirm("#{messages['page.common.confirmDelete']}")) {
+					return true;
+				}
+				return false;
+			}
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="bodyRegion">
+		<div class="ban_con" style="border: 0px; padding: 0px;">
+			<h:form>
+				<div class="clear"></div>
+				<div class="ban_form_yh">
+					<rich:tabPanel>
+						<rich:tab
+							header="#{messages['page.resourcemanage.panel.detailMsg']}"
+							switchType="client">
+							<h:form id="viewForm">
+								<ul>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceType']}</li>
+									<li><h:selectOneMenu
+											value="#{resourceManageAction.resource.type}"
+											label="#{messages['page.resourcemanage.panel.resourceType']}"
+											disabled="true" styleClass="eidt_readonly">
+											<f:selectItems
+												value="#{resourceManageAction.availableResTypes}"
+												style="color:#000;font-size:12px" />
+										</h:selectOneMenu></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceNameZh']}</li>
+									<li><h:inputText
+											value="#{resourceManageAction.resource.nameZh}"
+											label="#{messages['page.resourcemanage.panel.resourceNameZh']}"
+											readonly="true" styleClass="eidt_readonly" /></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceNameEn']}</li>
+									<li><h:inputText
+											value="#{resourceManageAction.resource.nameEn}"
+											label="#{messages['page.resourcemanage.panel.resourceNameEn']}"
+											readonly="true" styleClass="eidt_readonly" /></li>
+								</ul>
+								<ul>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceDesc']}</li>
+									<li><h:inputText
+											value="#{resourceManageAction.resource.description}"
+											label="#{messages['page.resourcemanage.panel.resourceDesc']}"
+											readonly="true" styleClass="eidt_readonly" /></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceValue']}</li>
+									<li><h:inputText
+											value="#{resourceManageAction.resource.path}"
+											label="#{messages['page.resourcemanage.panel.resourceValue']}"
+											readonly="true" styleClass="eidt_readonly" /></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceOrderNo']}</li>
+									<li><h:inputText
+											value="#{resourceManageAction.resource.orderNo}"
+											label="#{messages['page.resourcemanage.panel.resourceOrderNo']}"
+											readonly="true" styleClass="eidt_readonly" /></li>
+								</ul>
+								<ul>
+									<li class="textLi"><h:outputText value="资源Id" /></li>
+									<li><h:inputText
+											value="#{resourceManageAction.resource.id}" readonly="true"
+											styleClass="eidt_readonly" /></li>
+									<li class="textLi">导航菜单显示</li>
+									<li><h:selectBooleanCheckbox
+											value="#{resourceManageAction.resource.isNav}"
+											disabled="true" styleClass="eidt_readonly" /></li>
+								</ul>
+							</h:form>
+						</rich:tab>
+						<rich:tab header="#{messages['page.resourcemanage.panel.add']}"
+							rendered="#{resourceManageAction.isCanAddNode()}"
+							switchType="client">
+							<h:form id="addForm">
+								<ul>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceType']}</li>
+									<li><h:selectOneMenu
+											value="#{resourceManageAction.newResource.type}"
+											label="#{messages['page.resourcemanage.panel.resourceType']}">
+											<f:selectItems
+												value="#{resourceManageAction.availableResTypes}"
+												style="color:#000;font-size:12px" />
+										</h:selectOneMenu></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceNameZh']}<span
+										style="color: red;">*</span>
+									</li>
+									<li><h:inputText id="addNameZh" maxlength="40"
+											value="#{resourceManageAction.newResource.nameZh}"
+											label="#{messages['page.resourcemanage.panel.resourceNameZh']}"
+											validatorMessage="#{messages['page.resourcemanage.panel.resourceOrderNo']} #{messages['page.common.alert']}">
+											<f:validateRequired for="addNameZh" />
+										</h:inputText></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceNameEn']}<span
+										style="color: red;">*</span>
+									</li>
+
+									<li><h:inputText id="addNameEn" maxlength="40"
+											value="#{resourceManageAction.newResource.nameEn}"
+											label="#{messages['page.resourcemanage.panel.resourceNameEn']}"
+											validatorMessage="#{messages['page.resourcemanage.panel.resourceOrderNo']} #{messages['page.common.alert']}">
+											<f:validateRequired for="addNameEn" />
+										</h:inputText></li>
+								</ul>
+								<ul>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceDesc']}</li>
+									<li><h:inputText id="description" maxlength="100"
+											value="#{resourceManageAction.newResource.description}"
+											label="#{messages['page.resourcemanage.panel.resourceDesc']}">
+										</h:inputText></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceValue']}</li>
+									<li><h:inputText id="path" maxlength="255"
+											value="#{resourceManageAction.newResource.path}"
+											label="#{messages['page.resourcemanage.panel.resourceValue']}">
+										</h:inputText></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceOrderNo']}<span
+										style="color: red;">*</span>
+									</li>
+									<li><h:inputText id="addSeqNum" maxlength="6"
+											value="#{resourceManageAction.newResource.orderNo}"
+											label="#{messages['page.resourcemanage.panel.resourceOrderNo']}"
+											validatorMessage="#{messages['page.resourcemanage.panel.resourceOrderNo']} #{messages['page.common.alert']}">
+											<f:validateRequired for="addSeqNum" />
+										</h:inputText></li>
+								</ul>
+								<ul>
+									<li class="textLi">导航菜单显示</li>
+									<li><h:selectBooleanCheckbox
+											value="#{resourceManageAction.resource.isNav}"
+											style="background: none;border: none;" /></li>
+									<li><a4j:commandButton
+											value="#{messages['page.common.save']}"
+											action="#{resourceManageAction.saveNew}" render="addForm"
+											oncomplete="refreshTreeToCurrent('add');" styleClass="Button">
+										</a4j:commandButton></li>
+								</ul>
+								<span class="addCanRefreshCls"><h:message for="addSeqNum"
+										errorClass="pop_error_msg_span" /> <h:message for="addNameEn"
+										errorClass="pop_error_msg_span" /> <h:message for="addNameZh"
+										errorClass="pop_error_msg_span" /></span>
+							</h:form>
+						</rich:tab>
+						<rich:tab header="#{messages['page.common.modify']}"
+							switchType="client">
+							<h:form id="editForm">
+								<ul>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceType']}</li>
+									<li><h:selectOneMenu
+											value="#{resourceManageAction.resource.type}"
+											label="#{messages['page.resourcemanage.panel.resourceType']}">
+											<f:selectItems
+												value="#{resourceManageAction.availableResTypes}"
+												style="color:#000;font-size:12px" />
+										</h:selectOneMenu></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceNameZh']}<span
+										style="color: red;">*</span>
+									</li>
+									<li><h:inputText id="editNameZh" maxlength="40"
+											value="#{resourceManageAction.resource.nameZh}"
+											validatorMessage="#{resourceManageAction.resource.nameZh} #{messages['page.common.alert']}"
+											label="#{messages['page.resourcemanage.panel.resourceNameZh']}">
+											<f:validateRequired for="editNameZh" />
+										</h:inputText></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceNameEn']}<span
+										style="color: red;">*</span>
+									</li>
+									<li><h:inputText id="editNameEn" maxlength="40"
+											value="#{resourceManageAction.resource.nameEn}"
+											validatorMessage="#{resourceManageAction.resource.nameEn} #{messages['page.common.alert']}"
+											label="#{messages['page.resourcemanage.panel.resourceNameEn']}">
+											<f:validateRequired for="editNameEn" />
+										</h:inputText></li>
+								</ul>
+								<ul>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceDesc']}</li>
+									<li><h:inputText id="description" maxlength="100"
+											value="#{resourceManageAction.resource.description}"
+											label="#{messages['page.resourcemanage.panel.resourceDesc']}">
+										</h:inputText></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceValue']}</li>
+									<li><h:inputText id="path" maxlength="255"
+											value="#{resourceManageAction.resource.path}"
+											label="#{messages['page.resourcemanage.panel.resourceValue']}">
+										</h:inputText></li>
+									<li class="textLi">
+										#{messages['page.resourcemanage.panel.resourceOrderNo']}<span
+										style="color: red;">*</span>
+									</li>
+									<li><h:inputText id="editSeqNum" maxlength="6"
+											value="#{resourceManageAction.resource.orderNo}"
+											validatorMessage="#{resourceManageAction.resource.orderNo} #{messages['page.common.alert']}"
+											label="#{messages['page.resourcemanage.panel.resourceOrderNo']}">
+											<f:validateRequired for="editSeqNum" />
+										</h:inputText></li>
+								</ul>
+								<ul>
+									<li class="textLi">导航菜单显示</li>
+									<li><h:selectBooleanCheckbox
+											value="#{resourceManageAction.resource.isNav}"
+											style="background: none;border: none;" /></li>
+									<li><a4j:commandButton
+											value="#{messages['page.common.save']}"
+											action="#{resourceManageAction.save}" render="editForm"
+											oncomplete="refreshTreeToCurrent('edit');"
+											styleClass="Button">
+										</a4j:commandButton> <a4j:commandButton value="#{messages['page.common.delete']}"
+											action="#{resourceManageAction.delete}"
+											onclick="if(!confirmDelete()){return false;};"
+											oncomplete="refreshTreeAfterDelete();" styleClass="Button">
+										</a4j:commandButton></li>
+								</ul>
+								<span class="editCanRefreshCls"><h:message
+										for="editSeqNum" eorderNoass="pop_error_msg_span" /> <h:message
+										for="editNameEn" errorClass="pop_error_msg_span" /> <h:message
+										for="editNameZh" errorClass="pop_error_msg_span" /></span>
+							</h:form>
+						</rich:tab>
+					</rich:tabPanel>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

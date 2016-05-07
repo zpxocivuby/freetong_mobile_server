@@ -1,0 +1,376 @@
+<ui:composition template="/template/HfQuickMenu.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:validator="http://shale.apache.org/validator">
+	<ui:define name="navigation_region">
+		#{messages['page.common.currentPosition']} >> #{messages['page.otr.add.location']}
+	</ui:define>
+	<ui:define name="hf_st_head_region">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript">
+			//<![CDATA[ 
+			var baseUrl = "#{baseSession.contextPath}";
+			function complete() {
+				alert("#{messages['page.workflow.otr.js.operatesuccess']}");
+				window.location.href = baseUrl
+						+ "/pages/workflow/otr_form_add.xhtml";
+			}
+			function openUploadFileWindow() {
+				var strLink = baseUrl
+						+ "/pages/common/fileUpload.xhtml?jsCallback=afterUploadFiles&maxFilesQuantity=10&acceptedTypes=txt,doc,docx";
+				var popTitle = "#{messages['page.message.attachment']}";
+				top.popWindowBase.app.popWindow2(strLink, null, popTitle, 800,
+						355, true);
+			}
+			function afterUploadFiles(attachIds, attachNames) {
+				document.getElementById("qlListFormId:addAttachIds").value = attachIds;
+				document.getElementById("qlListFormId:addAttachBtnId").click();
+			}
+
+			function openFirstApproval() {
+				var strLink = baseUrl
+						+ "/pages/common/selectSingleStaff.xhtml?jsCallback=openFirstApprovalCallBack&renderedTabs=11";
+				var popTitle = "#{messages['page.otr.add.theFirstApprover']}";
+				var refreshObj = null;
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle,
+						800, 550, false);
+			}
+
+			function openFirstApprovalCallBack(callBackJson) {
+				for (var i = 0; i < callBackJson.length; i++) {
+					document.getElementById("qlListFormId:firstApproval").value = callBackJson[i].objId;
+					document.getElementById("qlListFormId:firstApprovalName").value = callBackJson[i].nameZh;
+				}
+			}
+
+			function openSecondApproval() {
+				var strLink = baseUrl
+						+ "/pages/common/selectSingleStaff.xhtml?jsCallback=openSecondApprovalCallBack&renderedTabs=11";
+				var popTitle = "#{messages['page.otr.add.secondApprover']}";
+				var refreshObj = null;
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle,
+						800, 550, false);
+			}
+
+			function openSecondApprovalCallBack(callBackJson) {
+				for (var i = 0; i < callBackJson.length; i++) {
+					document.getElementById("qlListFormId:secondApproval").value = callBackJson[i].objId;
+					document.getElementById("qlListFormId:secondApprovalName").value = callBackJson[i].nameZh;
+				}
+			}
+
+			function openOperator() {
+				var strLink = baseUrl
+						+ "/pages/common/selectSingleStaff.xhtml?jsCallback=openOperatorCallBack&renderedTabs=11";
+				var popTitle = "#{messages['page.workflow.otr.js.chooseoperator']}";
+				var refreshObj = null;
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle,
+						800, 550, false);
+			}
+
+			function openOperatorCallBack(callBackJson) {
+				for (var i = 0; i < callBackJson.length; i++) {
+					document.getElementById("qlListFormId:operator").value = callBackJson[i].objId;
+					document.getElementById("qlListFormId:operatorName").value = callBackJson[i].nameZh;
+				}
+			}
+			function validateSave() {
+				if (document.getElementById("qlListFormId:title").value == "") {
+					alert("#{messages['page.workflow.otr.js.titlecannotempty']}");
+					return false;
+				}
+				if (document.getElementById("qlListFormId:dependentNum").value!= "") {
+					var dependentNum = document.getElementById("qlListFormId:dependentNum").value;
+					if(isNaN(dependentNum)){
+						alert("#{messages['page.workflow.otr.js.thenumberofdependentsmustbenumeric']}");
+						return false;
+					}
+					
+				}
+				return true;
+			}
+			function validate() {
+				if (document.getElementById("qlListFormId:title").value == "") {
+					alert("#{messages['page.workflow.otr.js.titlecannotempty']}");
+					return false;
+				}
+				if (document.getElementById("qlListFormId:applyMatter").value == "") {
+					alert("#{messages['page.workflow.otr.js.applymattercannotempty']}");
+					return false;
+				}
+				if (document.getElementById("qlListFormId:applyContent").value == "") {
+					alert("#{messages['page.workflow.otr.js.applycontentcannotempty']}");
+					return false;
+				}
+				if (document.getElementById("qlListFormId:firstApprovalName").value == "") {
+					alert("#{messages['page.workflow.otr.js.approvalNamecannotempty']}");
+					return false;
+				}
+				if (document.getElementById("qlListFormId:secondApprovalName").value == "") {
+					alert("#{messages['page.workflow.otr.js.approvalNamecannotempty']}");
+					return false;
+				}
+				if (document.getElementById("qlListFormId:dependentNum").value!= "") {
+					var dependentNum = document.getElementById("qlListFormId:dependentNum").value;
+					if(isNaN(dependentNum)){
+						alert("#{messages['page.workflow.otr.js.thenumberofdependentsmustbenumeric']}");
+						return false;
+					}
+					
+				}
+				
+				return true;
+			}
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="hf_ql_query_conent_region">
+
+	</ui:define>
+	<ui:define name="hf_ql_list_conent_region">
+		<div class="ban_warp">
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.otrNo']}:</li>
+						<li><h:inputText id="otrNumber"
+								value="#{bzOtrCreateAction.newOtrCode}" readonly="true" /></li>
+						<li class="textLi">#{messages['page.otr.add.creator']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.currentBzStaffInf.username}" /></li>
+
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.employeeName']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.currentBzStaffInf.realnameZh}" /></li>
+						<li class="textLi">#{messages['page.otr.add.employeeNo']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.currentBzStaffInf.username}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.email']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.currentBzStaffInf.email}" /></li>
+						<li class="textLi">#{messages['page.otr.add.mobile']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.currentBzStaffInf.mobile}" /></li>
+						<li class="textLi">#{messages['page.otr.add.department']}:</li>
+						<li class="textLi"><h:outputText
+								value="#{bzOtrCreateAction.currentBzStaffInf.bzSiteInf.siteNameZh}" /></li>
+						<li class="textLi">#{messages['page.otr.add.state']}:未提交</li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.requisitionName']}:</li>
+						<li><h:inputText id="title"
+								value="#{bzOtrCreateAction.bzOtrCreate.title}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.application']}:</li>
+						<li><h:inputTextarea id="applyMatter" rows="4"
+								style="width:500px;"
+								value="#{bzOtrCreateAction.bzOtrCreate.applyMatter}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.date']}:</li>
+						<li><h:inputText id="startDate"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd'})" />
+							<h:inputText id="endDate"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd'})" />
+						</li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.applyContent']}:</li>
+						<li><h:inputTextarea id="applyContent" rows="4"
+								style="width:500px;"
+								value="#{bzOtrCreateAction.bzOtrCreate.applyContent}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.scheduling']}:</li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.returnflights']}:</li>
+						<li class="textLi">#{messages['page.otr.add.airlineCompany']}:</li>
+						<li><h:inputText id="airline"
+								value="#{bzOtrCreateAction.bzOtrCreate.airline}" /></li>
+						<li class="textLi">#{messages['page.otr.add.airlineNo']}:</li>
+						<li><h:inputText id="fltNo"
+								value="#{bzOtrCreateAction.bzOtrCreate.fltNo}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.whetherThereIsSupervisionTasks']}:</li>
+						<li><h:selectOneRadio id="haveOverseeTask" value="1">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+						<li class="textLi">#{messages['page.otr.add.returnType']}:</li>
+						<li><h:selectOneMenu id="returnCountryType">
+								<f:selectItem />
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrReturnCountryTypeChecked}" />
+							</h:selectOneMenu></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theAccompanyingFamilyMembersWhetherToReturnHomeOnLeave']}:</li>
+						<li><h:selectOneRadio id="isDependentVacation" value="1">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+						<li class="textLi">#{messages['page.otr.add.toTheNumberOfDependents']}:</li>
+						<li><h:inputText id="dependentNum"
+								value="#{bzOtrCreateAction.bzOtrCreate.dependentNum}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.duringTheVacationWhetherToArrangeTravel']}:</li>
+						<li><h:selectOneRadio id="isOutboundTourism" value="1">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.travelArrangements']}:</li>
+						<li class="textLi">#{messages['page.otr.add.country']}:</li>
+						<li><h:inputText id="travelCountry"
+								value="#{bzOtrCreateAction.bzOtrCreate.travelCountry}" /></li>
+						<li class="textLi">#{messages['page.otr.add.time']}:</li>
+						<li><h:inputText id="travelStartTime"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd'})" />
+							<h:inputText id="travelEndTime"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd'})" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.returneesNeedToExitCertificate']}:</li>
+						<li><h:selectOneRadio id="isPoliceRegistration" value="1">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theAccompanyingFamilyMembersIfTheEndOfTheWeekVacationToReturnToTheResident']}:</li>
+						<li><h:selectOneRadio id="isDependentComeback" value="1">
+								<f:selectItems
+									value="#{bzOtrCreateAction.checkBoxItemsOtrYesNoChecked}" />
+							</h:selectOneRadio></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theApplicantAndDomesticTelephone']}:</li>
+						<li><h:inputText id="applicantInlandTel"
+								value="#{bzOtrCreateAction.bzOtrCreate.applicantInlandTel}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.operator']}:</li>
+						<li><input class="Button" type="button" value="选择经办人"
+							onclick="openOperator();" /></li>
+						<li><h:inputText id="operatorName" readonly="true" /></li>
+						<li><h:inputHidden id="operator" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.operatorContact']}:</li>
+						<li><h:inputTextarea id="operatorContact" rows="4"
+								style="width:500px;"
+								value="#{bzOtrCreateAction.bzOtrCreate.operatorContact}" /></li>
+
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.otr.add.theFirstApprover']}:</li>
+						<li><h:inputText id="firstApprovalName" readonly="true" /></li>
+						<li><input class="Button" type="button"
+							value="#{messages['page.otr.add.selectApprovaler']}"
+							onclick="openFirstApproval();" /> <h:inputHidden
+								id="firstApproval" /></li>
+						<li class="textLi">#{messages['page.otr.add.secondApprover']}:</li>
+						<li><h:inputText id="secondApprovalName" readonly="true" /></li>
+						<li><input class="Button" type="button"
+							value="#{messages['page.otr.add.selectApprovaler']}"
+							onclick="openSecondApproval();" /></li>
+						<li><h:inputHidden id="secondApproval" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.attachment.attachmentList']}</li>
+						<li><input onclick="openUploadFileWindow()" class="Button"
+							type="button"
+							value="#{messages['page.attachment.addAttachment']}" /></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<a4j:commandButton styleClass="Button" render="qlListFormId"
+						oncomplete="PUBLIC.page.ajaxEnd();complete();"
+						onclick="if(!validateSave()){return false};PUBLIC.page.queryAjaxStart();"
+						value="#{messages['page.common.save']}"
+						action="#{bzOtrCreateAction.save}" />
+					<a4j:commandButton styleClass="Button" render="qlListFormId"
+						oncomplete="PUBLIC.page.ajaxEnd();complete();"
+						onclick="if(!validate()){return false};PUBLIC.page.queryAjaxStart();"
+						value="#{messages['page.common.submit']}"
+						action="#{bzOtrCreateAction.submit}" />
+				</div>
+			</div>
+			<div class="ban_con">
+				<h:inputHidden id="addAttachIds" />
+				<div style="display: none">
+					<a4j:commandButton id="addAttachBtnId" render="attachDataTableId"
+						oncomplete="PUBLIC.page.ajaxEnd();"
+						onclick="PUBLIC.page.queryAjaxStart();"
+						action="#{bzOtrCreateAction.addAttachments}">
+					</a4j:commandButton>
+				</div>
+				<rich:extendedDataTable id="attachDataTableId"
+					selectionMode="single" value="#{bzOtrCreateAction.bsAttachments}"
+					rows="1000" columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="item">
+					<rich:column width="250px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.fileName']}" />
+						</f:facet>
+						<h:commandLink action="#{attachmentAction.download}">
+							<h:outputText value="#{item.srcFileName}.#{item.fileExt}" />
+							<f:param name="attachId" value="#{item.id}" />
+						</h:commandLink>
+					</rich:column>
+					<rich:column width="250px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.createdUser']}" />
+						</f:facet>
+						<h:outputText value="#{item.createdUser.username}" />
+					</rich:column>
+					<rich:column width="100px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.attachment.createdDate']}" />
+						</f:facet>
+						<h:outputText value="#{item.createdDate}">
+							<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+						</h:outputText>
+					</rich:column>
+					<rich:column width="80px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.common.operate']}" />
+						</f:facet>
+						<a4j:commandLink action="#{bzOtrCreateAction.deleteAttachment}"
+							render="attachDataTableId">
+							<h:outputText value="#{messages['page.common.delete']}" />
+							<f:param name="attachId" value="#{item.id}" />
+							<f:param name="id" value="#{bzOtrCreateAction.bzOtrCreate.id}" />
+						</a4j:commandLink>
+					</rich:column>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

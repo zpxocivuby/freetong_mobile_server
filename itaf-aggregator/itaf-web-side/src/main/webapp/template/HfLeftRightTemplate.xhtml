@@ -1,0 +1,31 @@
+<ui:composition template="/template/HeaderAndFooterTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="hf_head_region">
+		<script type="text/javascript">
+			//<![CDATA[             
+			//]]>
+		</script>
+		<ui:insert name="hf_lr_head_region" />
+	</ui:define>
+	<ui:define name="hf_content_region">
+		<div id="leftDiv"
+			style="width: 30%; float: left; margin: 0px; overflow: auto;height: 100%;">
+			<h:form id="lrLeftFormId">
+				<ui:insert name="hf_lr_left_content_region" />
+			</h:form>
+		</div>
+		<div id="rightDiv"
+			style="height: 100%; width: 69%; float: left; margin: 0px">
+			<h:form id="lrRightFormId">
+				<ui:insert name="hf_lr_right_content_region" />
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

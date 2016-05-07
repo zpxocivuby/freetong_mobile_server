@@ -1,0 +1,278 @@
+<ui:composition template="/template/PopEmptyTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="titleRegion">
+    		#{messages['page.role.popup.roleManage']}
+	</ui:define>
+	<ui:define name="headRegion">
+		<script type="text/javascript">
+			//<![CDATA[
+			var baseUrl = "#{baseSession.contextPath}";
+			Ext
+					.onReady(function() {
+						PUBLIC.page
+								.showActionMsg("#{roleResourceManageAction.actionMsg}");
+						PUBLIC.page.checkedOnly();
+					});
+			function showTree() {
+				if (Ext.get("popEmptyFormId:treename")) {
+					var strLink = baseUrl
+							+ "/pages/platform/TsDepartmentTree.xhtml";
+					var popTitle = "#{messages['page.depart.detailDataTable']}";
+					top.popWindowBase.app.popWindow2(strLink, null, popTitle,
+							600, 550, true);
+				}
+			}
+			function addUserInfo(dataId) {
+				var strLink = baseUrl
+						+ "/pages/platform/role_user_add.xhtml?dataId=" + dataId;
+				var popTitle = "#{messages['page.role.relationUser']}";
+				var refreshObj = document
+						.getElementById("popEmptyFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle,
+						1050, 560, true);
+			}
+			function confirmDel() {
+				if (confirm("#{messages['page.role.confirmDeleteRelation']}")) {
+					PUBLIC.page.queryAjaxStart();
+					var dataIds = PUBLIC.page.getCheckedLang();
+					if (dataIds.length <= 0) {
+						Ext.Msg.alert(alertNotice, Ext.get(
+								"common_selectOneOrMore").getValue());
+						return false;
+					}
+					document.getElementById("popEmptyFormId:dataIds").value = dataIds;
+					return true;
+				}
+				return false;
+			}
+
+			function toClick(checkBox) {
+				var clickChecked = checkBox.checked;
+				var su_fix = ':childBoxId';
+				var pre_fix = 'popEmptyFormId:restree:';
+				var temp_str = checkBox.id.substr(pre_fix.length,
+						checkBox.id.length - su_fix.length - pre_fix.length);
+				var child_str = checkBox.id.substr(0, checkBox.id.length
+						- su_fix.length);
+				if (!clickChecked) {
+					//如果不选中，则对父节点也不进行选中
+					while (last_index > 0) {
+						temp_str = temp_str.substr(0, last_index);
+						//alert(temp_str);
+						var parent_checkBox = document.getElementById(pre_fix
+								+ temp_str + su_fix);
+						if (parent_checkBox != null) {
+							parent_checkBox.checked = clickChecked;
+						}
+						last_index = temp_str.lastIndexOf(':');
+					}
+				}
+				//所有子节点的值也根据选中或取消情况进行变化
+				var checks = document.getElementsByTagName('input');
+				for (var i = 0; checks.length > i; i++) {
+					if (checks[i].id.indexOf(su_fix) > 0) {
+						if (checks[i].id.length > child_str.length) {
+							var cut_str = checks[i].id.substr(0,
+									child_str.length);
+							if (cut_str == child_str) {
+								checks[i].checked = clickChecked;
+							}
+						}
+					}
+				}
+			}
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="bodyRegion">
+		<h:form id="popEmptyFormId">
+			<rich:tabPanel switchType="client">
+				<rich:tab header="#{messages['page.role.popup.linkUser']}">
+					<div class="ban_warp">
+						<div class="ban_top_bg">
+							<div class="ban_top_con">
+								<div class="ban_title_font">
+									#{messages['page.common.searchCondition']}</div>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="ban_con">
+							<div class="ban_form_yh">
+								<ul>
+									<li class="textLi_search">#{messages['page.user.userName']}</li>
+									<li><h:inputText id="username"
+											value="#{roleUserListAction.queryCriteria.queryCondition.username}" />
+									</li>
+								</ul>
+							</div>
+							<div class="ban_btn">
+								<h:inputHidden id="dataId"
+									value="#{roleAddUserListAction.roleId }" />
+								<a4j:commandButton id="queryDataBtnId"
+									value="#{messages['page.common.query']}"
+									render="roleUserListDtId" styleClass="Button"
+									oncomplete="PUBLIC.page.ajaxEnd();"
+									onclick="PUBLIC.page.queryAjaxStart();">
+									<f:param name="operateType" value="query" />
+								</a4j:commandButton>
+								<input type="reset" class="Button"
+									value="#{messages['page.common.reSetValue']}" />
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="ban_down_bg">
+							<div class="ban_down_left"></div>
+						</div>
+					</div>
+					<div class="ban_warp">
+						<div class="ban_top_bg">
+							<div class="ban_top_con">
+								<div class="ban_title_font">
+									#{messages['page.user.userManage']}</div>
+								<div class="ban_title_iconw">
+									<ul>
+										<li class="ban_icon4"></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<div class="ban_con">
+							<div class="ban_operate_btn">
+								<input type="button" class="Button"
+									onclick="addUserInfo('#{roleAddUserListAction.roleId }');"
+									value="#{messages['page.role.modifyRelation']}" /> <input
+									class="Button" type="button"
+									value="#{messages['page.common.cancel']}"
+									onclick="top.popWindowBase.app.exitWindow();" />
+								<a4j:commandButton value="#{messages['page.common.delete']}"
+									action="#{roleUserListAction.actionExecute}"
+									render="roleUserListDtId" oncomplete="PUBLIC.page.ajaxEnd();"
+									styleClass="Button" onclick="if(!confirmDel()){return false;};">
+									<f:param name="methodType" value="delete" />
+								</a4j:commandButton>
+								<h:inputHidden id="dataIds" />
+							</div>
+							<div class="cj_line" style="margin: 0;"></div>
+							<rich:extendedDataTable id="roleUserListDtId"
+								selectionMode="single"
+								value="#{roleUserListAction.pagerDataModel}"
+								rows="#{roleUserListAction.pagerDataModel.pageResult.pageSize}"
+								columnClasses="scroll_column_no_rightline"
+								footerClass="scroll_footer_color"
+								headerClass="scroll_head_color"
+								noDataLabel="#{messages['page.common.nodata']}" var="item">
+								<rich:column width="40px">
+									<f:facet name="header">
+										<h:selectBooleanCheckbox onclick="PUBLIC.page.checkedAll();"
+											class="publicCheckAll" />
+									</f:facet>
+									<h:selectBooleanCheckbox lang="#{item.id}"
+										onclick="PUBLIC.page.checkedOnly();" class="publicCheck"
+										style="background: none;border: none;height: 18px;line-height: 18px;" />
+								</rich:column>
+								<rich:column width="150px">
+									<f:facet name="header">
+										<h:outputText styleClass="headerText"
+											value="#{messages['page.user.userName']}" />
+									</f:facet>
+									<h:outputText value="#{item.username}" />
+								</rich:column>
+								<f:facet name="footer">
+									<rich:dataScroller fastControls="hide"
+										page="#{roleUserListAction.pagerDataModel.pageResult.currentPage}">
+										<f:facet name="first">
+											<h:graphicImage url="../../images/firstbg.gif" />
+										</f:facet>
+										<f:facet name="first_disabled">
+											<h:graphicImage url="../../images/firstbg_n.gif" />
+										</f:facet>
+										<f:facet name="last">
+											<h:graphicImage url="../../images/lastbg.gif" />
+										</f:facet>
+										<f:facet name="last_disabled">
+											<h:graphicImage url="../../images/lastbg_n.gif" />
+										</f:facet>
+										<f:facet name="next">
+											<h:graphicImage url="../../images/nextbg.gif" />
+										</f:facet>
+										<f:facet name="next_disabled">
+											<h:graphicImage url="../../images/nextbg_n.gif" />
+										</f:facet>
+										<f:facet name="previous">
+											<h:graphicImage url="../../images/previousbg.gif" />
+										</f:facet>
+										<f:facet name="previous_disabled">
+											<h:graphicImage url="../../images/previousbg_n.gif" />
+										</f:facet>
+									</rich:dataScroller>
+									<h:panelGroup styleClass="pager_info">
+										<h:outputText value="#{messages['page.pager.total']} " />
+										<h:outputText
+											value=" #{roleUserListAction.pagerDataModel.pageResult.totalPage} " />
+										<h:outputText value=" #{messages['page.pager.page']} " />
+										<h:outputText value=" #{messages['page.pager.prepage']} " />
+										<h:outputText
+											value=" #{roleUserListAction.pagerDataModel.pageResult.pageSize} " />
+										<h:outputText value=" #{messages['page.pager.item']} " />
+										<h:outputText value=" #{messages['page.pager.total']} " />
+										<h:outputText
+											value=" #{roleUserListAction.pagerDataModel.pageResult.totalCount} " />
+										<h:outputText value=" #{messages['page.pager.item']}" />
+									</h:panelGroup>
+								</f:facet>
+							</rich:extendedDataTable>
+						</div>
+						<div class="clear"></div>
+						<div class="ban_down_bg">
+							<div class="ban_down_left"></div>
+						</div>
+					</div>
+				</rich:tab>
+				<rich:tab header="#{messages['page.role.popup.linkResource']}">
+					<div class="ban_con">
+						<div class="ban_operate_btn">
+							<h:commandButton id="saveBtnId" styleClass="Button"
+								onclick="PUBLIC.page.operateAjaxStart();"
+								action="#{roleResourceManageAction.actionExecute}"
+								value="#{messages['page.common.determine']}">
+								<f:param name="methodType" value="save" />
+							</h:commandButton>
+						</div>
+						<div class="cj_line" style="margin: 0;"></div>
+						<div id="clueTreeId"
+							style="height: 400px; width: 100%; overflow: auto;">
+							<rich:tree id="tree" nodeType="#{node.type}" var="node"
+								value="#{roleResourceManageAction.treeRoots}"
+								toggleType="client" selectionType="ajax">
+								<rich:treeNode type="root"
+									iconCollapsed="/images/tree/folder.gif"
+									iconExpanded="/images/tree/folder-open.gif">
+									<h:selectBooleanCheckbox value="#{node.checked}"
+										onclick="toClick(this);" />
+									<h:outputText value="#{node.name}" />
+								</rich:treeNode>
+								<rich:treeNode type="leaf" iconLeaf="/images/tree/leaf.gif">
+									<h:selectBooleanCheckbox value="#{node.checked}"
+										id="childBoxId" onclick="toClick(this);" />
+									<h:outputText value="#{node.name}" />
+								</rich:treeNode>
+							</rich:tree>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="ban_down_bg">
+						<div class="ban_down_left"></div>
+					</div>
+				</rich:tab>
+			</rich:tabPanel>
+		</h:form>
+	</ui:define>
+</ui:composition>

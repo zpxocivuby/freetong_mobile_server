@@ -1,0 +1,168 @@
+<ui:composition template="/template/HfQueryListTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="navigation_region">
+    		#{messages['page.common.currentPosition']}#{messages['page.userloginlog.yourLocation']}
+  	</ui:define>
+	<ui:define name="hf_ql_head_region">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+	</ui:define>
+	<ui:define name="hf_ql_query_conent_region">
+		<!--查询条件 -->
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.common.searchCondition']}</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li>#{messages['page.userloginlog.userName']} <h:inputText
+								id="username" maxlength="100"
+								value="#{userAccLogAction.queryCriteria.queryCondition.username}" />
+							#{messages['page.userloginlog.accessTime']} <h:inputText
+								id="loginTime"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'qlQueryFormId:logoutTime\')||\'%y-%M-%d %H:%m:%s\'}'})"
+								value="#{userAccLogAction.queryCriteria.queryCondition.loginTime}">
+							</h:inputText> #{messages['page.userloginlog.to']} <h:inputText id="logoutTime"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'qlQueryFormId:loginTime\')}',maxDate:'%y-%M-%d %H:%m:%s'})"
+								value="#{userAccLogAction.queryCriteria.queryCondition.logoutTime}">
+							</h:inputText> <a4j:commandButton value="#{messages['page.common.query']}"
+								render="userAccLogDtId" styleClass="Button"
+								oncomplete="PUBLIC.page.ajaxEnd();"
+								onclick="PUBLIC.page.queryAjaxStart();">
+								<f:param name="operateType" value="query" />
+							</a4j:commandButton> <input type="reset" class="Button"
+							value="#{messages['page.common.reSetValue']}" />
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+		<!--查询条件 end-->
+	</ui:define>
+	<ui:define name="hf_ql_list_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						#{messages['page.userloginlog.listTitle']}</div>
+					<div class="ban_title_iconw">
+						<ul>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<rich:extendedDataTable id="userAccLogDtId" selectionMode="single"
+					value="#{userAccLogAction.pagerDataModel}"
+					rows="#{userAccLogAction.pagerDataModel.pageResult.pageSize}"
+					columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="#{messages['page.common.nodata']}" var="item">
+					<rich:column width="150px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.userloginlog.userName']}" />
+						</f:facet>
+						<h:outputText value="#{item.username}" style="font-size:12px;" />
+					</rich:column>
+					<rich:column width="300px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="SessionId" />
+						</f:facet>
+						<h:outputText value="#{item.sessionId}" style="font-size:12px;" />
+					</rich:column>
+					<rich:column width="350px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.userloginlog.accessUrl']}" />
+						</f:facet>
+						<h:outputText value="#{item.remoteAddr}" style="font-size:12px;" />
+					</rich:column>
+					<rich:column width="200px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.userloginlog.accessTime']}" />
+						</f:facet>
+						<h:outputText value="#{item.loginTime}" style="font-size:12px;">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</rich:column>
+					<rich:column width="145px">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.userloginlog.backTime']}" />
+						</f:facet>
+						<h:outputText value="#{item.logoutTime}" style="font-size:12px;">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</rich:column>
+					<f:facet name="footer">
+						<rich:dataScroller fastControls="hide"
+							page="#{userAccLogAction.pagerDataModel.pageResult.currentPage}">
+							<f:facet name="first">
+								<h:graphicImage url="../../images/firstbg.gif" />
+							</f:facet>
+							<f:facet name="first_disabled">
+								<h:graphicImage url="../../images/firstbg_n.gif" />
+							</f:facet>
+							<f:facet name="last">
+								<h:graphicImage url="../../images/lastbg.gif" />
+							</f:facet>
+							<f:facet name="last_disabled">
+								<h:graphicImage url="../../images/lastbg_n.gif" />
+							</f:facet>
+							<f:facet name="next">
+								<h:graphicImage url="../../images/nextbg.gif" />
+							</f:facet>
+							<f:facet name="next_disabled">
+								<h:graphicImage url="../../images/nextbg_n.gif" />
+							</f:facet>
+							<f:facet name="previous">
+								<h:graphicImage url="../../images/previousbg.gif" />
+							</f:facet>
+							<f:facet name="previous_disabled">
+								<h:graphicImage url="../../images/previousbg_n.gif" />
+							</f:facet>
+						</rich:dataScroller>
+						<h:panelGroup styleClass="pager_info">
+							<h:outputText value="#{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{userAccLogAction.pagerDataModel.pageResult.totalPage} " />
+							<h:outputText value=" #{messages['page.pager.page']} " />
+							<h:outputText value=" #{messages['page.pager.prepage']} " />
+							<h:outputText
+								value=" #{userAccLogAction.pagerDataModel.pageResult.pageSize} " />
+							<h:outputText value=" #{messages['page.pager.item']} " />
+							<h:outputText value=" #{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{userAccLogAction.pagerDataModel.pageResult.totalCount} " />
+							<h:outputText value=" #{messages['page.pager.item']}" />
+						</h:panelGroup>
+					</f:facet>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

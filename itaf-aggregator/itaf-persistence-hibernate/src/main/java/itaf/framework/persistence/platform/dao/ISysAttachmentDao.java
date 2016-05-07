@@ -1,0 +1,1 @@
+//ITAF DAO Tool Generator at 2014-05-29 16:36:19 package itaf.framework.persistence.platform.dao;import itaf.framework.domain.platform.SysAttachment;import itaf.framework.persistence.base.dao.IBaseDao;public interface ISysAttachmentDao extends IBaseDao<SysAttachment> {}

@@ -1,0 +1,75 @@
+<ui:composition template="/template/PopEditTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript">
+			//<![CDATA[ 
+			Ext.onReady(function() {
+				PUBLIC.page.showActionMsg("#{roleManageAction.actionMsg}", true);
+			});
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="pop_edit_content_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">
+						<h:outputText value="#{messages['page.role.edit']}" />
+						<h:message for="nameZh" errorClass="pop_error_msg_span" />
+						<h:message for="nameEn" errorClass="pop_error_msg_span" />
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">#{messages['page.role.nameZh']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="nameZh"
+								value="#{roleManageAction.sysRole.nameZh}" maxlength="30"
+								required="true"
+								validatorMessage="#{messages['page.role.nameZh']} #{messages['page.common.alert']}">
+							</h:inputText></li>
+						<li class="textLi">#{messages['page.role.nameEn']}<span
+							style="color: red;">*</span>
+						</li>
+						<li><h:inputText id="nameEn"
+								value="#{roleManageAction.sysRole.nameEn}" maxlength="20"
+								required="true"
+								validatorMessage="#{messages['page.role.nameEn']} #{messages['page.common.alert']}">
+							</h:inputText></li>
+						<li class="textLi">#{messages['page.role.desc']}</li>
+						<li><h:inputText id="description"
+								value="#{roleManageAction.sysRole.description}" maxlength="33">
+							</h:inputText></li>
+					</ul>
+
+				</div>
+				<div class="ban_btn">
+					<h:inputHidden id="dataId" value="#{roleManageAction.sysRole.id}" />
+					<h:commandButton class="Button"
+						value="#{messages['page.common.determine']}"
+						action="#{roleManageAction.actionExecute}">
+						<f:param name="methodType" value="save" />
+					</h:commandButton>
+					<input class="Button" type="button"
+						value="#{messages['page.common.cancel']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

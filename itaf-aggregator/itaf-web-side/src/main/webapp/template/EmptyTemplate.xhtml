@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+<h:head>
+	<title><ui:insert name="titleRegion" /></title>
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+	<link rel="stylesheet" type="text/css"
+		href="#{baseSession.contextPath}/ext/resources/css/ext-all.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{baseSession.contextPath}/css/style.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{baseSession.contextPath}/css/menu.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{baseSession.contextPath}/css/content.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{baseSession.contextPath}/css/tags.css" />
+	<link rel="stylesheet" type="text/css"
+		href="#{baseSession.contextPath}/css/override-richfaces.css" />
+
+	<script type="text/javascript"
+		src="#{baseSession.contextPath}/ext/adapter/ext/ext-base.js"></script>
+	<script type="text/javascript"
+		src="#{baseSession.contextPath}/ext/ext-all.js"></script>
+	<script type="text/javascript"
+		src="#{baseSession.contextPath}/js/jquery-1.8.3.js"></script>
+	<script type="text/javascript"
+		src="#{baseSession.contextPath}/js/popWin.js"></script>
+	<script type="text/javascript"
+		src="#{baseSession.contextPath}/js/public.js"></script>
+	<style type="text/css">
+.headerbg {
+	background-image:
+		url("#{baseSession.contextPath}/images/titleheaderBg.gif");
+	font: bolder 12px "宋体";
+}
+
+.list {
+	width: 200px;
+	text-align: center;
+}
+
+.red {
+	color: red;
+}
+</style>
+	<ui:insert name="headRegion" />
+</h:head>
+<h:body>
+	<f:view>
+		<f:loadBundle basename="TipMessages" var="messages" />
+		<ui:insert name="bodyRegion" />
+		<input type="hidden" id="common_baseUrlId"
+			value="#{baseSession.contextPath}" />
+		<input type="hidden" id="common_alertNoticeId"
+			value="#{messages['page.common.notice']}" />
+		<input type="hidden" id="common_selectOneOrMore"
+			value="#{messages['page.common.selectOneOrMore']}" />
+		<input type="hidden" id="common_operateSuccess"
+			value="#{messages['page.common.operateSuccess']}" />
+		<input type="hidden" id="common_operateError"
+			value="#{messages['page.common.operateError']}" />
+		<input type="hidden" id="common_operateBuffer"
+			value="#{messages['page.common.queryOperateBuffer']}" />
+		<input type="hidden" id="common_queryBuffer"
+			value="#{messages['page.common.queryBuffer']}" />
+		<input type="hidden" id="common_confirmDelete"
+			value="#{messages['page.common.confirmDelete']}" />
+	</f:view>
+</h:body>
+</html>

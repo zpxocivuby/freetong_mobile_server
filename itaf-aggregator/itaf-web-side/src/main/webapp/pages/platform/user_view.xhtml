@@ -1,0 +1,68 @@
+<ui:composition template="/template/PopViewTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="pop_view_content_region">
+		<div class="ban_warp">
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li class="textLi">#{messages['page.user.userName']}</li>
+						<li><h:inputText readonly="true"
+								value="#{userAction.sysUser.username}" /></li>
+						<li class="textLi">#{messages['page.user.office']}</li>
+						<li><h:inputText readonly="true"
+								value="#{userAction.sysUser.location}" /></li>
+						<li class="textLi">#{messages['page.user.realNameZh']}</li>
+						<li><h:inputText readonly="true"
+								value="#{userAction.sysUser.realnameZh}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.user.realNameEn']}</li>
+						<li><h:inputText readonly="true"
+								value="#{userAction.sysUser.realnameEn}" /></li>
+						<li class="textLi">#{messages['page.user.desc']}</li>
+						<li><h:inputText readonly="true"
+								value="#{userAction.sysUser.description}" /></li>
+						<li class="textLi">#{messages['page.user.email']}</li>
+						<li><h:inputText readonly="true"
+								value="#{userAction.sysUser.email}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.user.phone']}</li>
+						<li><h:inputText readonly="true"
+								value="#{userAction.sysUser.telephone}" /></li>
+						<li class="textLi">#{messages['page.user.dept']}</li>
+						<li><h:inputText readonly="true"
+								value="#{userAction.sysUser.tsDepartment.nameZh}" /></li>
+						<li class="textLi">#{messages['page.user.fax']}</li>
+						<li><h:inputText readonly="true"
+								value="#{userAction.sysUser.fax}" /></li>
+					</ul>
+					<ul>
+						<li class="textLi">#{messages['page.user.editable']}</li>
+						<li><h:selectBooleanCheckbox
+								style="width:25px; background: none; border: none;"
+								disabled="true" value="#{userAction.sysUser.editable}" /></li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<h:inputHidden id="userId" value="#{userAction.sysUser.id}" />
+					<input class="Button" type="button"
+						value="#{messages['page.common.close']}"
+						onclick="top.popWindowBase.app.exitWindow();" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,228 @@
+<ui:composition template="/template/HfQuickMenu.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="navigation_region">
+		#{messages['page.common.currentPosition']} >> 待办列表
+	</ui:define>
+	<ui:define name="hf_st_head_region">
+		<script type="text/javascript">
+			//<![CDATA[
+			var baseUrl = "#{baseSession.contextPath}";
+			function approve(taskId) {
+				var strLink = baseUrl
+						+ "/pages/workflow/approve_form.xhtml?taskId=" + taskId;
+				var popTitle = "";
+				var refreshObj = document
+						.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle,
+						800, 350, true);
+			}
+			function reject(taskId) {
+				var strLink = baseUrl
+						+ "/pages/workflow/reject_form.xhtml?taskId=" + taskId;
+				var popTitle = "";
+				var refreshObj = document
+						.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle,
+						800, 350, true);
+			}
+			
+			function addApplyRealname(){
+				var strLink = baseUrl + "/pages/workflow/apply_realname_workflow.xhtml";
+				var popTitle = "实名申请";
+				var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 100);
+			}
+			
+			function addSelling(){
+				var strLink = baseUrl + "/pages/workflow/apply_selling_workflow.xhtml";
+				var popTitle = "卖家申请";
+				var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 100);
+			}
+			
+			function addDist(){
+				var strLink = baseUrl + "/pages/workflow/apply_dist_workflow.xhtml";
+				var popTitle = "配送商申请";
+				var refreshObj = document.getElementById("qlQueryFormId:queryDataBtnId");
+				top.popWindowBase.app.popWindow2(strLink, refreshObj, popTitle, 1050, 100);
+			}
+			//]]>
+		</script>
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/My97DatePicker/WdatePicker.js" />
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/workflow.js" />
+	</ui:define>
+	<ui:define name="hf_ql_query_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font"></div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_form_yh">
+					<ul>
+						<li>标题：<h:inputText id="title"
+								value="#{processingWorkflowAction.queryCriteria.queryCondition.title}" />
+						</li>
+						<li>提交时间：<h:inputText id="startTime"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd'})"
+								value="#{processingWorkflowAction.queryCriteria.queryCondition.startTime}" />
+							到：<h:inputText id="endTime"
+								onfocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd'})"
+								value="#{processingWorkflowAction.queryCriteria.queryCondition.endTime}" />
+						</li>
+						<li>类型：<h:selectOneMenu id="processDefinitionId"
+								value="#{processingWorkflowAction.queryCriteria.queryCondition.processDefinitionId}">
+								<f:selectItem itemLabel="全部" />
+								<f:selectItems
+									value="#{processingWorkflowAction.checkBoxItemsProcessDefinitionChecked}" />
+							</h:selectOneMenu>
+						</li>
+					</ul>
+				</div>
+				<div class="ban_btn">
+					<a4j:commandButton id="queryDataBtnId" render="qlListFormId"
+						styleClass="Button" onclick="PUBLIC.page.queryAjaxStart()"
+						oncomplete="PUBLIC.page.ajaxEnd();"
+						value="#{messages['page.common.query']}">
+						<f:param name="operateType" value="query" />
+					</a4j:commandButton>
+					<input id="reSetValue" type="reset" class="Button"
+						value="#{messages['page.common.reSetValue']}" />
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+	<!-- 列表显示 -->
+	<ui:define name="hf_ql_list_conent_region">
+		<div class="ban_warp">
+			<div class="ban_top_bg">
+				<div class="ban_top_con">
+					<div class="ban_title_font">待办列表</div>
+					<div class="ban_title_iconw">
+						<ul>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_con">
+				<div class="ban_operate_btn">
+					<input type="button" class="Button" onclick="addApplyRealname();"
+						value="增加实名认证申请" />
+					<input type="button" class="Button" onclick="addSelling();"
+						value="增加卖家认证申请 " />
+					<input type="button" class="Button" onclick="addDist();"
+						value="增加配送商认证申请" />
+				</div>
+				<rich:extendedDataTable selectionMode="single"
+					value="#{processingWorkflowAction.pagerDataModel}"
+					rows="#{processingWorkflowAction.pagerDataModel.pageResult.pageSize}"
+					columnClasses="scroll_column_no_rightline"
+					footerClass="scroll_footer_color" headerClass="scroll_head_color"
+					noDataLabel="无数据" var="dataVar">
+
+					<rich:column width="200px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="标题" />
+						</f:facet>
+						<a href="#"
+							onclick="Workflow.page.showForm('#{dataVar.pageUrl}',1035,380);">
+							<h:outputText value="#{dataVar.title}" />
+						</a>
+					</rich:column>
+					<rich:column width="170px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="类型" />
+						</f:facet>
+						<h:outputText value="#{dataVar.formName}" />
+					</rich:column>
+					<rich:column width="170px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="提交人" />
+						</f:facet>
+						<h:outputText value="#{dataVar.draftUsername}" />
+					</rich:column>
+					<rich:column width="170px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="提交时间" />
+						</f:facet>
+						<h:outputText value="#{dataVar.submitTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+									timeZone="GMT+8" />
+						</h:outputText>
+					</rich:column>
+					<rich:column width="220px" filterBy="false" sortable="false">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['page.common.operate']}" />
+						</f:facet>
+						<a4j:commandLink value="同意" onclick="approve('#{dataVar.taskId}');"/><span style="padding-right:5px"></span>
+						<a4j:commandLink value="不同意" onclick="reject('#{dataVar.taskId}');"/><span style="padding-right:5px"></span>
+						<a4j:commandLink value="查看流程图" onclick="Workflow.page.viewWorkflowPicture('#{dataVar.processInstanceId}');"/>
+					</rich:column>
+
+					<f:facet name="footer">
+						<rich:dataScroller fastControls="hide"
+							page="#{processingWorkflowAction.pagerDataModel.pageResult.currentPage}">
+							<f:facet name="first">
+								<h:graphicImage url="../../images/firstbg.gif" />
+							</f:facet>
+							<f:facet name="first_disabled">
+								<h:graphicImage url="../../images/firstbg_n.gif" />
+							</f:facet>
+							<f:facet name="last">
+								<h:graphicImage url="../../images/lastbg.gif" />
+							</f:facet>
+							<f:facet name="last_disabled">
+								<h:graphicImage url="../../images/lastbg_n.gif" />
+							</f:facet>
+							<f:facet name="next">
+								<h:graphicImage url="../../images/nextbg.gif" />
+							</f:facet>
+							<f:facet name="next_disabled">
+								<h:graphicImage url="../../images/nextbg_n.gif" />
+							</f:facet>
+							<f:facet name="previous">
+								<h:graphicImage url="../../images/previousbg.gif" />
+							</f:facet>
+							<f:facet name="previous_disabled">
+								<h:graphicImage url="../../images/previousbg_n.gif" />
+							</f:facet>
+						</rich:dataScroller>
+						<h:panelGroup styleClass="pager_info">
+							<h:outputText value="#{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{processingWorkflowAction.pagerDataModel.pageResult.totalPage} " />
+							<h:outputText value=" #{messages['page.pager.page']} " />
+							<h:outputText value=" #{messages['page.pager.prepage']} " />
+							<h:outputText
+								value=" #{processingWorkflowAction.pagerDataModel.pageResult.pageSize} " />
+							<h:outputText value=" #{messages['page.pager.item']} " />
+							<h:outputText value=" #{messages['page.pager.total']} " />
+							<h:outputText
+								value=" #{processingWorkflowAction.pagerDataModel.pageResult.totalCount} " />
+							<h:outputText value=" #{messages['page.pager.item']}" />
+						</h:panelGroup>
+					</f:facet>
+				</rich:extendedDataTable>
+			</div>
+			<div class="clear"></div>
+			<div class="ban_down_bg">
+				<div class="ban_down_left"></div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="true"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="
+			http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<cxf:bus>
+		<cxf:outInterceptors>
+			<ref bean="gzip" />
+		</cxf:outInterceptors>
+		<cxf:outFaultInterceptors>
+			<ref bean="gzip" />
+		</cxf:outFaultInterceptors>
+		<cxf:inInterceptors>
+			<ref bean="sessionUserInInterceptor" />
+		</cxf:inInterceptors>
+	</cxf:bus>
+
+	<bean id="gzip" class="org.apache.cxf.transport.common.gzip.GZIPOutInterceptor">
+		<property name="threshold">
+			<value>4086</value>
+		</property>
+	</bean>
+
+	<bean id="sessionUserInInterceptor"
+		class="itaf.framework.ws.server.interceptor.SessionUserInInterceptor">
+	</bean>
+</beans>

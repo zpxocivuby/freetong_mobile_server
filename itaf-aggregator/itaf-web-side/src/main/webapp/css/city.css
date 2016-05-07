@@ -1,0 +1,68 @@
+
+.black {
+	font-size: 12px;
+	line-height: 20px;
+	color: #000000;
+}
+
+.white {
+	font-size: 12px;
+	line-height: 20px;
+	color: #FFFFFF;
+}
+
+.red {
+	font-size: 12px;
+	line-height: 20px;
+	color: #B50000;
+}
+
+.STYLE1 {
+	color: #000000
+}
+
+#divAddressMenu {
+	position: absolute;;
+	visibility: hidden;;
+	z-index: 1;;
+	overflow: hidden;;
+	width: 172px;;
+	background-color: #FFFFFF;;
+	border: solid #EBcccC 1px;;
+	font-size: 12px;
+}
+
+#divAddressMenu h4 {
+	border-bottom: dotted #CCCCCC 1px;;
+	color: #999999;;
+	font-size: 12px;
+	font-weight: 100;
+	padding: 2px 2px 0 2px;
+	margin: 0;
+}
+
+#divAddressMenu div {
+	border: solid #FC7A7D 1px;;
+	padding: 1px;
+}
+
+#divAddressMenu a {
+	display: block;;
+	width: 162px !important;;
+	width: 100%;;
+	padding: 1px 2px 2px 2px;;
+	cursor: default;;
+	text-decoration: none;;
+	color: #990000;;
+	border: solid #ffffff 1px;;
+	background-color: none;
+}
+
+#divAddressMenu a span {
+	float: right;
+}
+
+#divAddressMenu a:hover {
+	border: solid #F2C2BD 1px;;
+	background-color: #FBEDEC;
+}

@@ -1,0 +1,52 @@
+<ui:composition template="/template/EmptyTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="headRegion">
+		<script type="text/javascript"
+			src="#{baseSession.contextPath}/js/jquery-1.8.3.js" />
+		<script type="text/javascript">
+			//<![CDATA[
+			function submitSuccess() {
+				Ext.Msg.alert("提示", "#{messages['提交成功']}");
+			}
+			function clearValue(obj) {
+				obj.value = "";
+			}
+			//]]>
+		</script>
+	</ui:define>
+	<ui:define name="bodyRegion">
+		<h:form id="viewPic">
+			<div class="ban_warp"  style="overflow:hidden;">
+				<div class="clear"></div>
+				<div class="ban_con">
+					<div class="ban_form_yh" style="overflow:hidden;">
+						<a4j:mediaOutput id="uploadedImage" element="img" cacheable="false"
+							session="true" 
+							createContent="#{workflowPictureAction.loadByProcessInstance}"
+							mimeType="image/png">
+							<f:param name="processInstanceId"
+								value="#{workflowPictureAction.processInstanceId}" />
+						</a4j:mediaOutput>
+					</div>
+					<div id="workflowTrace"></div>
+					<div class="ban_btn">
+						<input id="closeWindowId" class="Button" type="button"
+							value="#{messages['page.common.cancel']}"
+							onclick="top.popWindowBase.app.exitWindow();" />
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="ban_down_bg">
+					<div class="ban_down_left"></div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
