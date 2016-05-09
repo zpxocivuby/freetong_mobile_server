@@ -1,9 +1,9 @@
 package itaf.framework.workflow.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
+
 import itaf.framework.core.domain.BaseEntity;
 import itaf.framework.domain.workflow.BzFormEntity;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 

@@ -1,14 +1,14 @@
 package itaf.framework.workflow.base.service.impl;
 
-import itaf.framework.core.common.QueryCriteria;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import itaf.framework.core.common.QueryCriteria;
 
 /**
  * <p>

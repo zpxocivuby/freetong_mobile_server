@@ -24,14 +24,6 @@
 		</dependency>
 		<dependency>
 			<groupId>itaf.framework</groupId>
-			<artifactId>itaf-exception</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>itaf.framework</groupId>
-			<artifactId>itaf-log</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>itaf.framework</groupId>
 			<artifactId>itaf-business</artifactId>
 		</dependency>
 		<!-- quartz jars start -->
@@ -50,5 +42,9 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+				<groupId>jdk.tools</groupId>
+				<artifactId>jdk.tools</artifactId>
+			</dependency>
 	</dependencies>
 </project>

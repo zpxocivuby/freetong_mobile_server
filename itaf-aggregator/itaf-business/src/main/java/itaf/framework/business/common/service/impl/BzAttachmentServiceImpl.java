@@ -1,17 +1,5 @@
 package itaf.framework.business.common.service.impl;
 
-import itaf.framework.business.base.service.impl.BaseServiceImpl;
-import itaf.framework.business.common.service.IBzAttachmentService;
-import itaf.framework.business.platform.service.ISystemConfigService;
-import itaf.framework.core.util.DateHelper;
-import itaf.framework.core.util.StringHelper;
-import itaf.framework.domain.common.BzAttachment;
-import itaf.framework.domain.platform.SysAttachment;
-import itaf.framework.domain.workflow.AttachmentTask;
-import itaf.framework.persistence.common.dao.IBzAttachmentDao;
-import itaf.framework.persistence.platform.dao.ISysAttachmentDao;
-import itaf.framework.workflow.service.AttachmentTaskService;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +16,18 @@ import java.util.TimeZone;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import itaf.framework.business.base.service.impl.BaseServiceImpl;
+import itaf.framework.business.common.service.IBzAttachmentService;
+import itaf.framework.business.platform.service.ISystemConfigService;
+import itaf.framework.core.util.DateHelper;
+import itaf.framework.core.util.StringHelper;
+import itaf.framework.domain.common.BzAttachment;
+import itaf.framework.domain.platform.SysAttachment;
+import itaf.framework.domain.workflow.AttachmentTask;
+import itaf.framework.persistence.common.dao.IBzAttachmentDao;
+import itaf.framework.persistence.platform.dao.ISysAttachmentDao;
+import itaf.framework.workflow.service.AttachmentTaskService;
 
 @Service("bzAttachmentServiceImpl")
 public class BzAttachmentServiceImpl extends BaseServiceImpl implements

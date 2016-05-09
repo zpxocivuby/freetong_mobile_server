@@ -24,14 +24,6 @@
 		</dependency>
 		<dependency>
 			<groupId>itaf.framework</groupId>
-			<artifactId>itaf-exception</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>itaf.framework</groupId>
-			<artifactId>itaf-log</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>itaf.framework</groupId>
 			<artifactId>itaf-persistence-hibernate</artifactId>
 		</dependency>
 		<dependency>

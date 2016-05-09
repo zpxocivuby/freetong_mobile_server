@@ -22,14 +22,6 @@
 		</dependency>
 		<dependency>
 			<groupId>itaf.framework</groupId>
-			<artifactId>itaf-exception</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>itaf.framework</groupId>
-			<artifactId>itaf-log</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>itaf.framework</groupId>
 			<artifactId>itaf-business</artifactId>
 		</dependency>
 		<dependency>
@@ -109,6 +101,10 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
+		<dependency>
+				<groupId>jdk.tools</groupId>
+				<artifactId>jdk.tools</artifactId>
+			</dependency>
 	</dependencies>
 	<build>
 		<finalName>itaf-web-side</finalName>

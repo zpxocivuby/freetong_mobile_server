@@ -1,25 +1,18 @@
 package itaf.framework.exception.aop;
 
-import itaf.framework.core.aop.CombinedThrowAdvice;
-import itaf.framework.exception.bean.BusinessException;
-import itaf.framework.exception.bean.AppException;
-import itaf.framework.exception.service.IExceptionMsgService;
-
 import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-import org.hibernate.ObjectNotFoundException;
-import org.hibernate.StaleObjectStateException;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.TransactionException;
+
+import itaf.framework.core.aop.CombinedThrowAdvice;
+import itaf.framework.exception.bean.AppException;
+import itaf.framework.exception.bean.BusinessException;
+import itaf.framework.exception.service.IExceptionMsgService;
 
 /**
  * 异常的切点
@@ -115,13 +108,13 @@ public final class ExceptionMsgProcessAdvice implements MethodBeforeAdvice,
 		log.error(
 				systemMsg.getMessage("SE0013", new Object[] {
 						target.getClass().getName(), method.getName() }), e);
-		if (e instanceof DataAccessException) {
-			e = translateDataAccessException((DataAccessException) e);
-		} else if (e instanceof TransactionException) {
-			e = new AppException("SE0005");
-		} else if (e instanceof HibernateException) {
-			e = translateHibernateException(e);
-		}
+//		if (e instanceof DataAccessException) {
+//			e = translateDataAccessException((DataAccessException) e);
+//		} else if (e instanceof TransactionException) {
+//			e = new AppException("SE0005");
+//		} else if (e instanceof HibernateException) {
+//			e = translateHibernateException(e);
+//		}
 
 		// Throwable cause = e.getCause();
 		log.error(e);
@@ -140,50 +133,50 @@ public final class ExceptionMsgProcessAdvice implements MethodBeforeAdvice,
 		throw e;
 	}
 
-	/**
-	 * <p>
-	 * Translates OR-Mapping hibernate framework exception to system specific
-	 * exception.
-	 * 
-	 * @param e
-	 *            exception from hibernate framework.
-	 * @return System exception wrapped up hibernate exception.
-	 */
-	private AppException translateHibernateException(Exception e) {
-		AppException se = new AppException("SE0002");
-		if (e instanceof ObjectNotFoundException) {
-			se = new AppException("SE0003",
-					new String[] { ((ObjectNotFoundException) e)
-							.getEntityName() });
-		}
-		return se;
-	}
+//	/**
+//	 * <p>
+//	 * Translates OR-Mapping hibernate framework exception to system specific
+//	 * exception.
+//	 * 
+//	 * @param e
+//	 *            exception from hibernate framework.
+//	 * @return System exception wrapped up hibernate exception.
+//	 */
+//	private AppException translateHibernateException(Exception e) {
+//		AppException se = new AppException("SE0002");
+//		if (e instanceof ObjectNotFoundException) {
+//			se = new AppException("SE0003",
+//					new String[] { ((ObjectNotFoundException) e)
+//							.getEntityName() });
+//		}
+//		return se;
+//	}
 
-	/**
-	 * <p>
-	 * Translates data accessing related Spring framework exception to system
-	 * specific exception.
-	 * 
-	 * @param e
-	 *            exception from hibernate framework.
-	 * @return System exception wrapped up hibernate exception.
-	 */
-	private AppException translateDataAccessException(DataAccessException e) {
-		Throwable cause = e.getCause();
-		AppException se = new AppException("SE0002");
-		if (cause instanceof ConstraintViolationException) {
-			log.debug("Exception with Excuting SQL:"
-					+ ((ConstraintViolationException) cause).getSQL());
-			se = new AppException("SE0004");
-		} else if (cause instanceof StaleObjectStateException) {
-			se = new AppException("SE0014");
-		} else if (cause instanceof JDBCException) {
-			log.debug("Exception with Excuting SQL:"
-					+ ((JDBCException) cause).getSQL());
-			se = new AppException("SE0002");
-		}
-		return se;
-	}
+//	/**
+//	 * <p>
+//	 * Translates data accessing related Spring framework exception to system
+//	 * specific exception.
+//	 * 
+//	 * @param e
+//	 *            exception from hibernate framework.
+//	 * @return System exception wrapped up hibernate exception.
+//	 */
+//	private AppException translateDataAccessException(DataAccessException e) {
+//		Throwable cause = e.getCause();
+//		AppException se = new AppException("SE0002");
+//		if (cause instanceof ConstraintViolationException) {
+//			log.debug("Exception with Excuting SQL:"
+//					+ ((ConstraintViolationException) cause).getSQL());
+//			se = new AppException("SE0004");
+//		} else if (cause instanceof StaleObjectStateException) {
+//			se = new AppException("SE0014");
+//		} else if (cause instanceof JDBCException) {
+//			log.debug("Exception with Excuting SQL:"
+//					+ ((JDBCException) cause).getSQL());
+//			se = new AppException("SE0002");
+//		}
+//		return se;
+//	}
 
 	public boolean isEnabledMethodTrace() {
 		return enabledMethodTrace;

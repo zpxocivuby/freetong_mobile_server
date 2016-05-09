@@ -1,8 +1,6 @@
 package itaf.framework.domain.workflow;
 
 import static javax.persistence.GenerationType.IDENTITY;
-import itaf.framework.domain.base.OperateEntity;
-import itaf.framework.domain.platform.SysRole;
 
 import java.util.Date;
 
@@ -20,7 +18,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import itaf.framework.domain.base.OperateEntity;
+import itaf.framework.domain.platform.SysRole;
 
 /**
  * 

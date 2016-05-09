@@ -24,14 +24,6 @@
 		</dependency>
 		<dependency>
 			<groupId>itaf.framework</groupId>
-			<artifactId>itaf-exception</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>itaf.framework</groupId>
-			<artifactId>itaf-log</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>itaf.framework</groupId>
 			<artifactId>itaf-ws-server</artifactId>
 		</dependency>
 		<dependency>
@@ -47,5 +39,9 @@
 			<artifactId>pinyin4j</artifactId>
 			<version>2.5.0</version>
 		</dependency>
+		<dependency>
+				<groupId>jdk.tools</groupId>
+				<artifactId>jdk.tools</artifactId>
+			</dependency>
 	</dependencies>
 </project>
