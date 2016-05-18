@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<settings>
+
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+<!-- | This is the configuration file for Maven. | -->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 	<profiles>
 		<profile>
 			<id>jdk-version</id>
@@ -14,10 +29,11 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>develop</id>
+			<id>nexus</id>
 			<repositories>
 				<repository>
-					<id>nexus-120</id>
+					<id>nexus</id>
+					<name>Nexus</name>
 					<url>http://127.0.0.1:8081/nexus/content/groups/public/</url>
 					<releases>
 						<enabled>true</enabled>
@@ -27,8 +43,49 @@
 					</snapshots>
 				</repository>
 			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>nexus</id>
+					<name>Nexus</name>
+					<url>http://127.0.0.1:8081/nexus/content/groups/public/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+		<profile>
+			<id>beifaprofile</id>
+			<repositories>
+				<repository>
+					<id>beifa</id>
+					<url>http://112.33.7.42:28081/nexus/content/groups/public/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>beifa</id>
+					<url>http://112.33.7.42:28081/nexus/content/groups/public/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
 		</profile>
 	</profiles>
+
 
 	<distributionManagement>
 		<repository>
@@ -42,7 +99,6 @@
 			<url>http://127.0.0.1:8081/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-
 	<servers>
 		<server>
 			<id>nexus-releases</id>
@@ -55,14 +111,16 @@
 			<password>admin123</password>
 		</server>
 		<server>
-			<id>app-side</id>
-			<username>tomcat-deploy</username>
+			<id>tomcat-deploy</id>
+			<username>tomcatAdmin</username>
 			<password>develop</password>
 		</server>
 	</servers>
 
 	<activeProfiles>
 		<activeProfile>jdk-version</activeProfile>
-		<activeProfile>develop</activeProfile>
+		<activeProfile>nexus</activeProfile>
+		<activeProfile>beifaprofile</activeProfile>
 	</activeProfiles>
+
 </settings>
