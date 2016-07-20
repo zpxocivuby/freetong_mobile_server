@@ -54,11 +54,11 @@ public class BzApplyRealnameCertificateServiceImpl extends BaseServiceImpl
 		variables.put(WorkflowMapDefine.FORMID, bzApplyRealnameCertificate.getId());
 		variables.put(WorkflowMapDefine.PROCESSDEFINITIONID, bzApplyRealnameCertificate.getProcessDefinitionId());
 		variables.put(WorkflowMapDefine.FINALAPPROVALSTATE, "NO");
-		variables.put(WorkflowMapDefine.FIRSTAPPROVAL, String.valueOf(bzApplyRealnameCertificate.getFirstApproval().getId()));
-		variables.put(WorkflowMapDefine.SECONDAPPROVAL, String.valueOf(bzApplyRealnameCertificate.getSecondApproval().getId()));
+		variables.put(WorkflowMapDefine.FIRSTAPPROVAL, String.valueOf(bzApplyRealnameCertificate.getFirstApprovalID()));
+		variables.put(WorkflowMapDefine.SECONDAPPROVAL, String.valueOf(bzApplyRealnameCertificate.getSecondApprovalID()));
 		variables.put(WorkflowMapDefine.TYPE, "realname");
 		String processInstanceId = workFlowService.doStartWorkflow(
-				String.valueOf(bzApplyRealnameCertificate.getSysUser().getId()), bzApplyRealnameCertificate.getProcessDefinitionId(),
+				String.valueOf(bzApplyRealnameCertificate.getSysUserId()), bzApplyRealnameCertificate.getProcessDefinitionId(),
 				bzApplyRealnameCertificate.getId().toString(), variables);
 		//回填更新
 		bzApplyRealnameCertificate.setProcessInstanceId(processInstanceId);

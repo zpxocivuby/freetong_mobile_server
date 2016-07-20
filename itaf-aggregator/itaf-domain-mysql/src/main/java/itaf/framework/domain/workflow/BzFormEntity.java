@@ -51,7 +51,7 @@ public class BzFormEntity extends OperateEntity {
 	private String processDefinitionId;
 	// 流程实例Id
 	private String processInstanceId;
-	// 审批状态 1新建  2进行中  3 完成
+	// 审批状态 1新建 2进行中 3 完成
 	private Long approvalState;
 	// 页面地址
 	private String pageUrl;
@@ -62,11 +62,44 @@ public class BzFormEntity extends OperateEntity {
 
 	private SysRole firstApproval;
 
+	private Long firstApprovalID;
+
 	private SysRole secondApproval;
 
+	private Long secondApprovalID;
+
 	private SysRole thirdApproval;
-	
-	//审批结果 1通过  2不通过
+
+	private Long thirdApprovalID;
+
+	@Column(name = "FIRST_APPROVAL_ID", nullable = false)
+	public Long getFirstApprovalID() {
+		return firstApprovalID;
+	}
+
+	public void setFirstApprovalID(Long firstApprovalID) {
+		this.firstApprovalID = firstApprovalID;
+	}
+
+	@Column(name = "SECOND_APPROVAL_ID", nullable = false)
+	public Long getSecondApprovalID() {
+		return secondApprovalID;
+	}
+
+	public void setSecondApprovalID(Long secondApprovalID) {
+		this.secondApprovalID = secondApprovalID;
+	}
+
+	@Column(name = "THIRD_APPROVAL_ID", nullable = false)
+	public Long getThirdApprovalID() {
+		return thirdApprovalID;
+	}
+
+	public void setThirdApprovalID(Long thirdApprovalID) {
+		this.thirdApprovalID = thirdApprovalID;
+	}
+
+	// 审批结果 1通过 2不通过
 	private String state;
 
 	@Id
@@ -171,9 +204,8 @@ public class BzFormEntity extends OperateEntity {
 		this.createUserName = createUserName;
 	}
 
-
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "FIRST_APPROVAL_ID")
+	@JoinColumn(name = "FIRST_APPROVAL_ID", nullable = false, updatable = false, insertable = false)
 	public SysRole getFirstApproval() {
 		return firstApproval;
 	}
@@ -183,7 +215,7 @@ public class BzFormEntity extends OperateEntity {
 	}
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SECOND_APPROVAL_ID")
+	@JoinColumn(name = "SECOND_APPROVAL_ID", nullable = false, updatable = false, insertable = false)
 	public SysRole getSecondApproval() {
 		return secondApproval;
 	}
@@ -191,9 +223,9 @@ public class BzFormEntity extends OperateEntity {
 	public void setSecondApproval(SysRole secondApproval) {
 		this.secondApproval = secondApproval;
 	}
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "THIRD_APPROVAL_ID")
+	@JoinColumn(name = "THIRD_APPROVAL_ID", nullable = false, updatable = false, insertable = false)
 	public SysRole getThirdApproval() {
 		return thirdApproval;
 	}

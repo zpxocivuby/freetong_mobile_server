@@ -6,6 +6,7 @@ import itaf.framework.business.platform.service.ISysUserService;
 import itaf.framework.certificate.dto.BzApplyRealnameCertificateDto;
 import itaf.framework.common.dto.BzAttachmentDto;
 import itaf.framework.domain.certificate.BzApplyRealnameCertificate;
+import itaf.framework.domain.platform.SysRole;
 import itaf.framework.platform.dto.SysUserDto;
 import itaf.framework.workflow.dto.BzApprovalInfoDto;
 import itaf.framework.ws.server.base.impl.WsBaseImpl;
@@ -37,6 +38,12 @@ public class WsApplyRealnameCertificateServiceImpl extends
 			@WebParam(name = "dtoString") String dtoString) {
 		WsPageResult<String> pr = new WsPageResult<String>();
 		try {
+			SysRole firstApproval = new SysRole();
+			firstApproval.setId(1l);
+			SysRole secondApproval = new SysRole();
+			firstApproval.setId(2l);
+			SysRole thirdApproval = new SysRole();
+			firstApproval.setId(3l);
 			BzApplyRealnameCertificateDto dto = (BzApplyRealnameCertificateDto) decodeBase64(dtoString);
 			BzApplyRealnameCertificate bzApplyRealnameCertificate = new BzApplyRealnameCertificate();
 			bzApplyRealnameCertificate
@@ -50,6 +57,10 @@ public class WsApplyRealnameCertificateServiceImpl extends
 			bzApplyRealnameCertificate.setIdType(dto.getIdType());
 			bzApplyRealnameCertificate.setIdNo(dto.getIdNo());
 			bzApplyRealnameCertificate.setApprovalState(1L);
+			bzApplyRealnameCertificate.setFirstApprovalID(1l);
+			bzApplyRealnameCertificate.setSecondApprovalID(2l);
+			bzApplyRealnameCertificate.setThirdApprovalID(3l);
+			bzApplyRealnameCertificate.setProcessDefinitionId("application");
 			bzApplyRealnameCertificateService
 					.doSubmitApply(bzApplyRealnameCertificate);
 			pr.setStatus(WsPageResult.STATUS_SUCCESS);
